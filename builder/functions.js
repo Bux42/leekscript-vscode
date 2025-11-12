@@ -24,19 +24,18 @@ function extractFunctions() {
   // Extract the FUNCTIONS array using regex
   // Match: export const FUNCTIONS: readonly LSFunction[] = Object.freeze([...])
   const match = content.match(
-    /export const FUNCTIONS[^=]*=\s*Object\.freeze\(([\s\S]*?)\)\s*$/m
+    /export const FUNCTIONS[^=]*=\s*Object\.freeze\(\[([\s\S]*?)\]\)\s*$/m
   );
 
   if (!match) {
     throw new Error("Could not find FUNCTIONS array in functions.ts");
   }
 
-  // The matched content is TypeScript/JavaScript array literal
-  // We'll evaluate it safely
   let arrayContent = match[1].trim();
 
-  // Parse the array (this is a simple eval - in production you'd want a proper parser)
-  const functions = eval(arrayContent);
+  // The file has two objects per line - wrap in brackets to make valid JS
+  const jsCode = "[" + arrayContent + "]";
+  const functions = eval(jsCode);
 
   // Create extracted directory if it doesn't exist
   const extractedDir = path.join(__dirname, "../extracted");

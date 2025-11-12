@@ -4,8 +4,12 @@
     "name": "abs",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -18,8 +22,12 @@
     "name": "acos",
     "category": 1,
     "operations": 12,
-    "arguments_names": ["argument"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "argument"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -32,13 +40,22 @@
     "name": "arrayChunk",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array", "chunkSize"],
-    "arguments_types": ["4", "6"],
+    "arguments_names": [
+      "array",
+      "chunkSize"
+    ],
+    "arguments_types": [
+      "4",
+      "6"
+    ],
     "return_type": 44,
     "return_name": "chunks",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -46,13 +63,19 @@
     "name": "arrayClear",
     "category": 3,
     "operations": 2,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -60,8 +83,14 @@
     "name": "arrayConcat",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array1", "array2"],
-    "arguments_types": ["4", "4"],
+    "arguments_names": [
+      "array1",
+      "array2"
+    ],
+    "arguments_types": [
+      "4",
+      "4"
+    ],
     "return_type": 4,
     "return_name": "newArray",
     "deprecated": false,
@@ -74,13 +103,22 @@
     "name": "arrayEvery",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 3,
     "return_name": "every",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -88,8 +126,14 @@
     "name": "arrayFilter",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 4,
     "return_name": "newArray",
     "deprecated": false,
@@ -102,13 +146,22 @@
     "name": "arrayFlatten",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "depth"],
-    "arguments_types": ["4", "1"],
+    "arguments_names": [
+      "array",
+      "depth"
+    ],
+    "arguments_types": [
+      "4",
+      "1"
+    ],
     "return_type": 4,
     "return_name": "newArray",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 13
   },
   {
@@ -116,8 +169,16 @@
     "name": "arrayFoldLeft",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "f", "v0"],
-    "arguments_types": ["4", "5", "-1"],
+    "arguments_names": [
+      "array",
+      "f",
+      "v0"
+    ],
+    "arguments_types": [
+      "4",
+      "5",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "result",
     "deprecated": false,
@@ -130,8 +191,16 @@
     "name": "arrayFoldRight",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "f", "v0"],
-    "arguments_types": ["4", "5", "-1"],
+    "arguments_names": [
+      "array",
+      "f",
+      "v0"
+    ],
+    "arguments_types": [
+      "4",
+      "5",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "result",
     "deprecated": false,
@@ -144,13 +213,19 @@
     "name": "arrayFrequencies",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 806,
     "return_name": "frequencies",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -158,13 +233,25 @@
     "name": "arrayGet",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array", "index", "defaultValue"],
-    "arguments_types": ["4", "6", "-1"],
+    "arguments_names": [
+      "array",
+      "index",
+      "defaultValue"
+    ],
+    "arguments_types": [
+      "4",
+      "6",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -172,8 +259,14 @@
     "name": "arrayIter",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -186,8 +279,14 @@
     "name": "arrayMap",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 4,
     "return_name": "newArray",
     "deprecated": false,
@@ -200,8 +299,12 @@
     "name": "arrayMax",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
@@ -214,8 +317,12 @@
     "name": "arrayMin",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
@@ -228,8 +335,14 @@
     "name": "arrayPartition",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 44,
     "return_name": "newArray",
     "deprecated": false,
@@ -242,13 +355,22 @@
     "name": "arrayRandom",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array", "count"],
-    "arguments_types": ["4", "6"],
+    "arguments_names": [
+      "array",
+      "count"
+    ],
+    "arguments_types": [
+      "4",
+      "6"
+    ],
     "return_type": 4,
     "return_name": "random",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -256,13 +378,22 @@
     "name": "arrayRemoveAll",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "element"],
-    "arguments_types": ["4", "-1"],
+    "arguments_names": [
+      "array",
+      "element"
+    ],
+    "arguments_types": [
+      "4",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -270,13 +401,28 @@
     "name": "arraySlice",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "start", "end", "stride"],
-    "arguments_types": ["4", "-1", "-1", "6"],
+    "arguments_names": [
+      "array",
+      "start",
+      "end",
+      "stride"
+    ],
+    "arguments_types": [
+      "4",
+      "-1",
+      "-1",
+      "6"
+    ],
     "return_type": 4,
     "return_name": "slice",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true, true],
+    "optional": [
+      false,
+      false,
+      true,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -284,13 +430,22 @@
     "name": "arraySome",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 3,
     "return_name": "some",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -298,13 +453,22 @@
     "name": "arraySort",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "callback"],
-    "arguments_types": ["4", "5"],
+    "arguments_names": [
+      "array",
+      "callback"
+    ],
+    "arguments_types": [
+      "4",
+      "5"
+    ],
     "return_type": 4,
     "return_name": "sortedArray",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 6
   },
   {
@@ -312,13 +476,19 @@
     "name": "arrayToSet",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 9,
     "return_name": "set",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -326,13 +496,19 @@
     "name": "arrayUnique",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 4,
     "return_name": "unique",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 7
   },
   {
@@ -340,8 +516,12 @@
     "name": "asin",
     "category": 1,
     "operations": 12,
-    "arguments_names": ["argument"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "argument"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -354,13 +534,22 @@
     "name": "assocSort",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "order"],
-    "arguments_types": ["4", "1"],
+    "arguments_names": [
+      "array",
+      "order"
+    ],
+    "arguments_types": [
+      "4",
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": true,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 6
   },
   {
@@ -368,8 +557,12 @@
     "name": "atan",
     "category": 1,
     "operations": 25,
-    "arguments_names": ["argument"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "argument"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -382,8 +575,14 @@
     "name": "atan2",
     "category": 1,
     "operations": 35,
-    "arguments_names": ["y", "x"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "y",
+      "x"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -396,8 +595,12 @@
     "name": "average",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["41"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "41"
+    ],
     "return_type": 7,
     "return_name": "averageValue",
     "deprecated": false,
@@ -410,13 +613,19 @@
     "name": "binString",
     "category": 1,
     "operations": 10,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -424,13 +633,19 @@
     "name": "bitCount",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "bits",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -438,13 +653,19 @@
     "name": "bitReverse",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "reversed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -452,13 +673,19 @@
     "name": "bitsToReal",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 7,
     "return_name": "real",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -466,13 +693,19 @@
     "name": "byteReverse",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "reversed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -480,8 +713,14 @@
     "name": "canUseChip",
     "category": 7,
     "operations": 45,
-    "arguments_names": ["chip", "entity"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "chip",
+      "entity"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "canUse",
     "deprecated": false,
@@ -494,8 +733,14 @@
     "name": "canUseChipOnCell",
     "category": 7,
     "operations": 45,
-    "arguments_names": ["chip", "cell"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "chip",
+      "cell"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "canUse",
     "deprecated": false,
@@ -508,13 +753,22 @@
     "name": "canUseWeapon",
     "category": 6,
     "operations": 45,
-    "arguments_names": ["weapon", "entity"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "weapon",
+      "entity"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "canUse",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false],
+    "optional": [
+      true,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -522,13 +776,22 @@
     "name": "canUseWeaponOnCell",
     "category": 6,
     "operations": 45,
-    "arguments_names": ["weapon", "cell"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "weapon",
+      "cell"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "canUse",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false],
+    "optional": [
+      true,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -536,8 +799,12 @@
     "name": "cbrt",
     "category": 1,
     "operations": 62,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -550,8 +817,12 @@
     "name": "ceil",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -564,8 +835,14 @@
     "name": "charAt",
     "category": 2,
     "operations": 8,
-    "arguments_names": ["string", "position"],
-    "arguments_types": ["2", "1"],
+    "arguments_names": [
+      "string",
+      "position"
+    ],
+    "arguments_types": [
+      "2",
+      "1"
+    ],
     "return_type": 2,
     "return_name": "char",
     "deprecated": false,
@@ -578,8 +855,12 @@
     "name": "chipNeedLos",
     "category": 7,
     "operations": 10,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "needLos",
     "deprecated": false,
@@ -606,13 +887,22 @@
     "name": "clone",
     "category": 10,
     "operations": -1,
-    "arguments_names": ["value", "level"],
-    "arguments_types": ["-1", "1"],
+    "arguments_names": [
+      "value",
+      "level"
+    ],
+    "arguments_types": [
+      "-1",
+      "1"
+    ],
     "return_type": -1,
     "return_name": "copy",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 13
   },
   {
@@ -620,13 +910,22 @@
     "name": "codePointAt",
     "category": 2,
     "operations": 5,
-    "arguments_names": ["string", "index"],
-    "arguments_types": ["2", "6"],
+    "arguments_names": [
+      "string",
+      "index"
+    ],
+    "arguments_types": [
+      "2",
+      "6"
+    ],
     "return_type": 6,
     "return_name": "codePoint",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -634,8 +933,14 @@
     "name": "contains",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "search"],
-    "arguments_types": ["2", "2"],
+    "arguments_names": [
+      "string",
+      "search"
+    ],
+    "arguments_types": [
+      "2",
+      "2"
+    ],
     "return_type": 3,
     "return_name": "contains",
     "deprecated": false,
@@ -648,8 +953,12 @@
     "name": "cos",
     "category": 1,
     "operations": 30,
-    "arguments_names": ["angle"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "angle"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "cosine",
     "deprecated": false,
@@ -662,8 +971,12 @@
     "name": "count",
     "category": 3,
     "operations": 1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 6,
     "return_name": "numberOfElements",
     "deprecated": false,
@@ -676,8 +989,12 @@
     "name": "debug",
     "category": 10,
     "operations": 100,
-    "arguments_names": ["object"],
-    "arguments_types": ["-1"],
+    "arguments_names": [
+      "object"
+    ],
+    "arguments_types": [
+      "-1"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -690,8 +1007,14 @@
     "name": "debugC",
     "category": 10,
     "operations": 100,
-    "arguments_names": ["object", "color"],
-    "arguments_types": ["-1", "1"],
+    "arguments_names": [
+      "object",
+      "color"
+    ],
+    "arguments_types": [
+      "-1",
+      "1"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -704,8 +1027,12 @@
     "name": "debugE",
     "category": 10,
     "operations": 100,
-    "arguments_names": ["object"],
-    "arguments_types": ["-1"],
+    "arguments_names": [
+      "object"
+    ],
+    "arguments_types": [
+      "-1"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -718,8 +1045,12 @@
     "name": "debugW",
     "category": 10,
     "operations": 100,
-    "arguments_names": ["object"],
-    "arguments_types": ["-1"],
+    "arguments_names": [
+      "object"
+    ],
+    "arguments_types": [
+      "-1"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -732,8 +1063,12 @@
     "name": "deleteRegister",
     "category": 10,
     "operations": 16,
-    "arguments_names": ["key"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "key"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -746,8 +1081,14 @@
     "name": "endsWith",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "suffix"],
-    "arguments_types": ["2", "2"],
+    "arguments_names": [
+      "string",
+      "suffix"
+    ],
+    "arguments_types": [
+      "2",
+      "2"
+    ],
     "return_type": 3,
     "return_name": "endsWith",
     "deprecated": false,
@@ -760,8 +1101,12 @@
     "name": "exp",
     "category": 1,
     "operations": 40,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -774,13 +1119,25 @@
     "name": "fill",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "value", "size"],
-    "arguments_types": ["4", "-1", "1"],
+    "arguments_names": [
+      "array",
+      "value",
+      "size"
+    ],
+    "arguments_types": [
+      "4",
+      "-1",
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -788,8 +1145,12 @@
     "name": "floor",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -802,13 +1163,19 @@
     "name": "getAbsoluteShield",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "shield",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -816,13 +1183,19 @@
     "name": "getAgility",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "agility",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -830,13 +1203,19 @@
     "name": "getAIID",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "id",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -844,13 +1223,19 @@
     "name": "getAIName",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "name",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1012,13 +1397,19 @@
     "name": "getBirthTurn",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "turn",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1026,8 +1417,12 @@
     "name": "getBlue",
     "category": 12,
     "operations": 10,
-    "arguments_names": ["color"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "color"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "blue",
     "deprecated": false,
@@ -1040,8 +1435,12 @@
     "name": "getBulbChips",
     "category": 9,
     "operations": 40,
-    "arguments_names": ["bulbChip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "bulbChip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 46,
     "return_name": "chips",
     "deprecated": false,
@@ -1054,13 +1453,19 @@
     "name": "getCell",
     "category": 5,
     "operations": 5,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cell",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1068,8 +1473,12 @@
     "name": "getCellContent",
     "category": 8,
     "operations": 6,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "content",
     "deprecated": false,
@@ -1082,8 +1491,14 @@
     "name": "getCellDistance",
     "category": 8,
     "operations": 15,
-    "arguments_names": ["cell1", "cell2"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "cell1",
+      "cell2"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "distance",
     "deprecated": false,
@@ -1096,8 +1511,14 @@
     "name": "getCellFromXY",
     "category": 8,
     "operations": 5,
-    "arguments_names": ["x", "y"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "x",
+      "y"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cell",
     "deprecated": false,
@@ -1110,13 +1531,25 @@
     "name": "getCellsToUseChip",
     "category": 9,
     "operations": 25834,
-    "arguments_names": ["chip", "entity", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "chip",
+      "entity",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 46,
     "return_name": "cells",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1124,13 +1557,25 @@
     "name": "getCellsToUseChipOnCell",
     "category": 9,
     "operations": 25834,
-    "arguments_names": ["chip", "cell", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "chip",
+      "cell",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 46,
     "return_name": "cells",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1138,13 +1583,25 @@
     "name": "getCellsToUseWeapon",
     "category": 9,
     "operations": 25834,
-    "arguments_names": ["weapon", "entity", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "weapon",
+      "entity",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 46,
     "return_name": "cells",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false, true],
+    "optional": [
+      true,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1152,13 +1609,25 @@
     "name": "getCellsToUseWeaponOnCell",
     "category": 9,
     "operations": 25834,
-    "arguments_names": ["weapon", "cell", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "weapon",
+      "cell",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 46,
     "return_name": "cell",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false, true],
+    "optional": [
+      true,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1166,13 +1635,25 @@
     "name": "getCellToUseChip",
     "category": 9,
     "operations": 38080,
-    "arguments_names": ["chip", "entity", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "chip",
+      "entity",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 6,
     "return_name": "cell",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1180,13 +1661,25 @@
     "name": "getCellToUseChipOnCell",
     "category": 9,
     "operations": 38080,
-    "arguments_names": ["chip", "cell", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "chip",
+      "cell",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 6,
     "return_name": "cell",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1194,13 +1687,25 @@
     "name": "getCellToUseWeapon",
     "category": 9,
     "operations": 38080,
-    "arguments_names": ["weapon", "entity", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "weapon",
+      "entity",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 6,
     "return_name": "cell",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false, true],
+    "optional": [
+      true,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1208,13 +1713,25 @@
     "name": "getCellToUseWeaponOnCell",
     "category": 9,
     "operations": 38080,
-    "arguments_names": ["weapon", "cell", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "weapon",
+      "cell",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 6,
     "return_name": "cell",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false, true],
+    "optional": [
+      true,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1222,8 +1739,12 @@
     "name": "getCellX",
     "category": 8,
     "operations": 5,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "x",
     "deprecated": false,
@@ -1236,8 +1757,12 @@
     "name": "getCellY",
     "category": 8,
     "operations": 5,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "y",
     "deprecated": false,
@@ -1250,8 +1775,12 @@
     "name": "getChipArea",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "area",
     "deprecated": false,
@@ -1264,8 +1793,12 @@
     "name": "getChipCooldown",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cooldown",
     "deprecated": false,
@@ -1278,8 +1811,12 @@
     "name": "getChipCost",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cost",
     "deprecated": false,
@@ -1292,13 +1829,25 @@
     "name": "getChipEffectiveArea",
     "category": 7,
     "operations": 78,
-    "arguments_names": ["chip", "cell", "from"],
-    "arguments_types": ["1", "1", "1"],
+    "arguments_names": [
+      "chip",
+      "cell",
+      "from"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "1"
+    ],
     "return_type": 46,
     "return_name": "cells",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1306,8 +1855,12 @@
     "name": "getChipEffects",
     "category": 7,
     "operations": 125,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "effects",
     "deprecated": false,
@@ -1320,8 +1873,12 @@
     "name": "getChipFailure",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "failure",
     "deprecated": true,
@@ -1334,13 +1891,19 @@
     "name": "getChipLaunchType",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "launchType",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -1348,8 +1911,12 @@
     "name": "getChipMaxRange",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "maxRange",
     "deprecated": false,
@@ -1362,8 +1929,12 @@
     "name": "getChipMaxScope",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "maxScope",
     "deprecated": true,
@@ -1376,13 +1947,19 @@
     "name": "getChipMaxUses",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "maxUses",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -1390,8 +1967,12 @@
     "name": "getChipMinRange",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "minRange",
     "deprecated": false,
@@ -1404,8 +1985,12 @@
     "name": "getChipMinScope",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "minScope",
     "deprecated": true,
@@ -1418,8 +2003,12 @@
     "name": "getChipName",
     "category": 7,
     "operations": 15,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "name",
     "deprecated": false,
@@ -1432,13 +2021,19 @@
     "name": "getChips",
     "category": 5,
     "operations": 40,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 46,
     "return_name": "chips",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1446,8 +2041,14 @@
     "name": "getChipTargets",
     "category": 9,
     "operations": 40,
-    "arguments_names": ["chip", "cell"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "chip",
+      "cell"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 46,
     "return_name": "targets",
     "deprecated": false,
@@ -1460,8 +2061,16 @@
     "name": "getColor",
     "category": 12,
     "operations": 15,
-    "arguments_names": ["red", "green", "blue"],
-    "arguments_types": ["1", "1", "1"],
+    "arguments_names": [
+      "red",
+      "green",
+      "blue"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "color",
     "deprecated": false,
@@ -1474,13 +2083,22 @@
     "name": "getCooldown",
     "category": 7,
     "operations": 30,
-    "arguments_names": ["chip", "entity"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "chip",
+      "entity"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cooldown",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1488,13 +2106,19 @@
     "name": "getCores",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cores",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1502,13 +2126,19 @@
     "name": "getDamageReturn",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "damageReturn",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1572,8 +2202,14 @@
     "name": "getDistance",
     "category": 8,
     "operations": 15,
-    "arguments_names": ["cell1", "cell2"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "cell1",
+      "cell2"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "distance",
     "deprecated": true,
@@ -1586,13 +2222,19 @@
     "name": "getEffects",
     "category": 5,
     "operations": 25,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "effects",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1670,8 +2312,12 @@
     "name": "getEntityOnCell",
     "category": 8,
     "operations": 15,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "entity",
     "deprecated": false,
@@ -1684,13 +2330,19 @@
     "name": "getEntityTurnOrder",
     "category": 5,
     "operations": 30,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "turnOrder",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1698,13 +2350,19 @@
     "name": "getFarmerCountry",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "country",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1712,13 +2370,19 @@
     "name": "getFarmerID",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "id",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1726,13 +2390,19 @@
     "name": "getFarmerName",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "name",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1824,13 +2494,19 @@
     "name": "getForce",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "force",
     "deprecated": true,
     "replacement": 303,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1838,13 +2514,19 @@
     "name": "getFrequency",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "frequency",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1852,8 +2534,12 @@
     "name": "getGreen",
     "category": 12,
     "operations": 10,
-    "arguments_names": ["color"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "color"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "green",
     "deprecated": false,
@@ -1880,13 +2566,19 @@
     "name": "getItemUses",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["item"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "item"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "uses",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -1894,13 +2586,19 @@
     "name": "getLaunchedEffects",
     "category": 5,
     "operations": 25,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "effects",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1922,13 +2620,19 @@
     "name": "getLeekID",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "realID",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1936,8 +2640,12 @@
     "name": "getLeekOnCell",
     "category": 8,
     "operations": 15,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "entity",
     "deprecated": true,
@@ -1950,13 +2658,19 @@
     "name": "getLevel",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "level",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1964,13 +2678,19 @@
     "name": "getLife",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "life",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -1978,13 +2698,19 @@
     "name": "getMagic",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "magic",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2026,7 +2752,9 @@
     "return_name": "ram",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -2034,8 +2762,12 @@
     "name": "getMessageAuthor",
     "category": 11,
     "operations": 5,
-    "arguments_names": ["message"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "message"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 6,
     "return_name": "entity",
     "deprecated": false,
@@ -2048,8 +2780,12 @@
     "name": "getMessageParams",
     "category": 11,
     "operations": 5,
-    "arguments_names": ["message"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "message"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": -1,
     "return_name": "params",
     "deprecated": false,
@@ -2062,13 +2798,19 @@
     "name": "getMessages",
     "category": 11,
     "operations": -1,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "messages",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 4
   },
   {
@@ -2076,8 +2818,12 @@
     "name": "getMessageType",
     "category": 11,
     "operations": 5,
-    "arguments_names": ["message"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "message"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 6,
     "return_name": "type",
     "deprecated": false,
@@ -2090,13 +2836,19 @@
     "name": "getMP",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2104,13 +2856,19 @@
     "name": "getName",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "name",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2132,8 +2890,12 @@
     "name": "getNearestAllyTo",
     "category": 9,
     "operations": 35,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "ally",
     "deprecated": false,
@@ -2146,8 +2908,12 @@
     "name": "getNearestAllyToCell",
     "category": 9,
     "operations": 35,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "ally",
     "deprecated": false,
@@ -2174,8 +2940,12 @@
     "name": "getNearestEnemyTo",
     "category": 9,
     "operations": 35,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "enemy",
     "deprecated": false,
@@ -2188,8 +2958,12 @@
     "name": "getNearestEnemyToCell",
     "category": 9,
     "operations": 35,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "enemy",
     "deprecated": false,
@@ -2244,13 +3018,19 @@
     "name": "getPassiveEffects",
     "category": 5,
     "operations": 125,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "passiveEffects",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2258,13 +3038,25 @@
     "name": "getPath",
     "category": 8,
     "operations": -1,
-    "arguments_names": ["start", "end", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "start",
+      "end",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 46,
     "return_name": "path",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 7
   },
   {
@@ -2272,13 +3064,25 @@
     "name": "getPathLength",
     "category": 8,
     "operations": -1,
-    "arguments_names": ["cell1", "cell2", "ignoredCells"],
-    "arguments_types": ["1", "1", "46"],
+    "arguments_names": [
+      "cell1",
+      "cell2",
+      "ignoredCells"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "46"
+    ],
     "return_type": 6,
     "return_name": "length",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 7
   },
   {
@@ -2286,13 +3090,19 @@
     "name": "getPower",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "power",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2314,13 +3124,19 @@
     "name": "getRAM",
     "category": 5,
     "operations": 1,
-    "arguments_names": ["entity"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "ram",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2328,8 +3144,12 @@
     "name": "getRed",
     "category": 12,
     "operations": 10,
-    "arguments_names": ["color"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "color"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "red",
     "deprecated": false,
@@ -2342,8 +3162,12 @@
     "name": "getRegister",
     "category": 10,
     "operations": 15,
-    "arguments_names": ["key"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "key"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 2,
     "return_name": "value",
     "deprecated": false,
@@ -2370,13 +3194,19 @@
     "name": "getRelativeShield",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "shield",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2384,13 +3214,19 @@
     "name": "getResistance",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "resistance",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2398,13 +3234,19 @@
     "name": "getScience",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "science",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2412,13 +3254,19 @@
     "name": "getSide",
     "category": 5,
     "operations": 5,
-    "arguments_names": ["entity"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "side",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2426,13 +3274,19 @@
     "name": "getStates",
     "category": 5,
     "operations": 25,
-    "arguments_names": ["entity"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 96,
     "return_name": "states",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2440,13 +3294,19 @@
     "name": "getStrength",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "strength",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2454,13 +3314,19 @@
     "name": "getSummoner",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "summoner",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2468,13 +3334,19 @@
     "name": "getSummons",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 46,
     "return_name": "summons",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2482,13 +3354,19 @@
     "name": "getTeamID",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "id",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2496,13 +3374,19 @@
     "name": "getTeamName",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "name",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2538,13 +3422,19 @@
     "name": "getTotalLife",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "life",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2552,13 +3442,19 @@
     "name": "getTotalMP",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "totalMP",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2566,13 +3462,19 @@
     "name": "getTotalTP",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "totalTP",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2580,13 +3482,19 @@
     "name": "getTP",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "tp",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2608,13 +3516,19 @@
     "name": "getType",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "type",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2628,7 +3542,9 @@
     "return_name": "ram",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -2636,13 +3552,19 @@
     "name": "getWeapon",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "weapon",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2650,8 +3572,12 @@
     "name": "getWeaponArea",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "area",
     "deprecated": false,
@@ -2664,8 +3590,12 @@
     "name": "getWeaponCost",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "cost",
     "deprecated": false,
@@ -2678,13 +3608,25 @@
     "name": "getWeaponEffectiveArea",
     "category": 6,
     "operations": 78,
-    "arguments_names": ["weapon", "cell", "from"],
-    "arguments_types": ["1", "1", "1"],
+    "arguments_names": [
+      "weapon",
+      "cell",
+      "from"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "1"
+    ],
     "return_type": 46,
     "return_name": "cells",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false, true],
+    "optional": [
+      true,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2692,13 +3634,19 @@
     "name": "getWeaponEffects",
     "category": 6,
     "operations": 125,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "effects",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2706,8 +3654,12 @@
     "name": "getWeaponFailure",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "failure",
     "deprecated": true,
@@ -2720,13 +3672,19 @@
     "name": "getWeaponLaunchType",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "launchType",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2734,8 +3692,12 @@
     "name": "getWeaponMaxRange",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "maxRange",
     "deprecated": false,
@@ -2748,8 +3710,12 @@
     "name": "getWeaponMaxScope",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "maxScope",
     "deprecated": true,
@@ -2762,13 +3728,19 @@
     "name": "getWeaponMaxUses",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "maxUses",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2776,8 +3748,12 @@
     "name": "getWeaponMinRange",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "minRange",
     "deprecated": false,
@@ -2790,8 +3766,12 @@
     "name": "getWeaponMinScope",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "minScope",
     "deprecated": true,
@@ -2804,8 +3784,12 @@
     "name": "getWeaponName",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 2,
     "return_name": "name",
     "deprecated": false,
@@ -2818,8 +3802,12 @@
     "name": "getWeaponPassiveEffects",
     "category": 6,
     "operations": 125,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 44,
     "return_name": "passiveEffects",
     "deprecated": false,
@@ -2832,13 +3820,19 @@
     "name": "getWeapons",
     "category": 5,
     "operations": 50,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 46,
     "return_name": "weapon",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2846,13 +3840,22 @@
     "name": "getWeaponTargets",
     "category": 9,
     "operations": 40,
-    "arguments_names": ["weapon", "cell"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "weapon",
+      "cell"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 46,
     "return_name": "targets",
     "deprecated": false,
     "replacement": null,
-    "optional": [true, false],
+    "optional": [
+      true,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -2860,13 +3863,19 @@
     "name": "getWisdom",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "wisdom",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -2874,13 +3883,19 @@
     "name": "hexString",
     "category": 1,
     "operations": 10,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -2888,8 +3903,14 @@
     "name": "hypot",
     "category": 1,
     "operations": 187,
-    "arguments_names": ["x", "y"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "x",
+      "y"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 7,
     "return_name": "hypotenuse",
     "deprecated": false,
@@ -2902,8 +3923,14 @@
     "name": "inArray",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "element"],
-    "arguments_types": ["4", "-1"],
+    "arguments_names": [
+      "array",
+      "element"
+    ],
+    "arguments_types": [
+      "4",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "inArray",
     "deprecated": false,
@@ -2916,8 +3943,12 @@
     "name": "include",
     "category": 10,
     "operations": 1,
-    "arguments_names": ["ai"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "ai"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
@@ -2930,13 +3961,25 @@
     "name": "indexOf",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "search", "start"],
-    "arguments_types": ["2", "2", "1"],
+    "arguments_names": [
+      "string",
+      "search",
+      "start"
+    ],
+    "arguments_types": [
+      "2",
+      "2",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "index",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -2944,8 +3987,16 @@
     "name": "insert",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "element", "position"],
-    "arguments_types": ["4", "-1", "1"],
+    "arguments_names": [
+      "array",
+      "element",
+      "position"
+    ],
+    "arguments_types": [
+      "4",
+      "-1",
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -2958,13 +4009,19 @@
     "name": "intervalAverage",
     "category": 14,
     "operations": 3,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 7,
     "return_name": "average",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -2972,13 +4029,22 @@
     "name": "intervalCombine",
     "category": 14,
     "operations": 3,
-    "arguments_names": ["interval1", "interval2"],
-    "arguments_types": ["10", "10"],
+    "arguments_names": [
+      "interval1",
+      "interval2"
+    ],
+    "arguments_types": [
+      "10",
+      "10"
+    ],
     "return_type": 10,
     "return_name": "combination",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -2986,13 +4052,22 @@
     "name": "intervalIntersection",
     "category": 14,
     "operations": 3,
-    "arguments_names": ["interval1", "interval2"],
-    "arguments_types": ["10", "10"],
+    "arguments_names": [
+      "interval1",
+      "interval2"
+    ],
+    "arguments_types": [
+      "10",
+      "10"
+    ],
     "return_type": 10,
     "return_name": "intersection",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3000,13 +4075,19 @@
     "name": "intervalIsBounded",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "bounded",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3014,13 +4095,19 @@
     "name": "intervalIsClosed",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "closed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3028,13 +4115,19 @@
     "name": "intervalIsEmpty",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "empty",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3042,13 +4135,19 @@
     "name": "intervalIsLeftBounded",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "bounded",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3056,13 +4155,19 @@
     "name": "intervalIsLeftClosed",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "closed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3070,13 +4175,19 @@
     "name": "intervalIsRightBounded",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "bounded",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3084,13 +4195,19 @@
     "name": "intervalIsRightClosed",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 3,
     "return_name": "closed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3098,13 +4215,19 @@
     "name": "intervalMax",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 1,
     "return_name": "max",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3112,13 +4235,19 @@
     "name": "intervalMin",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 1,
     "return_name": "min",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3126,13 +4255,19 @@
     "name": "intervalSize",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 1,
     "return_name": "size",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3140,13 +4275,22 @@
     "name": "intervalToArray",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval", "step"],
-    "arguments_types": ["10", "1"],
+    "arguments_names": [
+      "interval",
+      "step"
+    ],
+    "arguments_types": [
+      "10",
+      "1"
+    ],
     "return_type": 4,
     "return_name": "array",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -3154,13 +4298,19 @@
     "name": "intervalToSet",
     "category": 14,
     "operations": 1,
-    "arguments_names": ["interval"],
-    "arguments_types": ["10"],
+    "arguments_names": [
+      "interval"
+    ],
+    "arguments_types": [
+      "10"
+    ],
     "return_type": 9,
     "return_name": "set",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3168,8 +4318,12 @@
     "name": "isAlive",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "alive",
     "deprecated": false,
@@ -3182,8 +4336,12 @@
     "name": "isAlly",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isAlly",
     "deprecated": false,
@@ -3196,8 +4354,12 @@
     "name": "isChip",
     "category": 7,
     "operations": 10,
-    "arguments_names": ["value"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "value"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "chip",
     "deprecated": false,
@@ -3210,8 +4372,12 @@
     "name": "isDead",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "dead",
     "deprecated": false,
@@ -3224,8 +4390,12 @@
     "name": "isEmpty",
     "category": 3,
     "operations": 2,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 3,
     "return_name": "empty",
     "deprecated": false,
@@ -3238,8 +4408,12 @@
     "name": "isEmptyCell",
     "category": 8,
     "operations": 10,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "empty",
     "deprecated": false,
@@ -3252,8 +4426,12 @@
     "name": "isEnemy",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isEnemy",
     "deprecated": false,
@@ -3266,8 +4444,12 @@
     "name": "isEntity",
     "category": 8,
     "operations": 1,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isEntity",
     "deprecated": false,
@@ -3280,13 +4462,19 @@
     "name": "isFinite",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["7"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "7"
+    ],
     "return_type": 3,
     "return_name": "finite",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3294,13 +4482,19 @@
     "name": "isInfinite",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["7"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "7"
+    ],
     "return_type": 3,
     "return_name": "infinite",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3308,8 +4502,12 @@
     "name": "isInlineChip",
     "category": 7,
     "operations": 10,
-    "arguments_names": ["chip"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "chip"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isInline",
     "deprecated": true,
@@ -3322,8 +4520,12 @@
     "name": "isInlineWeapon",
     "category": 6,
     "operations": 10,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isInline",
     "deprecated": true,
@@ -3336,8 +4538,12 @@
     "name": "isLeek",
     "category": 8,
     "operations": 10,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isLeek",
     "deprecated": true,
@@ -3350,13 +4556,19 @@
     "name": "isNaN",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["7"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "7"
+    ],
     "return_type": 3,
     "return_name": "nan",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3364,8 +4576,12 @@
     "name": "isObstacle",
     "category": 8,
     "operations": 10,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "isObstacle",
     "deprecated": false,
@@ -3378,8 +4594,14 @@
     "name": "isOnSameLine",
     "category": 8,
     "operations": 15,
-    "arguments_names": ["cell1", "cell2"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "cell1",
+      "cell2"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "sameLine",
     "deprecated": false,
@@ -3392,13 +4614,22 @@
     "name": "isPermutation",
     "category": 1,
     "operations": 50,
-    "arguments_names": ["x", "y"],
-    "arguments_types": ["6", "6"],
+    "arguments_names": [
+      "x",
+      "y"
+    ],
+    "arguments_types": [
+      "6",
+      "6"
+    ],
     "return_type": 3,
     "return_name": "permutation",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3406,13 +4637,19 @@
     "name": "isStatic",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "static",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -3420,13 +4657,19 @@
     "name": "isSummon",
     "category": 5,
     "operations": 10,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "summon",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   },
   {
@@ -3434,8 +4677,12 @@
     "name": "isWeapon",
     "category": 6,
     "operations": 15,
-    "arguments_names": ["value"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "value"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "weapon",
     "deprecated": false,
@@ -3448,8 +4695,14 @@
     "name": "join",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "glue"],
-    "arguments_types": ["4", "2"],
+    "arguments_names": [
+      "array",
+      "glue"
+    ],
+    "arguments_types": [
+      "4",
+      "2"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
@@ -3462,8 +4715,12 @@
     "name": "jsonDecode",
     "category": 10,
     "operations": -1,
-    "arguments_names": ["json"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "json"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": -1,
     "return_name": "object",
     "deprecated": false,
@@ -3476,8 +4733,12 @@
     "name": "jsonEncode",
     "category": 10,
     "operations": -1,
-    "arguments_names": ["object"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "object"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 2,
     "return_name": "json",
     "deprecated": false,
@@ -3490,13 +4751,22 @@
     "name": "keySort",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "order"],
-    "arguments_types": ["4", "1"],
+    "arguments_names": [
+      "array",
+      "order"
+    ],
+    "arguments_types": [
+      "4",
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 6
   },
   {
@@ -3504,13 +4774,19 @@
     "name": "leadingZeros",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "zeros",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3518,8 +4794,12 @@
     "name": "length",
     "category": 2,
     "operations": 15,
-    "arguments_names": ["string"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "string"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 6,
     "return_name": "length",
     "deprecated": false,
@@ -3532,13 +4812,25 @@
     "name": "lineOfSight",
     "category": 9,
     "operations": 31,
-    "arguments_names": ["start", "end", "entityToIgnore"],
-    "arguments_types": ["1", "1", "1"],
+    "arguments_names": [
+      "start",
+      "end",
+      "entityToIgnore"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "los",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -3560,8 +4852,12 @@
     "name": "log",
     "category": 1,
     "operations": 39,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "log",
     "deprecated": false,
@@ -3574,8 +4870,12 @@
     "name": "log10",
     "category": 1,
     "operations": 23,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "log10",
     "deprecated": false,
@@ -3588,13 +4888,19 @@
     "name": "log2",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "log2",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3602,13 +4908,19 @@
     "name": "mapAverage",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 7,
     "return_name": "average",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3616,13 +4928,19 @@
     "name": "mapClear",
     "category": 4,
     "operations": 1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3630,13 +4948,22 @@
     "name": "mapContains",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "value"],
-    "arguments_types": ["8", "-1"],
+    "arguments_names": [
+      "map",
+      "value"
+    ],
+    "arguments_types": [
+      "8",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "contains",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3644,13 +4971,22 @@
     "name": "mapContainsKey",
     "category": 4,
     "operations": 2,
-    "arguments_names": ["map", "key"],
-    "arguments_types": ["8", "-1"],
+    "arguments_names": [
+      "map",
+      "key"
+    ],
+    "arguments_types": [
+      "8",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "contains",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3658,13 +4994,22 @@
     "name": "mapEvery",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "callback"],
-    "arguments_types": ["8", "5"],
+    "arguments_names": [
+      "map",
+      "callback"
+    ],
+    "arguments_types": [
+      "8",
+      "5"
+    ],
     "return_type": 3,
     "return_name": "every",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3672,13 +5017,22 @@
     "name": "mapFill",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "value"],
-    "arguments_types": ["8", "-1"],
+    "arguments_names": [
+      "map",
+      "value"
+    ],
+    "arguments_types": [
+      "8",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3686,13 +5040,22 @@
     "name": "mapFilter",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "callback"],
-    "arguments_types": ["8", "5"],
+    "arguments_names": [
+      "map",
+      "callback"
+    ],
+    "arguments_types": [
+      "8",
+      "5"
+    ],
     "return_type": 8,
     "return_name": "filtered",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3700,13 +5063,25 @@
     "name": "mapFold",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "f", "v"],
-    "arguments_types": ["8", "5", "-1"],
+    "arguments_names": [
+      "map",
+      "f",
+      "v"
+    ],
+    "arguments_types": [
+      "8",
+      "5",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "result",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, false],
+    "optional": [
+      false,
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3714,13 +5089,25 @@
     "name": "mapGet",
     "category": 4,
     "operations": 2,
-    "arguments_names": ["map", "key", "default"],
-    "arguments_types": ["8", "-1", "-1"],
+    "arguments_names": [
+      "map",
+      "key",
+      "default"
+    ],
+    "arguments_types": [
+      "8",
+      "-1",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -3728,13 +5115,19 @@
     "name": "mapIsEmpty",
     "category": 4,
     "operations": 2,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 3,
     "return_name": "isEmpty",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3742,13 +5135,22 @@
     "name": "mapIter",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "callback"],
-    "arguments_types": ["8", "5"],
+    "arguments_names": [
+      "map",
+      "callback"
+    ],
+    "arguments_types": [
+      "8",
+      "5"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3756,13 +5158,19 @@
     "name": "mapKeys",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 4,
     "return_name": "keys",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3770,13 +5178,22 @@
     "name": "mapMap",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "callback"],
-    "arguments_types": ["8", "5"],
+    "arguments_names": [
+      "map",
+      "callback"
+    ],
+    "arguments_types": [
+      "8",
+      "5"
+    ],
     "return_type": 8,
     "return_name": "newMap",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3784,13 +5201,19 @@
     "name": "mapMax",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 7,
     "return_name": "max",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3798,13 +5221,22 @@
     "name": "mapMerge",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map1", "map2"],
-    "arguments_types": ["8", "8"],
+    "arguments_names": [
+      "map1",
+      "map2"
+    ],
+    "arguments_types": [
+      "8",
+      "8"
+    ],
     "return_type": 8,
     "return_name": "merged",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3812,13 +5244,19 @@
     "name": "mapMin",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 7,
     "return_name": "min",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3826,13 +5264,25 @@
     "name": "mapPut",
     "category": 4,
     "operations": 3,
-    "arguments_names": ["map", "key", "value"],
-    "arguments_types": ["8", "-1", "-1"],
+    "arguments_names": [
+      "map",
+      "key",
+      "value"
+    ],
+    "arguments_types": [
+      "8",
+      "-1",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "value",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, false],
+    "optional": [
+      false,
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3840,13 +5290,22 @@
     "name": "mapPutAll",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "elements"],
-    "arguments_types": ["8", "8"],
+    "arguments_names": [
+      "map",
+      "elements"
+    ],
+    "arguments_types": [
+      "8",
+      "8"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3854,13 +5313,21 @@
     "name": "mapRemove",
     "category": 4,
     "operations": 2,
-    "arguments_names": ["map", "key"],
-    "arguments_types": ["8", "-1"],
+    "arguments_names": [
+      "map",
+      "key"
+    ],
+    "arguments_types": [
+      "8",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3868,13 +5335,22 @@
     "name": "mapRemoveAll",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "value"],
-    "arguments_types": ["8", "-1"],
+    "arguments_names": [
+      "map",
+      "value"
+    ],
+    "arguments_types": [
+      "8",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3882,13 +5358,25 @@
     "name": "mapReplace",
     "category": 4,
     "operations": 3,
-    "arguments_names": ["map", "key", "value"],
-    "arguments_types": ["8", "-1", "-1"],
+    "arguments_names": [
+      "map",
+      "key",
+      "value"
+    ],
+    "arguments_types": [
+      "8",
+      "-1",
+      "-1"
+    ],
     "return_type": -1,
     "return_name": "value",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, false],
+    "optional": [
+      false,
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3896,13 +5384,22 @@
     "name": "mapReplaceAll",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map1", "map2"],
-    "arguments_types": ["8", "8"],
+    "arguments_names": [
+      "map1",
+      "map2"
+    ],
+    "arguments_types": [
+      "8",
+      "8"
+    ],
     "return_type": 0,
     "return_name": "",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3910,13 +5407,21 @@
     "name": "mapSearch",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "value"],
-    "arguments_types": ["8", "-1"],
+    "arguments_names": [
+      "map",
+      "value"
+    ],
+    "arguments_types": [
+      "8",
+      "-1"
+    ],
     "return_type": 7,
     "return_name": "key",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3924,13 +5429,19 @@
     "name": "mapSize",
     "category": 4,
     "operations": 1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 6,
     "return_name": "size",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -3938,13 +5449,22 @@
     "name": "mapSome",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map", "callback"],
-    "arguments_types": ["8", "5"],
+    "arguments_names": [
+      "map",
+      "callback"
+    ],
+    "arguments_types": [
+      "8",
+      "5"
+    ],
     "return_type": 3,
     "return_name": "some",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3952,13 +5472,19 @@
     "name": "mapSum",
     "category": 4,
     "operations": 1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 7,
     "return_name": "sum",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3966,13 +5492,19 @@
     "name": "mapValues",
     "category": 4,
     "operations": -1,
-    "arguments_names": ["map"],
-    "arguments_types": ["8"],
+    "arguments_names": [
+      "map"
+    ],
+    "arguments_types": [
+      "8"
+    ],
     "return_type": 4,
     "return_name": "values",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -3980,13 +5512,25 @@
     "name": "mark",
     "category": 10,
     "operations": 164,
-    "arguments_names": ["cells", "color", "duration"],
-    "arguments_types": ["-1", "1", "1"],
+    "arguments_names": [
+      "cells",
+      "color",
+      "duration"
+    ],
+    "arguments_types": [
+      "-1",
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "success",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true, true],
+    "optional": [
+      false,
+      true,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -3994,13 +5538,28 @@
     "name": "markText",
     "category": 10,
     "operations": 164,
-    "arguments_names": ["cells", "text", "color", "duration"],
-    "arguments_types": ["-1", "2", "1", "1"],
+    "arguments_names": [
+      "cells",
+      "text",
+      "color",
+      "duration"
+    ],
+    "arguments_types": [
+      "-1",
+      "2",
+      "1",
+      "1"
+    ],
     "return_type": 3,
     "return_name": "success",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true, true, true],
+    "optional": [
+      false,
+      true,
+      true,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4008,8 +5567,14 @@
     "name": "max",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["a", "b"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "a",
+      "b"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 1,
     "return_name": "max",
     "deprecated": false,
@@ -4022,8 +5587,14 @@
     "name": "min",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["a", "b"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "a",
+      "b"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 1,
     "return_name": "min",
     "deprecated": false,
@@ -4036,13 +5607,22 @@
     "name": "moveAwayFrom",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["entity", "mp"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "entity",
+      "mp"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4050,13 +5630,22 @@
     "name": "moveAwayFromCell",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["cell", "mp"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "cell",
+      "mp"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4064,13 +5653,22 @@
     "name": "moveAwayFromCells",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["cells", "mp"],
-    "arguments_types": ["41", "1"],
+    "arguments_names": [
+      "cells",
+      "mp"
+    ],
+    "arguments_types": [
+      "41",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4078,13 +5676,22 @@
     "name": "moveAwayFromEntities",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["entities", "mp"],
-    "arguments_types": ["46", "1"],
+    "arguments_names": [
+      "entities",
+      "mp"
+    ],
+    "arguments_types": [
+      "46",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4092,13 +5699,22 @@
     "name": "moveAwayFromLeeks",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["entities", "mp"],
-    "arguments_types": ["41", "1"],
+    "arguments_names": [
+      "entities",
+      "mp"
+    ],
+    "arguments_types": [
+      "41",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": true,
     "replacement": 358,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4106,13 +5722,25 @@
     "name": "moveAwayFromLine",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["cell1", "cell2", "mp"],
-    "arguments_types": ["1", "1", "1"],
+    "arguments_names": [
+      "cell1",
+      "cell2",
+      "mp"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4120,13 +5748,22 @@
     "name": "moveToward",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["entity", "mp"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "entity",
+      "mp"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4134,13 +5771,22 @@
     "name": "moveTowardCell",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["cell", "mp"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "cell",
+      "mp"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4148,13 +5794,22 @@
     "name": "moveTowardCells",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["cells", "mp"],
-    "arguments_types": ["46", "1"],
+    "arguments_names": [
+      "cells",
+      "mp"
+    ],
+    "arguments_types": [
+      "46",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4162,13 +5817,22 @@
     "name": "moveTowardEntities",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["entities", "mp"],
-    "arguments_types": ["46", "1"],
+    "arguments_names": [
+      "entities",
+      "mp"
+    ],
+    "arguments_types": [
+      "46",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4176,13 +5840,22 @@
     "name": "moveTowardLeeks",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["leeks", "mp"],
-    "arguments_types": ["46", "1"],
+    "arguments_names": [
+      "leeks",
+      "mp"
+    ],
+    "arguments_types": [
+      "46",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": true,
     "replacement": 356,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4190,13 +5863,25 @@
     "name": "moveTowardLine",
     "category": 9,
     "operations": 500,
-    "arguments_names": ["cell1", "cell2", "mp"],
-    "arguments_types": ["1", "1", "1"],
+    "arguments_names": [
+      "cell1",
+      "cell2",
+      "mp"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "mp",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4204,8 +5889,12 @@
     "name": "number",
     "category": 1,
     "operations": 20,
-    "arguments_names": ["value"],
-    "arguments_types": ["-1"],
+    "arguments_names": [
+      "value"
+    ],
+    "arguments_types": [
+      "-1"
+    ],
     "return_type": 7,
     "return_name": "number",
     "deprecated": false,
@@ -4232,8 +5921,12 @@
     "name": "pop",
     "category": 3,
     "operations": 5,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
@@ -4246,8 +5939,14 @@
     "name": "pow",
     "category": 1,
     "operations": 140,
-    "arguments_names": ["base", "exp"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "base",
+      "exp"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 7,
     "return_name": "result",
     "deprecated": false,
@@ -4260,8 +5959,14 @@
     "name": "push",
     "category": 3,
     "operations": 2,
-    "arguments_names": ["array", "element"],
-    "arguments_types": ["4", "-1"],
+    "arguments_names": [
+      "array",
+      "element"
+    ],
+    "arguments_types": [
+      "4",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4274,8 +5979,14 @@
     "name": "pushAll",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "elements"],
-    "arguments_types": ["4", "4"],
+    "arguments_names": [
+      "array",
+      "elements"
+    ],
+    "arguments_types": [
+      "4",
+      "4"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4302,8 +6013,14 @@
     "name": "randFloat",
     "category": 1,
     "operations": 30,
-    "arguments_names": ["a", "b"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "a",
+      "b"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "number",
     "deprecated": true,
@@ -4316,8 +6033,14 @@
     "name": "randInt",
     "category": 1,
     "operations": 30,
-    "arguments_names": ["a", "b"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "a",
+      "b"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "number",
     "deprecated": false,
@@ -4330,13 +6053,22 @@
     "name": "randReal",
     "category": 1,
     "operations": 30,
-    "arguments_names": ["a", "b"],
-    "arguments_types": ["7", "7"],
+    "arguments_names": [
+      "a",
+      "b"
+    ],
+    "arguments_types": [
+      "7",
+      "7"
+    ],
     "return_type": 7,
     "return_name": "number",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4344,13 +6076,19 @@
     "name": "realBits",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["7"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "7"
+    ],
     "return_type": 6,
     "return_name": "bits",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4358,8 +6096,14 @@
     "name": "remove",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "position"],
-    "arguments_types": ["4", "1"],
+    "arguments_names": [
+      "array",
+      "position"
+    ],
+    "arguments_types": [
+      "4",
+      "1"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
@@ -4372,8 +6116,14 @@
     "name": "removeElement",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "element"],
-    "arguments_types": ["4", "-1"],
+    "arguments_names": [
+      "array",
+      "element"
+    ],
+    "arguments_types": [
+      "4",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4386,8 +6136,14 @@
     "name": "removeKey",
     "category": 3,
     "operations": 5,
-    "arguments_names": ["array", "key"],
-    "arguments_types": ["4", "-1"],
+    "arguments_names": [
+      "array",
+      "key"
+    ],
+    "arguments_types": [
+      "4",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4400,8 +6156,16 @@
     "name": "replace",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "search", "replace"],
-    "arguments_types": ["2", "2", "2"],
+    "arguments_names": [
+      "string",
+      "search",
+      "replace"
+    ],
+    "arguments_types": [
+      "2",
+      "2",
+      "2"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
@@ -4414,8 +6178,14 @@
     "name": "resurrect",
     "category": 7,
     "operations": 500,
-    "arguments_names": ["entity", "cell"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "entity",
+      "cell"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -4428,8 +6198,12 @@
     "name": "reverse",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4442,13 +6216,22 @@
     "name": "rotateLeft",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x", "s"],
-    "arguments_types": ["6", "6"],
+    "arguments_names": [
+      "x",
+      "s"
+    ],
+    "arguments_types": [
+      "6",
+      "6"
+    ],
     "return_type": 6,
     "return_name": "rotated",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4456,13 +6239,22 @@
     "name": "rotateRight",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x", "s"],
-    "arguments_types": ["6", "6"],
+    "arguments_names": [
+      "x",
+      "s"
+    ],
+    "arguments_types": [
+      "6",
+      "6"
+    ],
     "return_type": 6,
     "return_name": "rotated",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4470,8 +6262,12 @@
     "name": "round",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "number",
     "deprecated": false,
@@ -4484,8 +6280,12 @@
     "name": "say",
     "category": 5,
     "operations": 30,
-    "arguments_names": ["message"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "message"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4498,13 +6298,25 @@
     "name": "search",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "element", "start"],
-    "arguments_types": ["4", "-1", "1"],
+    "arguments_names": [
+      "array",
+      "element",
+      "start"
+    ],
+    "arguments_types": [
+      "4",
+      "-1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "pos",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -4512,8 +6324,14 @@
     "name": "sendAll",
     "category": 11,
     "operations": 40,
-    "arguments_names": ["type", "params"],
-    "arguments_types": ["1", "-1"],
+    "arguments_names": [
+      "type",
+      "params"
+    ],
+    "arguments_types": [
+      "1",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4526,8 +6344,16 @@
     "name": "sendTo",
     "category": 11,
     "operations": 15,
-    "arguments_names": ["entity", "type", "params"],
-    "arguments_types": ["1", "1", "-1"],
+    "arguments_names": [
+      "entity",
+      "type",
+      "params"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "sent",
     "deprecated": false,
@@ -4540,13 +6366,19 @@
     "name": "setClear",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set"],
-    "arguments_types": ["9"],
+    "arguments_names": [
+      "set"
+    ],
+    "arguments_types": [
+      "9"
+    ],
     "return_type": 9,
     "return_name": "set",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4554,13 +6386,22 @@
     "name": "setContains",
     "category": 13,
     "operations": 2,
-    "arguments_names": ["set", "element"],
-    "arguments_types": ["9", "-1"],
+    "arguments_names": [
+      "set",
+      "element"
+    ],
+    "arguments_types": [
+      "9",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "contains",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4568,13 +6409,22 @@
     "name": "setDifference",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set1", "set2"],
-    "arguments_types": ["9", "9"],
+    "arguments_names": [
+      "set1",
+      "set2"
+    ],
+    "arguments_types": [
+      "9",
+      "9"
+    ],
     "return_type": 9,
     "return_name": "difference",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -4582,13 +6432,22 @@
     "name": "setDisjunction",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set1", "set2"],
-    "arguments_types": ["9", "9"],
+    "arguments_names": [
+      "set1",
+      "set2"
+    ],
+    "arguments_types": [
+      "9",
+      "9"
+    ],
     "return_type": 9,
     "return_name": "disjunction",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -4596,13 +6455,22 @@
     "name": "setIntersection",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set1", "set2"],
-    "arguments_types": ["9", "9"],
+    "arguments_names": [
+      "set1",
+      "set2"
+    ],
+    "arguments_types": [
+      "9",
+      "9"
+    ],
     "return_type": 9,
     "return_name": "intersection",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -4610,13 +6478,19 @@
     "name": "setIsEmpty",
     "category": 13,
     "operations": 2,
-    "arguments_names": ["set"],
-    "arguments_types": ["9"],
+    "arguments_names": [
+      "set"
+    ],
+    "arguments_types": [
+      "9"
+    ],
     "return_type": 3,
     "return_name": "empty",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4624,13 +6498,22 @@
     "name": "setIsSubsetOf",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set1", "set2"],
-    "arguments_types": ["9", "9"],
+    "arguments_names": [
+      "set1",
+      "set2"
+    ],
+    "arguments_types": [
+      "9",
+      "9"
+    ],
     "return_type": 3,
     "return_name": "subset",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -4638,13 +6521,22 @@
     "name": "setPut",
     "category": 13,
     "operations": 3,
-    "arguments_names": ["set", "element"],
-    "arguments_types": ["9", "-1"],
+    "arguments_names": [
+      "set",
+      "element"
+    ],
+    "arguments_types": [
+      "9",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "existed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4652,8 +6544,14 @@
     "name": "setRegister",
     "category": 10,
     "operations": 50,
-    "arguments_names": ["key", "value"],
-    "arguments_types": ["2", "2"],
+    "arguments_names": [
+      "key",
+      "value"
+    ],
+    "arguments_types": [
+      "2",
+      "2"
+    ],
     "return_type": 3,
     "return_name": "success",
     "deprecated": false,
@@ -4666,13 +6564,22 @@
     "name": "setRemove",
     "category": 13,
     "operations": 2,
-    "arguments_names": ["set", "element"],
-    "arguments_types": ["9", "-1"],
+    "arguments_names": [
+      "set",
+      "element"
+    ],
+    "arguments_types": [
+      "9",
+      "-1"
+    ],
     "return_type": 3,
     "return_name": "existed",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4680,13 +6587,19 @@
     "name": "setSize",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set"],
-    "arguments_types": ["9"],
+    "arguments_names": [
+      "set"
+    ],
+    "arguments_types": [
+      "9"
+    ],
     "return_type": 6,
     "return_name": "size",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -4694,13 +6607,19 @@
     "name": "setToArray",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set"],
-    "arguments_types": ["9"],
+    "arguments_names": [
+      "set"
+    ],
+    "arguments_types": [
+      "9"
+    ],
     "return_type": 4,
     "return_name": "array",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 4
   },
   {
@@ -4708,13 +6627,22 @@
     "name": "setUnion",
     "category": 13,
     "operations": 1,
-    "arguments_names": ["set1", "set2"],
-    "arguments_types": ["9", "9"],
+    "arguments_names": [
+      "set1",
+      "set2"
+    ],
+    "arguments_types": [
+      "9",
+      "9"
+    ],
     "return_type": 9,
     "return_name": "union",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false],
+    "optional": [
+      false,
+      false
+    ],
     "complexity": 4
   },
   {
@@ -4722,8 +6650,12 @@
     "name": "setWeapon",
     "category": 5,
     "operations": 15,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4736,8 +6668,12 @@
     "name": "shift",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": -1,
     "return_name": "element",
     "deprecated": false,
@@ -4750,13 +6686,22 @@
     "name": "show",
     "category": 10,
     "operations": 8,
-    "arguments_names": ["cell", "color"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "cell",
+      "color"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 1
   },
   {
@@ -4764,8 +6709,12 @@
     "name": "shuffle",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["4"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "4"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -4778,8 +6727,12 @@
     "name": "signum",
     "category": 1,
     "operations": 2,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "sign",
     "deprecated": false,
@@ -4792,8 +6745,12 @@
     "name": "sin",
     "category": 1,
     "operations": 30,
-    "arguments_names": ["angle"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "angle"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "sine",
     "deprecated": false,
@@ -4806,13 +6763,22 @@
     "name": "sort",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "order"],
-    "arguments_types": ["4", "1"],
+    "arguments_names": [
+      "array",
+      "order"
+    ],
+    "arguments_types": [
+      "4",
+      "1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
     "replacement": null,
-    "optional": [false, true],
+    "optional": [
+      false,
+      true
+    ],
     "complexity": 6
   },
   {
@@ -4820,13 +6786,25 @@
     "name": "split",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "delimiter", "limit"],
-    "arguments_types": ["2", "2", "1"],
+    "arguments_names": [
+      "string",
+      "delimiter",
+      "limit"
+    ],
+    "arguments_types": [
+      "2",
+      "2",
+      "1"
+    ],
     "return_type": 42,
     "return_name": "parts",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -4834,8 +6812,12 @@
     "name": "sqrt",
     "category": 1,
     "operations": 8,
-    "arguments_names": ["number"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "number"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "root",
     "deprecated": false,
@@ -4848,8 +6830,14 @@
     "name": "startsWith",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "prefix"],
-    "arguments_types": ["2", "2"],
+    "arguments_names": [
+      "string",
+      "prefix"
+    ],
+    "arguments_types": [
+      "2",
+      "2"
+    ],
     "return_type": 3,
     "return_name": "startsWith",
     "deprecated": false,
@@ -4862,8 +6850,12 @@
     "name": "string",
     "category": 2,
     "operations": 8,
-    "arguments_names": ["value"],
-    "arguments_types": ["-1"],
+    "arguments_names": [
+      "value"
+    ],
+    "arguments_types": [
+      "-1"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
@@ -4876,8 +6868,16 @@
     "name": "subArray",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "start", "end"],
-    "arguments_types": ["4", "1", "1"],
+    "arguments_names": [
+      "array",
+      "start",
+      "end"
+    ],
+    "arguments_types": [
+      "4",
+      "1",
+      "1"
+    ],
     "return_type": 4,
     "return_name": "array",
     "deprecated": false,
@@ -4890,13 +6890,25 @@
     "name": "substring",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string", "start", "length"],
-    "arguments_types": ["2", "1", "1"],
+    "arguments_names": [
+      "string",
+      "start",
+      "length"
+    ],
+    "arguments_types": [
+      "2",
+      "1",
+      "1"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
     "replacement": null,
-    "optional": [false, false, true],
+    "optional": [
+      false,
+      false,
+      true
+    ],
     "complexity": 4
   },
   {
@@ -4904,8 +6916,12 @@
     "name": "sum",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array"],
-    "arguments_types": ["41"],
+    "arguments_names": [
+      "array"
+    ],
+    "arguments_types": [
+      "41"
+    ],
     "return_type": 7,
     "return_name": "sum",
     "deprecated": false,
@@ -4918,8 +6934,16 @@
     "name": "summon",
     "category": 7,
     "operations": 1750,
-    "arguments_names": ["chip", "cell", "ai"],
-    "arguments_types": ["1", "1", "5"],
+    "arguments_names": [
+      "chip",
+      "cell",
+      "ai"
+    ],
+    "arguments_types": [
+      "1",
+      "1",
+      "5"
+    ],
     "return_type": 6,
     "return_name": "return",
     "deprecated": false,
@@ -4932,8 +6956,12 @@
     "name": "tan",
     "category": 1,
     "operations": 30,
-    "arguments_names": ["angle"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "angle"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "tangent",
     "deprecated": false,
@@ -4946,8 +6974,12 @@
     "name": "toDegrees",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["radians"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "radians"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "degrees",
     "deprecated": false,
@@ -4960,8 +6992,12 @@
     "name": "toLower",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "string"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
@@ -4974,8 +7010,12 @@
     "name": "toRadians",
     "category": 1,
     "operations": 31,
-    "arguments_names": ["degrees"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "degrees"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 7,
     "return_name": "radians",
     "deprecated": false,
@@ -4988,8 +7028,12 @@
     "name": "toUpper",
     "category": 2,
     "operations": -1,
-    "arguments_names": ["string"],
-    "arguments_types": ["2"],
+    "arguments_names": [
+      "string"
+    ],
+    "arguments_types": [
+      "2"
+    ],
     "return_type": 2,
     "return_name": "string",
     "deprecated": false,
@@ -5002,13 +7046,19 @@
     "name": "trailingZeros",
     "category": 1,
     "operations": 1,
-    "arguments_names": ["x"],
-    "arguments_types": ["6"],
+    "arguments_names": [
+      "x"
+    ],
+    "arguments_types": [
+      "6"
+    ],
     "return_type": 6,
     "return_name": "zeros",
     "deprecated": false,
     "replacement": null,
-    "optional": [false],
+    "optional": [
+      false
+    ],
     "complexity": 1
   },
   {
@@ -5016,8 +7066,12 @@
     "name": "typeOf",
     "category": 10,
     "operations": 8,
-    "arguments_names": ["value"],
-    "arguments_types": ["-1"],
+    "arguments_names": [
+      "value"
+    ],
+    "arguments_types": [
+      "-1"
+    ],
     "return_type": 6,
     "return_name": "type",
     "deprecated": false,
@@ -5030,8 +7084,14 @@
     "name": "unshift",
     "category": 3,
     "operations": -1,
-    "arguments_names": ["array", "element"],
-    "arguments_types": ["4", "-1"],
+    "arguments_names": [
+      "array",
+      "element"
+    ],
+    "arguments_types": [
+      "4",
+      "-1"
+    ],
     "return_type": 0,
     "return_name": null,
     "deprecated": false,
@@ -5044,8 +7104,14 @@
     "name": "useChip",
     "category": 7,
     "operations": 3000,
-    "arguments_names": ["chip", "entity"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "chip",
+      "entity"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -5058,8 +7124,14 @@
     "name": "useChipOnCell",
     "category": 7,
     "operations": 3000,
-    "arguments_names": ["chip", "cell"],
-    "arguments_types": ["1", "1"],
+    "arguments_names": [
+      "chip",
+      "cell"
+    ],
+    "arguments_types": [
+      "1",
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -5072,8 +7144,12 @@
     "name": "useWeapon",
     "category": 6,
     "operations": 3000,
-    "arguments_names": ["entity"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "entity"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -5086,8 +7162,12 @@
     "name": "useWeaponOnCell",
     "category": 6,
     "operations": 3000,
-    "arguments_names": ["cell"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "cell"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 6,
     "return_name": "result",
     "deprecated": false,
@@ -5100,13 +7180,19 @@
     "name": "weaponNeedLos",
     "category": 6,
     "operations": 10,
-    "arguments_names": ["weapon"],
-    "arguments_types": ["1"],
+    "arguments_names": [
+      "weapon"
+    ],
+    "arguments_types": [
+      "1"
+    ],
     "return_type": 3,
     "return_name": "needLos",
     "deprecated": false,
     "replacement": null,
-    "optional": [true],
+    "optional": [
+      true
+    ],
     "complexity": 1
   }
 ]
