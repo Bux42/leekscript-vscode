@@ -69,8 +69,49 @@ export function activate(context: vscode.ExtensionContext) {
           // Get documentation from doc.en.json
           const docKey = `func_${func.name}`;
           const documentation = docData[docKey] || "No documentation available";
+
+          // Get return value description
+          const returnDocKey = `func_${func.name}_return`;
+          const returnDoc = docData[returnDocKey];
+
+          // Get argument descriptions
+          const argDescriptions: string[] = [];
+          func.arguments_names.forEach((argName: string, index: number) => {
+            const argDocKey = `func_${func.name}_arg_${index + 1}`;
+            const argDoc = docData[argDocKey];
+            if (argDoc) {
+              const argType = getTypeName(func.arguments_types[index]);
+              argDescriptions.push(`- **${argName}** (${argType}): ${argDoc}`);
+            }
+          });
+
+          // Build complete documentation
           const docMarkdown = new vscode.MarkdownString(documentation);
           docMarkdown.supportHtml = true; // Enable HTML rendering
+
+          // Add arguments section if there are descriptions
+          if (argDescriptions.length > 0) {
+            docMarkdown.appendMarkdown("\n\n**Parameters:**\n");
+            docMarkdown.appendMarkdown(argDescriptions.join("\n"));
+          }
+
+          // Add return value description if available
+          if (returnDoc) {
+            docMarkdown.appendMarkdown("\n\n**Return:**\n");
+            docMarkdown.appendMarkdown(`${returnDoc}`);
+          }
+
+          // Add operations cost
+          const operations = func.operations;
+          if (operations !== undefined && operations !== null) {
+            docMarkdown.appendMarkdown("\n\n");
+            if (operations === -1) {
+              docMarkdown.appendMarkdown("Complexity **O(n²)**");
+            } else {
+              docMarkdown.appendMarkdown(`**${operations} operations**`);
+            }
+          }
+
           item.documentation = docMarkdown;
 
           // Set insert text with parameter snippets
@@ -209,6 +250,17 @@ export function activate(context: vscode.ExtensionContext) {
         if (returnDoc) {
           markdown.appendMarkdown("\n\n**Returns:**\n");
           markdown.appendMarkdown(`${returnDoc}`);
+        }
+
+        // Add operations cost
+        const operations = func.operations;
+        if (operations !== undefined && operations !== null) {
+          markdown.appendMarkdown("\n\n**Operations:** ");
+          if (operations === -1) {
+            markdown.appendMarkdown("Variable");
+          } else {
+            markdown.appendMarkdown(`${operations}`);
+          }
         }
 
         return new vscode.Hover(markdown);
