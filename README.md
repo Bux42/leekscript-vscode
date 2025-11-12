@@ -2,6 +2,16 @@
 
 A Visual Studio Code extension that provides language support for LeekScript.
 
+## How to use this project
+
+This project builds itself from the official leekwars project, you need to follow a few steps in order to do that
+
+leek-wars front submodule:
+
+- init submodule to fetch the repo
+
+then run `node builder/builder.js`
+
 ## Features
 
 - **Syntax Highlighting**: Full syntax highlighting for LeekScript files (`.leek`, `.ls`)
