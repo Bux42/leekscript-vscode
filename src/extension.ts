@@ -178,11 +178,38 @@ export function activate(context: vscode.ExtensionContext) {
         const docKey = `func_${func.name}`;
         const documentation = docData[docKey] || "No documentation available";
 
+        // Get return value description
+        const returnDocKey = `func_${func.name}_return`;
+        const returnDoc = docData[returnDocKey];
+
+        // Get argument descriptions
+        const argDescriptions: string[] = [];
+        func.arguments_names.forEach((argName: string, index: number) => {
+          const argDocKey = `func_${func.name}_arg_${index + 1}`;
+          const argDoc = docData[argDocKey];
+          if (argDoc) {
+            const argType = getTypeName(func.arguments_types[index]);
+            argDescriptions.push(`- **${argName}** (${argType}): ${argDoc}`);
+          }
+        });
+
         // Create markdown content
         const markdown = new vscode.MarkdownString();
         markdown.supportHtml = true; // Enable HTML rendering
         markdown.appendCodeblock(signature, "leekscript");
         markdown.appendMarkdown("\n" + documentation);
+
+        // Add arguments section if there are descriptions
+        if (argDescriptions.length > 0) {
+          markdown.appendMarkdown("\n\n**Parameters:**\n");
+          markdown.appendMarkdown(argDescriptions.join("\n"));
+        }
+
+        // Add return value description if available
+        if (returnDoc) {
+          markdown.appendMarkdown("\n\n**Returns:**\n");
+          markdown.appendMarkdown(`${returnDoc}`);
+        }
 
         return new vscode.Hover(markdown);
       }
