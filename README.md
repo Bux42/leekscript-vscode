@@ -12,6 +12,9 @@ leek-wars front submodule:
 
 then run `node builder/builder.js`
 
+npm run compile
+F5
+
 ## Features
 
 - **Syntax Highlighting**: Full syntax highlighting for LeekScript files (`.leek`, `.ls`)

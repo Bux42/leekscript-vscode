@@ -1,4 +1,37 @@
 import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
+
+// Load extracted data
+const functionsData = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../extracted/functions.json"), "utf8")
+);
+const docData = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../extracted/doc.en.json"), "utf8")
+);
+
+// Type mappings
+const typeMap: { [key: string]: string } = {
+  "-1": "any",
+  "1": "number",
+  "2": "string",
+  "3": "boolean",
+  "4": "array",
+  "41": "array<number>",
+  "42": "array<string>",
+  "43": "array<boolean>",
+  "44": "array<array>",
+  "46": "array<integer>",
+  "47": "array<real>",
+  "5": "function",
+  "6": "integer",
+  "7": "real",
+  "8": "map",
+};
+
+function getTypeName(typeId: string): string {
+  return typeMap[typeId] || "any";
+}
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("LeekScript extension is now active!");
@@ -13,6 +46,40 @@ export function activate(context: vscode.ExtensionContext) {
       ) {
         // Example: provide some basic keyword completions
         const completionItems: vscode.CompletionItem[] = [];
+
+        // Add function completions from extracted data
+        functionsData.forEach((func: any) => {
+          const item = new vscode.CompletionItem(
+            func.name,
+            vscode.CompletionItemKind.Function
+          );
+
+          // Build function signature
+          const params = func.arguments_names
+            .map((name: string, index: number) => {
+              const type = getTypeName(func.arguments_types[index]);
+              return `${name}: ${type}`;
+            })
+            .join(", ");
+
+          const returnType = getTypeName(func.return_type.toString());
+          item.detail = `${func.name}(${params}): ${returnType}`;
+
+          // Get documentation from doc.en.json
+          const docKey = `func_${func.name}`;
+          const documentation = docData[docKey] || "No documentation available";
+          item.documentation = new vscode.MarkdownString(documentation);
+
+          // Set insert text with parameter snippets
+          const paramSnippets = func.arguments_names
+            .map((name: string, index: number) => `\${${index + 1}:${name}}`)
+            .join(", ");
+          item.insertText = new vscode.SnippetString(
+            `${func.name}(${paramSnippets})`
+          );
+
+          completionItems.push(item);
+        });
 
         // Keywords
         const keywords = [
