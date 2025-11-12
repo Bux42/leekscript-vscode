@@ -4,7 +4,13 @@ A Visual Studio Code extension that provides language support for LeekScript.
 
 (All .leek files should be handled by the extension)
 
-![function definition example gif](images/function_definition_example.gif)
+Autocomplete:
+
+![autocomplete](images/autocomplete.png)
+
+Function definition:
+
+![function definition](images/function_definition.png)
 
 ## How to use this project
 
