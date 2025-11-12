@@ -11,7 +11,9 @@ console.log("============================\n");
 // extract functions
 const { extractFunctions } = require("./functions");
 const { extractLang } = require("./lang");
+const { extractConstants } = require("./constants");
 
 extractFunctions();
 extractLang();
+extractConstants();
 console.log("\nBuild completed successfully.");
