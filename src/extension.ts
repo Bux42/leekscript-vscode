@@ -340,6 +340,42 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+
+  // Register file save listener for .leek files
+  const saveListener = vscode.workspace.onDidSaveTextDocument((document) => {
+    if (
+      document.languageId === "leekscript" ||
+      document.fileName.endsWith(".leek")
+    ) {
+      console.log(
+        `LeekScript file saved: ${
+          document.fileName
+        }, content: \n${document.getText()}`
+      ); // For demonstration purposes
+    }
+  });
+
+  context.subscriptions.push(saveListener);
+
+  // Register file/folder delete listener
+  const deleteListener = vscode.workspace.onDidDeleteFiles((event) => {
+    event.files.forEach((uri) => {
+      const filePath = uri.fsPath;
+
+      // Check if it's a .leek file
+      if (filePath.endsWith(".leek")) {
+        console.log(`LeekScript file deleted: ${filePath}`);
+      } else {
+        // Check if it's a folder - try to determine if it contained .leek files
+        // Note: We can't check the contents after deletion, but we can log folder deletions
+        console.log(
+          `Folder or file deleted: ${filePath} (may have contained .leek files)`
+        );
+      }
+    });
+  });
+
+  context.subscriptions.push(deleteListener);
 }
 
 export function deactivate() {
