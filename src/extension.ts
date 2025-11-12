@@ -58,7 +58,9 @@ export function activate(context: vscode.ExtensionContext) {
           const params = func.arguments_names
             .map((name: string, index: number) => {
               const type = getTypeName(func.arguments_types[index]);
-              return `${name}: ${type}`;
+              const isOptional = func.optional && func.optional[index] === true;
+              const optionalMark = isOptional ? "?" : "";
+              return `${name}${optionalMark}: ${type}`;
             })
             .join(", ");
 
@@ -213,7 +215,9 @@ export function activate(context: vscode.ExtensionContext) {
         const params = func.arguments_names
           .map((name: string, index: number) => {
             const type = getTypeName(func.arguments_types[index]);
-            return `${name}: ${type}`;
+            const isOptional = func.optional && func.optional[index] === true;
+            const optionalMark = isOptional ? "?" : "";
+            return `${name}${optionalMark}: ${type}`;
           })
           .join(", ");
 
