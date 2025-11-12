@@ -6,6 +6,9 @@ import * as fs from "fs";
 const functionsData = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../extracted/functions.json"), "utf8")
 );
+const constantsData = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../extracted/constants.json"), "utf8")
+);
 const docData = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../extracted/doc.en.json"), "utf8")
 );
@@ -129,6 +132,27 @@ export function activate(context: vscode.ExtensionContext) {
           item.insertText = new vscode.SnippetString(
             `${func.name}(${paramSnippets})`
           );
+
+          completionItems.push(item);
+        });
+
+        // Add constant completions from extracted data
+        constantsData.forEach((constant: any) => {
+          const item = new vscode.CompletionItem(
+            constant.name,
+            vscode.CompletionItemKind.Constant
+          );
+
+          // Set detail with value
+          item.detail = `${constant.name} = ${constant.value}`;
+
+          // Get documentation from doc.en.json
+          const docKey = `const_${constant.name}`;
+          let documentation = docData[docKey] || "No documentation available";
+
+          const docMarkdown = new vscode.MarkdownString(documentation);
+          docMarkdown.supportHtml = true;
+          item.documentation = docMarkdown;
 
           completionItems.push(item);
         });
@@ -278,6 +302,25 @@ export function activate(context: vscode.ExtensionContext) {
             markdown.appendMarkdown(`${operations}`);
           }
         }
+
+        return new vscode.Hover(markdown);
+      }
+
+      // Check if it's a constant
+      const constant = constantsData.find((c: any) => c.name === word);
+      if (constant) {
+        // Get documentation
+        const docKey = `const_${constant.name}`;
+        let documentation = docData[docKey] || "No documentation available";
+
+        // Create markdown content
+        const markdown = new vscode.MarkdownString();
+        markdown.supportHtml = true;
+        markdown.appendCodeblock(
+          `const ${constant.name} = ${constant.value}`,
+          "leekscript"
+        );
+        markdown.appendMarkdown("\n" + documentation);
 
         return new vscode.Hover(markdown);
       }
