@@ -150,6 +150,44 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(completionProvider);
 
+  // Register hover provider
+  const hoverProvider = vscode.languages.registerHoverProvider("leekscript", {
+    provideHover(document: vscode.TextDocument, position: vscode.Position) {
+      const range = document.getWordRangeAtPosition(position);
+      const word = document.getText(range);
+
+      // Find the function in functionsData
+      const func = functionsData.find((f: any) => f.name === word);
+      if (func) {
+        // Build function signature
+        const params = func.arguments_names
+          .map((name: string, index: number) => {
+            const type = getTypeName(func.arguments_types[index]);
+            return `${name}: ${type}`;
+          })
+          .join(", ");
+
+        const returnType = getTypeName(func.return_type.toString());
+        const signature = `${func.name}(${params}): ${returnType}`;
+
+        // Get documentation
+        const docKey = `func_${func.name}`;
+        const documentation = docData[docKey] || "No documentation available";
+
+        // Create markdown content
+        const markdown = new vscode.MarkdownString();
+        markdown.appendCodeblock(signature, "leekscript");
+        markdown.appendMarkdown("\n" + documentation);
+
+        return new vscode.Hover(markdown);
+      }
+
+      return null;
+    },
+  });
+
+  context.subscriptions.push(hoverProvider);
+
   // Register a command
   let disposable = vscode.commands.registerCommand(
     "leekscript.helloWorld",
