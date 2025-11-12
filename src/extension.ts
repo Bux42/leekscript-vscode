@@ -342,22 +342,51 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 
   // Register file save listener for .leek files
-  const saveListener = vscode.workspace.onDidSaveTextDocument((document) => {
-    if (
-      document.languageId === "leekscript" ||
-      document.fileName.endsWith(".leek")
-    ) {
-      // Get relative path
-      const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-      const relativePath = workspaceFolder
-        ? vscode.workspace.asRelativePath(document.uri, false)
-        : document.fileName;
+  const saveListener = vscode.workspace.onDidSaveTextDocument(
+    async (document) => {
+      if (
+        document.languageId === "leekscript" ||
+        document.fileName.endsWith(".leek")
+      ) {
+        // Get relative path
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(
+          document.uri
+        );
+        const relativePath = workspaceFolder
+          ? vscode.workspace.asRelativePath(document.uri, false)
+          : document.fileName;
 
-      console.log(
-        `LeekScript file saved: ${relativePath}, content: \n${document.getText()}`
-      ); // For demonstration purposes
+        const content = document.getText();
+
+        console.log(`LeekScript file saved: ${relativePath}`);
+
+        // Make POST request to localhost:8080/code-save
+        try {
+          const response = await fetch("http://localhost:8080/code-save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              code: content,
+              path: relativePath,
+              upperCodeFile: "test",
+            }),
+          });
+
+          if (response.ok) {
+            console.log(`Successfully sent code to server: ${relativePath}`);
+          } else {
+            console.error(
+              `Failed to send code to server: ${response.status} ${response.statusText}`
+            );
+          }
+        } catch (error) {
+          console.error(`Error sending code to server: ${error}`);
+        }
+      }
     }
-  });
+  );
 
   context.subscriptions.push(saveListener);
 
