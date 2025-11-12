@@ -1,0 +1,54 @@
+{
+  "name": "leekscript",
+  "displayName": "LeekScript",
+  "description": "Language support for LeekScript",
+  "version": "0.0.1",
+  "publisher": "leekscript",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:leekscript"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "leekscript",
+        "aliases": [
+          "LeekScript",
+          "leekscript"
+        ],
+        "extensions": [
+          ".leek",
+          ".ls"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "leekscript",
+        "scopeName": "source.leekscript",
+        "path": "./syntaxes/leekscript.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.40.0",
+    "typescript": "^5.1.0"
+  }
+}
