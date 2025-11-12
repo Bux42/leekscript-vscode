@@ -68,7 +68,13 @@ export function activate(context: vscode.ExtensionContext) {
 
           // Get documentation from doc.en.json
           const docKey = `func_${func.name}`;
-          const documentation = docData[docKey] || "No documentation available";
+          let documentation = docData[docKey] || "No documentation available";
+
+          // Add link to encyclopedia at the end of first line
+          const encyclopediaUrl = `https://leekwars.com/encyclopedia/en/${func.name}`;
+          documentation =
+            documentation +
+            ` [🔗](${encyclopediaUrl} "View in LeekWars Encyclopedia")`;
 
           // Get return value description
           const returnDocKey = `func_${func.name}_return`;
@@ -217,7 +223,13 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Get documentation
         const docKey = `func_${func.name}`;
-        const documentation = docData[docKey] || "No documentation available";
+        let documentation = docData[docKey] || "No documentation available";
+
+        // Add link to encyclopedia at the end of first line
+        const encyclopediaUrl = `https://leekwars.com/encyclopedia/en/${func.name}`;
+        documentation =
+          documentation +
+          ` [🔗](${encyclopediaUrl} "View in LeekWars Encyclopedia")`;
 
         // Get return value description
         const returnDocKey = `func_${func.name}_return`;
