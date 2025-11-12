@@ -347,10 +347,14 @@ export function activate(context: vscode.ExtensionContext) {
       document.languageId === "leekscript" ||
       document.fileName.endsWith(".leek")
     ) {
+      // Get relative path
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+      const relativePath = workspaceFolder
+        ? vscode.workspace.asRelativePath(document.uri, false)
+        : document.fileName;
+
       console.log(
-        `LeekScript file saved: ${
-          document.fileName
-        }, content: \n${document.getText()}`
+        `LeekScript file saved: ${relativePath}, content: \n${document.getText()}`
       ); // For demonstration purposes
     }
   });
@@ -360,16 +364,22 @@ export function activate(context: vscode.ExtensionContext) {
   // Register file/folder delete listener
   const deleteListener = vscode.workspace.onDidDeleteFiles((event) => {
     event.files.forEach((uri) => {
+      // Get relative path
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+      const relativePath = workspaceFolder
+        ? vscode.workspace.asRelativePath(uri, false)
+        : uri.fsPath;
+
       const filePath = uri.fsPath;
 
       // Check if it's a .leek file
       if (filePath.endsWith(".leek")) {
-        console.log(`LeekScript file deleted: ${filePath}`);
+        console.log(`LeekScript file deleted: ${relativePath}`);
       } else {
         // Check if it's a folder - try to determine if it contained .leek files
         // Note: We can't check the contents after deletion, but we can log folder deletions
         console.log(
-          `Folder or file deleted: ${filePath} (may have contained .leek files)`
+          `Folder or file deleted: ${relativePath} (may have contained .leek files)`
         );
       }
     });
