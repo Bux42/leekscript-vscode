@@ -63,7 +63,8 @@ export function activate(context: vscode.ExtensionContext) {
             .join(", ");
 
           const returnType = getTypeName(func.return_type.toString());
-          item.detail = `${func.name}(${params}): ${returnType}`;
+          const returnName = func.return_name || "result";
+          item.detail = `${func.name}(${params}): ${returnType} ${returnName}`;
 
           // Get documentation from doc.en.json
           const docKey = `func_${func.name}`;
@@ -168,7 +169,8 @@ export function activate(context: vscode.ExtensionContext) {
           .join(", ");
 
         const returnType = getTypeName(func.return_type.toString());
-        const signature = `${func.name}(${params}): ${returnType}`;
+        const returnName = func.return_name || "result";
+        const signature = `${func.name}(${params}): ${returnType} (${returnName})`;
 
         // Get documentation
         const docKey = `func_${func.name}`;
