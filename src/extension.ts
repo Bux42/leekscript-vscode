@@ -69,7 +69,9 @@ export function activate(context: vscode.ExtensionContext) {
           // Get documentation from doc.en.json
           const docKey = `func_${func.name}`;
           const documentation = docData[docKey] || "No documentation available";
-          item.documentation = new vscode.MarkdownString(documentation);
+          const docMarkdown = new vscode.MarkdownString(documentation);
+          docMarkdown.supportHtml = true; // Enable HTML rendering
+          item.documentation = docMarkdown;
 
           // Set insert text with parameter snippets
           const paramSnippets = func.arguments_names
@@ -178,6 +180,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Create markdown content
         const markdown = new vscode.MarkdownString();
+        markdown.supportHtml = true; // Enable HTML rendering
         markdown.appendCodeblock(signature, "leekscript");
         markdown.appendMarkdown("\n" + documentation);
 
