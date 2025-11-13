@@ -26,7 +26,11 @@
           ".leek",
           ".ls"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/leekscript-icon.png",
+          "dark": "./images/leekscript-icon.png"
+        }
       }
     ],
     "grammars": [
