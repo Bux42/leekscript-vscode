@@ -133,7 +133,7 @@ export class LeekWarsService {
                 ? leekwarsDir
                 : folderPaths.get(aiInfo.folder) || leekwarsDir;
 
-            const aiFilePath = path.join(folderPath, `${ai.name}.leek`);
+            const aiFilePath = path.join(folderPath, ai.name);
 
             fs.writeFileSync(aiFilePath, ai.code, "utf8");
             console.log(`[LeekWars Service] Created AI file: ${aiFilePath}`);
@@ -245,7 +245,7 @@ export class LeekWarsService {
             fs.mkdirSync(leekwarsDir, { recursive: true });
           }
 
-          const aiFilePath = path.join(leekwarsDir, `${ai.name}.leek`);
+          const aiFilePath = path.join(leekwarsDir, ai.name);
 
           // Add metadata as comment at the top
           const metadata = `// LeekWars AI: ${ai.name}\n// AI ID: ${ai.id}\n// Valid: ${ai.valid}\n\n`;
