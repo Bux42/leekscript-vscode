@@ -35,7 +35,20 @@
         "scopeName": "source.leekscript",
         "path": "./syntaxes/leekscript.tmLanguage.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "LeekScript",
+      "properties": {
+        "leekscript.leekwarsApiToken": {
+          "type": "string",
+          "default": "",
+          "description": "LeekWars API token for authentication",
+          "scope": "application",
+          "markdownDescription": "Your LeekWars API token for authenticating with LeekWars services. This value is stored securely.",
+          "format": "password"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
