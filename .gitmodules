@@ -1,3 +1,7 @@
 [submodule "leek-wars"]
 	path = leek-wars
 	url = https://github.com/leek-wars/leek-wars.git
+[submodule "leekscript-local"]
+	path = leekscript-local
+	url = https://github.com/Bux42/leekscript-local.git
+	branch = pool_generator
