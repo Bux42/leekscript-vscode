@@ -48,7 +48,19 @@
           "format": "password"
         }
       }
-    }
+    },
+    "commands": [
+      {
+        "command": "leekscript.pullAllAIs",
+        "title": "LeekWars: Pull All AIs",
+        "category": "LeekScript"
+      },
+      {
+        "command": "leekscript.pullAI",
+        "title": "LeekWars: Pull AI",
+        "category": "LeekScript"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

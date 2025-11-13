@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 import { LeekScriptAnalyzer } from "./analyzer";
+import { LeekWarsService } from "./services/leekwars";
 
 // Load extracted data
 const functionsData = JSON.parse(
@@ -208,6 +209,22 @@ export function activate(context: vscode.ExtensionContext) {
   diagnosticCollection =
     vscode.languages.createDiagnosticCollection("leekscript");
   context.subscriptions.push(diagnosticCollection);
+
+  // Initialize LeekWars service
+  const leekWarsService = new LeekWarsService(context);
+
+  // Register LeekWars commands
+  context.subscriptions.push(
+    vscode.commands.registerCommand("leekscript.pullAllAIs", async () => {
+      await leekWarsService.pullAllAIs();
+    })
+  );
+
+  // context.subscriptions.push(
+  //   vscode.commands.registerCommand("leekscript.pullAI", async () => {
+  //     await leekWarsService.selectAndPullAI();
+  //   })
+  // );
 
   // Register a simple completion provider for LeekScript
   const completionProvider = vscode.languages.registerCompletionItemProvider(
