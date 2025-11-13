@@ -1,0 +1,67 @@
+/*
+ * Test LeekScript file to demonstrate analyzer features
+ * TODO: Add more features later
+ */
+
+include("utils")
+
+global number HEALTH_THRESHOLD
+
+/*
+ * Calculates the damage dealt to an enemy
+ * @param number enemyId The ID of the enemy
+ * @param number power The power of the attack
+ * @return The total damage dealt
+ */
+function calculateDamage(number enemyId, number power) {
+	var baseDamage = power * 2
+	var criticalHit = rand(1, 100) > 90
+	if (criticalHit) {
+		return baseDamage * 1.5
+	}
+	return baseDamage
+}
+
+/*
+ * Main combat AI class
+ */
+class CombatAI {
+	number health
+	static number maxInstances = 10
+	
+	/*
+	 * Constructor for CombatAI
+	 * @param number initialHealth The starting health value
+	 */
+	constructor(number initialHealth) {
+		this.health = initialHealth
+	}
+	
+	/*
+	 * Attacks the nearest enemy
+	 * @param number targetId The ID of the target
+	 * @return Whether the attack was successful
+	 */
+	boolean attack(number targetId) {
+		var damage = calculateDamage(targetId, 100)
+		debug("Dealt " + damage + " damage")
+		return damage > 0
+	}
+	
+	/*
+	 * Static helper method
+	 */
+	static number getMaxHealth() {
+		return 1000
+	}
+}
+
+// Main game loop
+function main() {
+	var ai = new CombatAI(500)
+	
+	var enemies = getEnemies()
+	for (var enemy in enemies) {
+		ai.attack(enemy)
+	}
+}

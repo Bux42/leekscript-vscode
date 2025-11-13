@@ -29,15 +29,15 @@
       "patterns": [
         {
           "name": "keyword.control.leekscript",
-          "match": "\\b(if|else|while|for|do|break|continue|return|switch|case|default|try|catch|throw|finally)\\b"
+          "match": "\\b(if|else|while|for|in|do|break|continue|return|switch|case|default|try|catch|throw|finally)\\b"
         },
         {
           "name": "keyword.other.leekscript",
-          "match": "\\b(var|let|const|function|class|new|this|null|true|false|undefined)\\b"
+          "match": "\\b(global|var|let|const|function|class|new|this|null|true|false|undefined|public|private|protected)\\b"
         },
         {
           "name": "storage.type.leekscript",
-          "match": "\\b(int|float|string|bool|array|object|void)\\b"
+          "match": "\\b(string|Array|void|any|boolean|undefined|integer|real)\\b"
         },
         {
           "name": "keyword.operator.leekscript",
