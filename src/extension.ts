@@ -360,6 +360,8 @@ export function activate(context: vscode.ExtensionContext) {
 
         console.log(`LeekScript file saved: ${relativePath}`);
 
+        /*
+        Commented until I make up my mind about this feature
         // Make POST request to localhost:8080/code-save
         try {
           const response = await fetch("http://localhost:8080/code-save", {
@@ -384,6 +386,7 @@ export function activate(context: vscode.ExtensionContext) {
         } catch (error) {
           console.error(`Error sending code to server: ${error}`);
         }
+        */
       }
     }
   );
