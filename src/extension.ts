@@ -53,12 +53,6 @@ function getTypeName(typeId: string): string {
   return typeMap[typeId] || "any";
 }
 
-// Get the LeekWars API token from configuration
-function getLeekWarsApiToken(): string {
-  const config = vscode.workspace.getConfiguration("leekscript");
-  return config.get<string>("leekwarsApiToken", "");
-}
-
 // Analyze a LeekScript document
 function analyzeDocument(document: vscode.TextDocument): void {
   if (
