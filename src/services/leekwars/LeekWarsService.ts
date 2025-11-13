@@ -93,10 +93,54 @@ export class LeekWarsService {
 
           // Create folder structure
           progress.report({ message: "Creating folder structure..." });
-          this.createFolderStructure(leekwarsDir, response.folders);
+          const folderPaths = this.createFolderStructure(
+            leekwarsDir,
+            response.folders
+          );
+
+          // Create AI files
+          progress.report({ message: "Pulling AI files..." });
+          const aiInfos = response.ais;
+
+          for (let i = 0; i < aiInfos.length; i++) {
+            const aiInfo = aiInfos[i];
+            progress.report({
+              message: `Pulling ${aiInfo.name} (${i + 1}/${aiInfos.length})...`,
+              increment: 100 / aiInfos.length,
+            });
+
+            // Add delay to avoid rate limiting (except for the first request)
+            if (i > 0) {
+              await new Promise((resolve) => setTimeout(resolve, 500));
+            }
+
+            // Get the AI code
+            const aiResponse = await this.apiService!.getAI(aiInfo.id);
+
+            if (!aiResponse.ai) {
+              console.warn(
+                `[LeekWars Service] Failed to pull AI: ${aiInfo.name}`,
+                aiResponse.error
+              );
+              continue;
+            }
+
+            const ai = aiResponse.ai;
+
+            // Determine the folder path
+            const folderPath =
+              aiInfo.folder === 0
+                ? leekwarsDir
+                : folderPaths.get(aiInfo.folder) || leekwarsDir;
+
+            const aiFilePath = path.join(folderPath, `${ai.name}.leek`);
+
+            fs.writeFileSync(aiFilePath, ai.code, "utf8");
+            console.log(`[LeekWars Service] Created AI file: ${aiFilePath}`);
+          }
 
           vscode.window.showInformationMessage(
-            `Successfully created ${response.folders.length} folder(s) from LeekWars`
+            `Successfully pulled ${aiInfos.length} AI(s) from LeekWars`
           );
         }
       );
@@ -107,11 +151,12 @@ export class LeekWarsService {
 
   /**
    * Create the folder structure based on LeekWars folders
+   * Returns a map of folder IDs to their paths
    */
   private createFolderStructure(
     baseDir: string,
     folders: Array<{ id: number; name: string; folder: number }>
-  ): void {
+  ): Map<number, string> {
     // Map folder IDs to their paths
     const folderPaths = new Map<number, string>();
     folderPaths.set(0, baseDir); // Root folder ID 0 maps to base directory
@@ -155,6 +200,8 @@ export class LeekWarsService {
 
       currentLevelFolders = nextLevelFolders;
     }
+
+    return folderPaths;
   }
 
   /**
@@ -177,7 +224,7 @@ export class LeekWarsService {
 
           console.log(`[LeekWars Service] getAI(${aiId}) response:`, response);
 
-          if (!response.success || !response.ai) {
+          if (!response.ai) {
             const errorMsg = response.error || "Failed to fetch AI";
             console.error("[LeekWars Service] Error:", errorMsg);
             throw new Error(

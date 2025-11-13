@@ -37,12 +37,13 @@ export interface GetFarmerAIsResponse {
 
 // Response from ai/get
 export interface GetAIResponse {
-  success: boolean;
   ai?: {
     id: number;
     name: string;
-    code: string;
+    level: number;
     valid: boolean;
+    owner: number;
+    code: string;
   };
   error?: string;
 }
@@ -135,6 +136,6 @@ export class LeekWarsApiService {
    * Get a specific AI with its code
    */
   async getAI(aiId: number): Promise<GetAIResponse> {
-    return this.request("GET", "ai/get", { ai_id: aiId });
+    return this.request("GET", `ai/get/${aiId}`);
   }
 }

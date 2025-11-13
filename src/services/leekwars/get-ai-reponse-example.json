@@ -1,0 +1,10 @@
+{
+  "ai": {
+    "id": 449513,
+    "name": "NormalizeHelpers",
+    "level": 1,
+    "valid": true,
+    "owner": 94042,
+    "code": "function normalize(integer value, integer minValue, integer maxValue) {\n    return (value - minValue) / (maxValue - minValue); \n}"
+  }
+}
