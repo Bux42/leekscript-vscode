@@ -54,7 +54,7 @@ function getTypeName(typeId: string): string {
 }
 
 // Analyze a LeekScript document
-function analyzeDocument(document: vscode.TextDocument): void {
+async function analyzeDocument(document: vscode.TextDocument): Promise<void> {
   if (
     document.languageId !== "leekscript" &&
     !document.fileName.endsWith(".leek")
@@ -65,7 +65,7 @@ function analyzeDocument(document: vscode.TextDocument): void {
   const code = document.getText();
   const name = path.basename(document.fileName);
   const analyzer = new LeekScriptAnalyzer(code, name, builtInFunctions);
-  analyzer.analyze();
+  await analyzer.analyze();
 
   // Store the analyzer first (before resolving includes to avoid circular references)
   documentAnalyzers.set(document.uri.toString(), analyzer);
@@ -93,7 +93,7 @@ function analyzeDocument(document: vscode.TextDocument): void {
               includedName,
               builtInFunctions
             );
-            includedAnalyzer.analyze();
+            await includedAnalyzer.analyze();
             documentAnalyzers.set(resolvedUri.toString(), includedAnalyzer);
           } else {
             // File not open, try to read it
@@ -104,7 +104,7 @@ function analyzeDocument(document: vscode.TextDocument): void {
               includedName,
               builtInFunctions
             );
-            includedAnalyzer.analyze();
+            await includedAnalyzer.analyze();
             documentAnalyzers.set(resolvedUri.toString(), includedAnalyzer);
           }
         } catch (error) {
@@ -122,7 +122,7 @@ function analyzeDocument(document: vscode.TextDocument): void {
   analyzer.setIncludedAnalyzers(includedAnalyzers);
 
   // Re-run analysis to check for undefined functions with includes resolved
-  analyzer.analyze();
+  await analyzer.analyze();
 
   // Update diagnostics
   updateDiagnostics(document, analyzer);

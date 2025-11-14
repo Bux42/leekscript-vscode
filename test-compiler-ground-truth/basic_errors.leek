@@ -1,0 +1,12 @@
+integer enemy = getNearestEnemy();
+
+if (count(getWeapons())) {
+	setWeapon(getWeapons()[0]);
+}
+
+moveToward(enemy);
+
+useWeapon(enemy);
+
+integer name = getName()
+string nearestEnemyId = getNearestEnemy();

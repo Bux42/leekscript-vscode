@@ -240,7 +240,7 @@ export class Parser {
 
     const body: Statement[] = [];
     while (!this.check(TokenType.RBRACE) && !this.isAtEnd()) {
-      const stmt = this.parseStatement();
+      const stmt = this.parseClassMember();
       if (stmt) {
         body.push(stmt);
       }
@@ -248,6 +248,68 @@ export class Parser {
 
     this.consume(TokenType.RBRACE, "Expected } after class body");
     return new ClassDeclaration(token, identifier, superClass, body);
+  }
+
+  private parseClassMember(): Statement | undefined {
+    // Check if this is a method declaration with optional typed parameters
+    // e.g., "methodName(integer x, string y) { ... }" or "constructor (integer x) { ... }"
+    if (this.check(TokenType.IDENT)) {
+      const methodToken = this.peek();
+      const methodName = methodToken.value;
+      const startPos = this.current;
+
+      this.advance(); // consume method name
+
+      // Check if followed by (
+      if (this.check(TokenType.LPAREN)) {
+        this.advance(); // consume (
+
+        // Parse parameters, allowing type annotations
+        const params: any[] = [];
+        if (!this.check(TokenType.RPAREN)) {
+          do {
+            // Check for typed parameter: "integer x" or just "x"
+            if (this.check(TokenType.IDENT)) {
+              const firstIdent = this.peek();
+              this.advance(); // consume first identifier
+
+              // If followed by another identifier, first was a type
+              if (this.check(TokenType.IDENT)) {
+                const paramName = this.advance();
+                // Store param name (ignore type for now)
+                params.push(new Identifier(paramName, paramName.value));
+              } else {
+                // No type, just parameter name
+                params.push(new Identifier(firstIdent, firstIdent.value));
+              }
+            }
+          } while (this.match(TokenType.COMMA));
+        }
+
+        this.consume(TokenType.RPAREN, "Expected ) after parameters");
+
+        // Check if followed by { (method body)
+        if (this.check(TokenType.LBRACE)) {
+          // Parse method body
+          const body = this.parseStatement()!;
+
+          // Create a function expression representing the method
+          const func = new FunctionExpression(methodToken, params, body);
+
+          return new ExpressionStatement(methodToken, func);
+        }
+
+        // Not a method declaration (no body), rewind and parse as regular statement
+        this.current = startPos;
+      } else {
+        // Not followed by (, rewind
+        this.current = startPos;
+      }
+    }
+
+    // Default: parse as regular statement
+    const stmt = this.parseStatement();
+    return stmt !== null ? stmt : undefined;
   }
 
   private parseReturnStatement(): ReturnStatement {
@@ -551,7 +613,8 @@ export class Parser {
         TokenType.PLUS,
         TokenType.BIT_NOT,
         TokenType.INCREMENT,
-        TokenType.DECREMENT
+        TokenType.DECREMENT,
+        TokenType.NEW
       )
     ) {
       const operator = this.previous();

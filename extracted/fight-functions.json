@@ -1,0 +1,2437 @@
+{
+  "version": "1.10.0",
+  "extractedAt": "2025-11-14T07:33:24.532Z",
+  "functions": {
+    "getLife": {
+      "name": "getLife",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getForce": {
+      "name": "getForce",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getStrength": {
+      "name": "getStrength",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAgility": {
+      "name": "getAgility",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getScience": {
+      "name": "getScience",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getWisdom": {
+      "name": "getWisdom",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getResistance": {
+      "name": "getResistance",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getMagic": {
+      "name": "getMagic",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getCell": {
+      "name": "getCell",
+      "category": "Entity",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeapon": {
+      "name": "getWeapon",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getName": {
+      "name": "getName",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string?",
+          "parameters": []
+        }
+      ]
+    },
+    "getTP": {
+      "name": "getTP",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getMP": {
+      "name": "getMP",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getTotalTP": {
+      "name": "getTotalTP",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getTotalMP": {
+      "name": "getTotalMP",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getTotalLife": {
+      "name": "getTotalLife",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getPower": {
+      "name": "getPower",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAbsoluteShield": {
+      "name": "getAbsoluteShield",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getRelativeShield": {
+      "name": "getRelativeShield",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getDamageReturn": {
+      "name": "getDamageReturn",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "setWeapon": {
+      "name": "setWeapon",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "say": {
+      "name": "say",
+      "category": "Entity",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "lama": {
+      "name": "lama",
+      "category": "Entity",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": []
+        }
+      ]
+    },
+    "listen": {
+      "name": "listen",
+      "category": "Entity",
+      "operations": 78,
+      "isStatic": true,
+      "versions": []
+    },
+    "getWeapons": {
+      "name": "getWeapons",
+      "category": "Entity",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "isEnemy": {
+      "name": "isEnemy",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isAlly": {
+      "name": "isAlly",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isAlive": {
+      "name": "isAlive",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isDead": {
+      "name": "isDead",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getLeek": {
+      "name": "getLeek",
+      "category": "Entity",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getEntity": {
+      "name": "getEntity",
+      "category": "Entity",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getChips": {
+      "name": "getChips",
+      "category": "Entity",
+      "operations": 40,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getEffects": {
+      "name": "getEffects",
+      "category": "Entity",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<array<int_or_bool>>|null",
+          "parameters": []
+        }
+      ]
+    },
+    "getLaunchedEffects": {
+      "name": "getLaunchedEffects",
+      "category": "Entity",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<array<int_or_bool>>|null",
+          "parameters": []
+        }
+      ]
+    },
+    "getPassiveEffects": {
+      "name": "getPassiveEffects",
+      "category": "Entity",
+      "operations": 125,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<array<int|real>>|null",
+          "parameters": []
+        }
+      ]
+    },
+    "getStates": {
+      "name": "getStates",
+      "category": "Entity",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "set<int>|null",
+          "parameters": []
+        }
+      ]
+    },
+    "getLevel": {
+      "name": "getLevel",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getFrequency": {
+      "name": "getFrequency",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getCores": {
+      "name": "getCores",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getRAM": {
+      "name": "getRAM",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getTeamName": {
+      "name": "getTeamName",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string?",
+          "parameters": []
+        }
+      ]
+    },
+    "getFarmerName": {
+      "name": "getFarmerName",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string?",
+          "parameters": []
+        }
+      ]
+    },
+    "getFarmerCountry": {
+      "name": "getFarmerCountry",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string?",
+          "parameters": []
+        }
+      ]
+    },
+    "getTeamID": {
+      "name": "getTeamID",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getFarmerID": {
+      "name": "getFarmerID",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAIName": {
+      "name": "getAIName",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAIID": {
+      "name": "getAIID",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getSummons": {
+      "name": "getSummons",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getType": {
+      "name": "getType",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "isSummon": {
+      "name": "isSummon",
+      "category": "Entity",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool?",
+          "parameters": []
+        }
+      ]
+    },
+    "getSummoner": {
+      "name": "getSummoner",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "isStatic": {
+      "name": "isStatic",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "getBirthTurn": {
+      "name": "getBirthTurn",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getEntityTurnOrder": {
+      "name": "getEntityTurnOrder",
+      "category": "Entity",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getLeekID": {
+      "name": "getLeekID",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getSide": {
+      "name": "getSide",
+      "category": "Entity",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getItemUses": {
+      "name": "getItemUses",
+      "category": "Entity",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "useWeapon": {
+      "name": "useWeapon",
+      "category": "Weapon",
+      "operations": 3000,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "useWeaponOnCell": {
+      "name": "useWeaponOnCell",
+      "category": "Weapon",
+      "operations": 3000,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getWeaponMinScope": {
+      "name": "getWeaponMinScope",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getWeaponMaxScope": {
+      "name": "getWeaponMaxScope",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getWeaponMinRange": {
+      "name": "getWeaponMinRange",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponMaxRange": {
+      "name": "getWeaponMaxRange",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponLaunchType": {
+      "name": "getWeaponLaunchType",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponCost": {
+      "name": "getWeaponCost",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponEffects": {
+      "name": "getWeaponEffects",
+      "category": "Weapon",
+      "operations": 125,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<array<int|real>>|null",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponPassiveEffects": {
+      "name": "getWeaponPassiveEffects",
+      "category": "Weapon",
+      "operations": 125,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<array<int|real>>",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponName": {
+      "name": "getWeaponName",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": []
+        }
+      ]
+    },
+    "isInlineWeapon": {
+      "name": "isInlineWeapon",
+      "category": "Weapon",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "weaponNeedLos": {
+      "name": "weaponNeedLos",
+      "category": "Weapon",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "canUseWeapon": {
+      "name": "canUseWeapon",
+      "category": "Weapon",
+      "operations": 45,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "canUseWeaponOnCell": {
+      "name": "canUseWeaponOnCell",
+      "category": "Weapon",
+      "operations": 45,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponTargets": {
+      "name": "getWeaponTargets",
+      "category": "Weapon",
+      "operations": 40,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponFailure": {
+      "name": "getWeaponFailure",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "isWeapon": {
+      "name": "isWeapon",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getWeaponArea": {
+      "name": "getWeaponArea",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getWeaponEffectiveArea": {
+      "name": "getWeaponEffectiveArea",
+      "category": "Weapon",
+      "operations": 78,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAllWeapons": {
+      "name": "getAllWeapons",
+      "category": "Weapon",
+      "operations": 200,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getWeaponMaxUses": {
+      "name": "getWeaponMaxUses",
+      "category": "Weapon",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getCurrentCooldown": {
+      "name": "getCurrentCooldown",
+      "category": "Chip",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "null",
+          "parameters": []
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getCooldown": {
+      "name": "getCooldown",
+      "category": "Chip",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "useChip": {
+      "name": "useChip",
+      "category": "Chip",
+      "operations": 3000,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "useChipOnCell": {
+      "name": "useChipOnCell",
+      "category": "Chip",
+      "operations": 3000,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipName": {
+      "name": "getChipName",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipMinScope": {
+      "name": "getChipMinScope",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipMaxScope": {
+      "name": "getChipMaxScope",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipMinRange": {
+      "name": "getChipMinRange",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipMaxRange": {
+      "name": "getChipMaxRange",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipCost": {
+      "name": "getChipCost",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipEffects": {
+      "name": "getChipEffects",
+      "category": "Chip",
+      "operations": 125,
+      "isStatic": true,
+      "versions": []
+    },
+    "isInlineChip": {
+      "name": "isInlineChip",
+      "category": "Chip",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "chipNeedLos": {
+      "name": "chipNeedLos",
+      "category": "Chip",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipCooldown": {
+      "name": "getChipCooldown",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "canUseChip": {
+      "name": "canUseChip",
+      "category": "Chip",
+      "operations": 45,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "canUseChipOnCell": {
+      "name": "canUseChipOnCell",
+      "category": "Chip",
+      "operations": 45,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipTargets": {
+      "name": "getChipTargets",
+      "category": "Chip",
+      "operations": 40,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipFailure": {
+      "name": "getChipFailure",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isChip": {
+      "name": "isChip",
+      "category": "Chip",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipLaunchType": {
+      "name": "getChipLaunchType",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getChipArea": {
+      "name": "getChipArea",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "resurrect": {
+      "name": "resurrect",
+      "category": "Chip",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "summon": {
+      "name": "summon",
+      "category": "Chip",
+      "operations": 1750,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int",
+            "function"
+          ]
+        }
+      ]
+    },
+    "getChipEffectiveArea": {
+      "name": "getChipEffectiveArea",
+      "category": "Chip",
+      "operations": 78,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAllChips": {
+      "name": "getAllChips",
+      "category": "Chip",
+      "operations": 200,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getChipMaxUses": {
+      "name": "getChipMaxUses",
+      "category": "Chip",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getDistance": {
+      "name": "getDistance",
+      "category": "Field",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getCellDistance": {
+      "name": "getCellDistance",
+      "category": "Field",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getPathLength": {
+      "name": "getPathLength",
+      "category": "Field",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getPath": {
+      "name": "getPath",
+      "category": "Field",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getLeekOnCell": {
+      "name": "getLeekOnCell",
+      "category": "Field",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getEntityOnCell": {
+      "name": "getEntityOnCell",
+      "category": "Field",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getCellContent": {
+      "name": "getCellContent",
+      "category": "Field",
+      "operations": 6,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isEmptyCell": {
+      "name": "isEmptyCell",
+      "category": "Field",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isObstacle": {
+      "name": "isObstacle",
+      "category": "Field",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "isOnSameLine": {
+      "name": "isOnSameLine",
+      "category": "Field",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "isLeek": {
+      "name": "isLeek",
+      "category": "Field",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "maxVersion": 3
+    },
+    "isEntity": {
+      "name": "isEntity",
+      "category": "Field",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getCellX": {
+      "name": "getCellX",
+      "category": "Field",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getCellY": {
+      "name": "getCellY",
+      "category": "Field",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getCellFromXY": {
+      "name": "getCellFromXY",
+      "category": "Field",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "lineOfSight": {
+      "name": "lineOfSight",
+      "category": "Field",
+      "operations": 31,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool?",
+          "parameters": []
+        }
+      ]
+    },
+    "getObstacles": {
+      "name": "getObstacles",
+      "category": "Field",
+      "operations": 85,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getMapType": {
+      "name": "getMapType",
+      "category": "Field",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getBulbChips": {
+      "name": "getBulbChips",
+      "category": "Fight",
+      "operations": 40,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getNearestEnemy": {
+      "name": "getNearestEnemy",
+      "category": "Fight",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getFarestEnemy": {
+      "name": "getFarestEnemy",
+      "category": "Fight",
+      "operations": 31,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getFarthestEnemy": {
+      "name": "getFarthestEnemy",
+      "category": "Fight",
+      "operations": 31,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getTurn": {
+      "name": "getTurn",
+      "category": "Fight",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getAliveEnemies": {
+      "name": "getAliveEnemies",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getAliveEnemiesCount": {
+      "name": "getAliveEnemiesCount",
+      "category": "Fight",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getAlliedTurret": {
+      "name": "getAlliedTurret",
+      "category": "Fight",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getAllEffects": {
+      "name": "getAllEffects",
+      "category": "Fight",
+      "operations": 200,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getEnemyTurret": {
+      "name": "getEnemyTurret",
+      "category": "Fight",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": []
+        }
+      ]
+    },
+    "getDeadEnemies": {
+      "name": "getDeadEnemies",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getDeadEnemiesCount": {
+      "name": "getDeadEnemiesCount",
+      "category": "Fight",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getEnemies": {
+      "name": "getEnemies",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getAllies": {
+      "name": "getAllies",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getEnemiesCount": {
+      "name": "getEnemiesCount",
+      "category": "Fight",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getNearestAlly": {
+      "name": "getNearestAlly",
+      "category": "Fight",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getFarestAlly": {
+      "name": "getFarestAlly",
+      "category": "Fight",
+      "operations": 31,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ],
+      "maxVersion": 3
+    },
+    "getFarthestAlly": {
+      "name": "getFarthestAlly",
+      "category": "Fight",
+      "operations": 31,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getAliveAllies": {
+      "name": "getAliveAllies",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getAliveAlliesCount": {
+      "name": "getAliveAlliesCount",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getDeadAllies": {
+      "name": "getDeadAllies",
+      "category": "Fight",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>",
+          "parameters": []
+        }
+      ]
+    },
+    "getAlliesCount": {
+      "name": "getAlliesCount",
+      "category": "Fight",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getNextPlayer": {
+      "name": "getNextPlayer",
+      "category": "Fight",
+      "operations": 20,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getPreviousPlayer": {
+      "name": "getPreviousPlayer",
+      "category": "Fight",
+      "operations": 20,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellToUseWeapon": {
+      "name": "getCellToUseWeapon",
+      "category": "Fight",
+      "operations": 38080,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellToUseWeaponOnCell": {
+      "name": "getCellToUseWeaponOnCell",
+      "category": "Fight",
+      "operations": 38080,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellToUseChip": {
+      "name": "getCellToUseChip",
+      "category": "Fight",
+      "operations": 38080,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellToUseChipOnCell": {
+      "name": "getCellToUseChipOnCell",
+      "category": "Fight",
+      "operations": 38080,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getEnemiesLife": {
+      "name": "getEnemiesLife",
+      "category": "Fight",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getAlliesLife": {
+      "name": "getAlliesLife",
+      "category": "Fight",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveToward": {
+      "name": "moveToward",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveTowardCell": {
+      "name": "moveTowardCell",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveTowardLeeks": {
+      "name": "moveTowardLeeks",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveTowardEntities": {
+      "name": "moveTowardEntities",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveTowardCells": {
+      "name": "moveTowardCells",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveAwayFrom": {
+      "name": "moveAwayFrom",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveAwayFromCell": {
+      "name": "moveAwayFromCell",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveAwayFromCells": {
+      "name": "moveAwayFromCells",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveAwayFromLeeks": {
+      "name": "moveAwayFromLeeks",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveAwayFromEntities": {
+      "name": "moveAwayFromEntities",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveAwayFromLine": {
+      "name": "moveAwayFromLine",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "moveTowardLine": {
+      "name": "moveTowardLine",
+      "category": "Fight",
+      "operations": 500,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getFightID": {
+      "name": "getFightID",
+      "category": "Fight",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getFightType": {
+      "name": "getFightType",
+      "category": "Fight",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getFightContext": {
+      "name": "getFightContext",
+      "category": "Fight",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getFightBoss": {
+      "name": "getFightBoss",
+      "category": "Fight",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellsToUseWeapon": {
+      "name": "getCellsToUseWeapon",
+      "category": "Fight",
+      "operations": 25834,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellsToUseWeaponOnCell": {
+      "name": "getCellsToUseWeaponOnCell",
+      "category": "Fight",
+      "operations": 25834,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellsToUseChip": {
+      "name": "getCellsToUseChip",
+      "category": "Fight",
+      "operations": 25834,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getCellsToUseChipOnCell": {
+      "name": "getCellsToUseChipOnCell",
+      "category": "Fight",
+      "operations": 25834,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<int>?",
+          "parameters": []
+        }
+      ]
+    },
+    "getNearestEnemyTo": {
+      "name": "getNearestEnemyTo",
+      "category": "Fight",
+      "operations": 35,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getNearestEnemyToCell": {
+      "name": "getNearestEnemyToCell",
+      "category": "Fight",
+      "operations": 35,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getNearestAllyToCell": {
+      "name": "getNearestAllyToCell",
+      "category": "Fight",
+      "operations": 35,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getNearestAllyTo": {
+      "name": "getNearestAllyTo",
+      "category": "Fight",
+      "operations": 35,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int?",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "sendTo": {
+      "name": "sendTo",
+      "category": "Network",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int",
+            "int",
+            "any"
+          ]
+        }
+      ]
+    },
+    "sendAll": {
+      "name": "sendAll",
+      "category": "Network",
+      "operations": 40,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "int",
+            "any"
+          ]
+        }
+      ]
+    },
+    "getMessages": {
+      "name": "getMessages",
+      "category": "Network",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array<array>",
+          "parameters": []
+        }
+      ]
+    },
+    "getMessageAuthor": {
+      "name": "getMessageAuthor",
+      "category": "Network",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "array"
+          ]
+        }
+      ]
+    },
+    "getMessageType": {
+      "name": "getMessageType",
+      "category": "Network",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "array"
+          ]
+        }
+      ]
+    },
+    "getMessageParams": {
+      "name": "getMessageParams",
+      "category": "Network",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "any",
+          "parameters": [
+            "array"
+          ]
+        }
+      ]
+    },
+    "mark": {
+      "name": "mark",
+      "category": "Util",
+      "operations": 164,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "markText": {
+      "name": "markText",
+      "category": "Util",
+      "operations": 164,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "clearMarks": {
+      "name": "clearMarks",
+      "category": "Util",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": []
+        }
+      ]
+    },
+    "show": {
+      "name": "show",
+      "category": "Util",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": []
+        }
+      ]
+    },
+    "pause": {
+      "name": "pause",
+      "category": "Util",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": []
+        }
+      ]
+    },
+    "getRegisters": {
+      "name": "getRegisters",
+      "category": "Util",
+      "operations": 25,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "map<string,string>",
+          "parameters": []
+        }
+      ]
+    },
+    "getRegister": {
+      "name": "getRegister",
+      "category": "Util",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string?",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "setRegister": {
+      "name": "setRegister",
+      "category": "Util",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "string",
+            "any"
+          ]
+        }
+      ]
+    },
+    "deleteRegister": {
+      "name": "deleteRegister",
+      "category": "Util",
+      "operations": 16,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    }
+  }
+}

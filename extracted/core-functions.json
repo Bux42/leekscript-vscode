@@ -1,0 +1,1121 @@
+{
+  "version": "unknown",
+  "extractedAt": "2025-11-14T07:33:26.318Z",
+  "functions": {
+    "string": {
+      "name": "string",
+      "category": "Value",
+      "operations": 8,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "number": {
+      "name": "number",
+      "category": "Value",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int|real",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "typeOf": {
+      "name": "typeOf",
+      "category": "Value",
+      "operations": 8,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "clone": {
+      "name": "clone",
+      "category": "Value",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "any",
+          "parameters": []
+        }
+      ]
+    },
+    "unknown": {
+      "name": "unknown",
+      "category": "Value",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "any",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "abs": {
+      "name": "abs",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": []
+        }
+      ]
+    },
+    "min": {
+      "name": "min",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": []
+        }
+      ]
+    },
+    "max": {
+      "name": "max",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": []
+        }
+      ]
+    },
+    "cos": {
+      "name": "cos",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "sin": {
+      "name": "sin",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "tan": {
+      "name": "tan",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "acos": {
+      "name": "acos",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "asin": {
+      "name": "asin",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "atan": {
+      "name": "atan",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "atan2": {
+      "name": "atan2",
+      "category": "Number",
+      "operations": 35,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real",
+            "real"
+          ]
+        }
+      ]
+    },
+    "toRadians": {
+      "name": "toRadians",
+      "category": "Number",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "toDegrees": {
+      "name": "toDegrees",
+      "category": "Number",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "ceil": {
+      "name": "ceil",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "floor": {
+      "name": "floor",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "round": {
+      "name": "round",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "sqrt": {
+      "name": "sqrt",
+      "category": "Number",
+      "operations": 8,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "cbrt": {
+      "name": "cbrt",
+      "category": "Number",
+      "operations": 62,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "log": {
+      "name": "log",
+      "category": "Number",
+      "operations": 39,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "log2": {
+      "name": "log2",
+      "category": "Number",
+      "operations": 23,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "log10": {
+      "name": "log10",
+      "category": "Number",
+      "operations": 23,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "exp": {
+      "name": "exp",
+      "category": "Number",
+      "operations": 40,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "pow": {
+      "name": "pow",
+      "category": "Number",
+      "operations": 140,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real",
+            "real"
+          ]
+        }
+      ]
+    },
+    "rand": {
+      "name": "rand",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": []
+        }
+      ]
+    },
+    "randInt": {
+      "name": "randInt",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "randFloat": {
+      "name": "randFloat",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real",
+            "real"
+          ]
+        }
+      ]
+    },
+    "randReal": {
+      "name": "randReal",
+      "category": "Number",
+      "operations": 30,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real",
+            "real"
+          ]
+        }
+      ]
+    },
+    "hypot": {
+      "name": "hypot",
+      "category": "Number",
+      "operations": 187,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "real",
+            "real"
+          ]
+        }
+      ]
+    },
+    "signum": {
+      "name": "signum",
+      "category": "Number",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "real"
+          ]
+        }
+      ]
+    },
+    "bitCount": {
+      "name": "bitCount",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "trailingZeros": {
+      "name": "trailingZeros",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "leadingZeros": {
+      "name": "leadingZeros",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "bitReverse": {
+      "name": "bitReverse",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "byteReverse": {
+      "name": "byteReverse",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "rotateLeft": {
+      "name": "rotateLeft",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "rotateRight": {
+      "name": "rotateRight",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "binString": {
+      "name": "binString",
+      "category": "Number",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "hexString": {
+      "name": "hexString",
+      "category": "Number",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "realBits": {
+      "name": "realBits",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "real"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "bitsToReal": {
+      "name": "bitsToReal",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "real",
+          "parameters": [
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "isFinite": {
+      "name": "isFinite",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "real"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "isInfinite": {
+      "name": "isInfinite",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "real"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "isNaN": {
+      "name": "isNaN",
+      "category": "Number",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "real"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "isPermutation": {
+      "name": "isPermutation",
+      "category": "Number",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "int",
+            "int"
+          ]
+        }
+      ],
+      "minVersion": 4
+    },
+    "charAt": {
+      "name": "charAt",
+      "category": "String",
+      "operations": 8,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "string",
+            "int"
+          ]
+        }
+      ]
+    },
+    "length": {
+      "name": "length",
+      "category": "String",
+      "operations": 15,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "substring": {
+      "name": "substring",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": []
+        }
+      ]
+    },
+    "replace": {
+      "name": "replace",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "string",
+            "string",
+            "string"
+          ]
+        }
+      ]
+    },
+    "indexOf": {
+      "name": "indexOf",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "split": {
+      "name": "split",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "array_string",
+          "parameters": []
+        }
+      ]
+    },
+    "toLower": {
+      "name": "toLower",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "toUpper": {
+      "name": "toUpper",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "startsWith": {
+      "name": "startsWith",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "string",
+            "string"
+          ]
+        }
+      ]
+    },
+    "endsWith": {
+      "name": "endsWith",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "string",
+            "string"
+          ]
+        }
+      ]
+    },
+    "contains": {
+      "name": "contains",
+      "category": "String",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "bool",
+          "parameters": [
+            "string",
+            "string"
+          ]
+        }
+      ]
+    },
+    "trim": {
+      "name": "trim",
+      "category": "String",
+      "operations": 10,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "codePointAt": {
+      "name": "codePointAt",
+      "category": "String",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "jsonEncode": {
+      "name": "jsonEncode",
+      "category": "JSON",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "jsonDecode": {
+      "name": "jsonDecode",
+      "category": "JSON",
+      "operations": 0,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "any",
+          "parameters": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "color": {
+      "name": "color",
+      "category": "Color",
+      "operations": 7,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getColor": {
+      "name": "getColor",
+      "category": "Color",
+      "operations": 7,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getRed": {
+      "name": "getRed",
+      "category": "Color",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getGreen": {
+      "name": "getGreen",
+      "category": "Color",
+      "operations": 2,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getBlue": {
+      "name": "getBlue",
+      "category": "Color",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": [
+            "int"
+          ]
+        }
+      ]
+    },
+    "getOperations": {
+      "name": "getOperations",
+      "category": "System",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getMaxOperations": {
+      "name": "getMaxOperations",
+      "category": "System",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getInstructionsCount": {
+      "name": "getInstructionsCount",
+      "category": "System",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "debug": {
+      "name": "debug",
+      "category": "System",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "debugW": {
+      "name": "debugW",
+      "category": "System",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "debugE": {
+      "name": "debugE",
+      "category": "System",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "debugC": {
+      "name": "debugC",
+      "category": "System",
+      "operations": 100,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "void",
+          "parameters": [
+            "any",
+            "int"
+          ]
+        }
+      ]
+    },
+    "getUsedRAM": {
+      "name": "getUsedRAM",
+      "category": "System",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getMaxRAM": {
+      "name": "getMaxRAM",
+      "category": "System",
+      "operations": 1,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    },
+    "getDate": {
+      "name": "getDate",
+      "category": "System",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": []
+        }
+      ]
+    },
+    "getTime": {
+      "name": "getTime",
+      "category": "System",
+      "operations": 50,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "string",
+          "parameters": []
+        }
+      ]
+    },
+    "getTimestamp": {
+      "name": "getTimestamp",
+      "category": "System",
+      "operations": 5,
+      "isStatic": true,
+      "versions": [
+        {
+          "returnType": "int",
+          "parameters": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1465 @@
+/** Exporté le 04/11/2025 15:20:31 **/
+
+/** MonteCarlo/MonteCarloBeta **/
+
+/** MonteCarlo/Context/GlobalContext **/
+
+/** MonteCarlo/Map/MapContext **/
+
+/** MonteCarlo/Leek/Leek **/
+
+/** MonteCarlo/Map/MapContentCell **/
+
+class MapContentCell {
+	public integer cell
+	public boolean isObstacle
+	public integer cellContent
+	public integer entityType = -1
+	public integer entityId = -1
+	public integer mpDistance = 0
+	
+	public integer distanceFromMe = 0
+	public integer distanceFromEnemy = 0
+
+	constructor(integer cell, integer cellContent) {
+		this.cell = cell
+		
+		if (cellContent == CELL_OBSTACLE) {
+			this.isObstacle = true
+		}
+		if (cellContent == CELL_ENTITY) {
+			integer entity = getEntityOnCell(cell)
+			this.entityType = getType(entity)
+			this.entityId = getEntityOnCell(cell)
+		}
+	}
+}
+/** MonteCarlo/Map/MovementCell **/
+
+class MovementCell {
+	public integer cell
+	public integer mpDistance = 99999
+
+	constructor(integer cell, integer mpDistance) {
+		this.cell = cell
+		this.mpDistance = mpDistance
+	}
+}
+/** MonteCarlo/Map/RunAwayCell **/
+
+class RunAwayCell {
+	public integer cell
+	public real minRecievedDamange
+
+	constructor(integer cell, real minRecievedDamange) {
+		this.cell = cell
+		this.minRecievedDamange = minRecievedDamange
+	}
+}
+/** MonteCarlo/Leek/LeekStats **/
+
+class LeekStats {
+	public integer absoluteShield
+	public integer agility
+	public Array<integer> chips
+	public integer damageReturn
+	public Array<Array<integer>> effects
+	public integer lifePoints
+	public integer magic
+	public integer mp
+	public Array<Array<integer>> passiveEffects
+	public integer power
+	public integer relativeShield
+	public integer resistance
+	public integer science
+	public integer summoner
+	
+	public integer strength
+	public integer tp
+	public integer type
+	
+	public integer | null equippedWeapon
+	public Array<integer> weapons
+	
+	public integer wisdom
+	
+	public boolean enemy
+	public boolean ally
+	public boolean summon
+
+	constructor (integer id) {
+		this.getStats(id)
+	}
+
+	getStats(integer id) {
+		this.absoluteShield = getAbsoluteShield(id)
+		this.agility = getAgility(id)
+		this.chips = getChips(id)
+		this.effects = getEffects(id)
+		this.damageReturn = getDamageReturn(id)
+		this.lifePoints = getLife(id)
+		this.magic = getMagic(id)
+		this.mp = getMP(id)
+		this.passiveEffects = getPassiveEffects(id)
+		this.power = getPower(id)
+		this.relativeShield = getRelativeShield(id)
+		this.resistance = getResistance(id)
+		this.science = getScience(id)
+		this.strength = getStrength(id)
+		this.summoner = getSummoner(id)
+		
+		this.tp = getTP(id)
+		this.type = getType(id)
+		this.equippedWeapon = getWeapon(id)
+		this.weapons = getWeapons(id)
+		
+		this.wisdom = getWisdom(id)
+		
+		this.enemy = isEnemy(id)
+		this.ally = isAlly(id)
+		this.summon = isSummon(id)
+	}
+}
+/** MonteCarlo/Fight/LeekWeapon **/
+
+/** MonteCarlo/Fight/LeekCastable **/
+
+
+//include("../Map/MapReachableCell");
+//include("../Map/CastableCell");
+/** MonteCarlo/Map/CellXY **/
+
+class CellXY {
+	public integer cell
+	public integer x
+	public integer y
+
+	constructor(integer cell) {
+		this.cell = cell
+		this.x = getCellX(cell)
+		this.y = getCellY(cell)
+	}
+	
+	constructor(integer x, integer y) {
+		this.x = x;
+		this.y = y;
+	}
+}
+/** MonteCarlo/Fight/DamageResult **/
+
+
+
+
+class DamageResult {
+	public real baseDamage = 0.0
+	public real maxDamage = 0.0
+
+	constructor(Array<Array<real | integer>> effects, Leek caster, Leek target, integer distance) {
+		for (Array<real | integer> effect in effects) {
+			if (effect[0] as integer == EFFECT_DAMAGE) {
+				real minD = effect[1] as real
+				real maxD = effect[2] as real
+
+				this.baseDamage += calculateDamage(minD, caster, target, distance)
+				this.maxDamage += calculateDamage(maxD, caster, target, distance)
+			}
+			if (effect[0] as integer == EFFECT_POISON) {
+				real minD = effect[1] as real
+				real maxD = effect[2] as real
+
+				this.baseDamage += calculatePoison(minD, caster, target, distance) * effect[3]
+				this.maxDamage += calculatePoison(maxD, caster, target, distance) * effect[3]
+			}
+			if (effect[0] as integer == EFFECT_NOVA_DAMAGE) {
+				real minD = effect[1] as real
+				real maxD = effect[2] as real
+
+				this.baseDamage += calculatePoison(minD, caster, target, distance) * effect[3]
+				this.maxDamage += calculatePoison(maxD, caster, target, distance) * effect[3]
+			}
+		}
+	}
+	
+	calculateNovaDamage(integer damageInput, Leek caster, Leek target, integer distance) {
+		real damage = damageInput * (1 + caster.leekStats.science / 100)
+		
+		if (damage < 0) {
+			damage = 0;
+		}
+		return damage
+	}
+	
+	calculatePoison(integer damageInput, Leek caster, Leek target, integer distance) {
+		real damage = damageInput * (1 + caster.leekStats.magic / 100)
+		
+		if (damage < 0) {
+			damage = 0;
+		}
+		return damage
+	}
+	
+	calculateDamage(integer damageInput, Leek caster, Leek target, integer distance) {
+		real damage = damageInput * (1 + caster.leekStats.strength / 100)
+		damage -= damage * (target.leekStats.relativeShield / 100.0) + target.leekStats.absoluteShield;
+		
+		if (damage < 0) {
+			damage = 0;
+		}
+		return damage
+	}
+}
+/** MonteCarlo/Map/AttackCell **/
+
+class AttackCell {
+	public integer targetCell
+	public integer sourceCell
+	public integer usedMp
+
+	constructor(integer targetCell, integer sourceCell, integer usedMp) {
+		this.targetCell = targetCell
+		this.sourceCell = sourceCell
+		this.usedMp = usedMp
+	}
+}
+/** MonteCarlo/Fight/FightHelpers/AreaLaserLine **/
+
+
+
+
+/** MonteCarlo/Fight/AttackingCell **/
+
+class AttackingCell {
+	public integer reachableCell
+	public integer targetCell
+	public real medianDamage
+	public integer mpDistance
+	public real minRecievedDamage
+	public integer runAwayCell
+	public LeekCastable castable
+	
+	constructor (integer reachableCell, integer targetCell, integer mpDistance) {
+		this.reachableCell = reachableCell
+		this.targetCell = targetCell
+		this.medianDamage = 0
+		this.mpDistance = mpDistance
+		this.minRecievedDamage = 999999
+	}
+}
+
+function getLaserLineIgnoredCells(Leek castingLeek, Leek targetLeek, Array<MapContentCell> mapCells) {
+	Array<MapContentCell> ignoredCells = arrayFilter(mapCells, function(MapContentCell cell) {
+		return cell.entityType != -1
+	})
+
+	Array<integer> ignoredCellIds = arrayMap(ignoredCells, function(MapContentCell cell) {
+		return cell.cell
+	})
+
+	return ignoredCellIds
+}
+
+function getLaserLineOfSight(MovementCell reachableCell, Leek targetLeek, LeekCastable castable) {
+	integer distanceToTarget = getCellDistance(reachableCell.cell, targetLeek.cell)
+
+	CellXY reachableCellCellXY = new CellXY(reachableCell.cell)
+	CellXY targetCellXY = new CellXY(targetLeek.cell)
+
+	integer dx = reachableCellCellXY.x - targetCellXY.x;
+	integer dy = reachableCellCellXY.y - targetCellXY.y;
+
+	integer step = max(abs(dx), abs(dy));
+
+	for (integer i = 1; i < step; i++) {
+		if (distanceToTarget - i <= castable.minRange) {
+			break
+		}
+		targetCellXY.x += ((dx / step) * i) as integer
+		targetCellXY.y += ((dy / step) * i) as integer
+
+		integer | null targetCell = getCellFromXY(targetCellXY.x, targetCellXY.y)
+		
+		if (targetCell != null && lineOfSight(reachableCell.cell, targetCell)) {
+			if (reachableCell.cell == targetLeek.cell) {
+				debug("[getLaserLineOfSight] Skip reachable cell 2 " + reachableCell.cell)
+				continue
+			}
+			
+			return new AttackingCell(reachableCell.cell, targetCell, reachableCell.mpDistance)
+		}
+	}
+	return null
+}
+
+function getLaserLineAttackingCell(
+		Leek castingLeek,
+		Leek targetLeek,
+		Array<MapContentCell> mapCells,
+		LeekCastable castable,
+		Function<integer, integer, null | Array<integer> => null | Array<integer>> | Function<integer, integer => null | Array<integer>> getCellsToUseCastable) {
+		Array<integer> ignoredCellIds = getLaserLineIgnoredCells(castingLeek, targetLeek, mapCells)
+
+	Array<integer> cellsToUseCastable = getCellsToUseCastable(castable.id, targetLeek.cell, ignoredCellIds)
+	
+	Array<MovementCell> reachableMovableCells = arrayFilter(castingLeek.movementCells, function(MovementCell movableCell) {
+		return arraySome(cellsToUseCastable, function(integer cellToUseWeapon) {
+			return movableCell.cell == cellToUseWeapon
+		})
+	})
+	
+	reachableMovableCells = arraySort(reachableMovableCells, function(MovementCell cell1, MovementCell cell2) {
+		return cell1.mpDistance - cell2.mpDistance
+	})
+			
+	for (MovementCell reachableCell in reachableMovableCells) {
+		if (lineOfSight(reachableCell.cell, targetLeek.cell)) {
+			if (reachableCell.cell == targetLeek.cell) {
+				debug("[getLaserLineAttackingCell] Skip reachable cell 1 " + reachableCell.cell)
+				continue
+			}
+			return new AttackingCell(reachableCell.cell, targetLeek.cell, reachableCell.mpDistance)
+		} else {
+			AttackingCell | null attackCell = getLaserLineOfSight(reachableCell, targetLeek, castable)
+			
+			if (attackCell != null) {
+				return attackCell
+			}
+		}
+	}
+	
+	return null
+}
+
+function getLaserLineAttackingCells(
+		Leek castingLeek,
+		Leek targetLeek,
+		Array<MapContentCell> mapCells,
+		LeekCastable castable,
+		Function<integer, integer, null | Array<integer> => null | Array<integer>> | Function<integer, integer => null | Array<integer>> getCellsToUseCastable) {
+		Array<integer> ignoredCellIds = getLaserLineIgnoredCells(castingLeek, targetLeek, mapCells)
+
+	Array<AttackingCell> attackingCells = []
+	Array<integer> cellsToUseCastable = getCellsToUseCastable(castable.id, targetLeek.cell, ignoredCellIds)
+	
+	Array<MovementCell> reachableMovableCells = arrayFilter(castingLeek.movementCells, function(MovementCell movableCell) {
+		return arraySome(cellsToUseCastable, function(integer cellToUseWeapon) {
+			return movableCell.cell == cellToUseWeapon
+		})
+	})
+	
+	reachableMovableCells = arraySort(reachableMovableCells, function(MovementCell cell1, MovementCell cell2) {
+		return cell1.mpDistance - cell2.mpDistance
+	})
+			
+	for (MovementCell reachableCell in reachableMovableCells) {
+		if (lineOfSight(reachableCell.cell, targetLeek.cell)) {
+			push(attackingCells, new AttackingCell(reachableCell.cell, targetLeek.cell, reachableCell.mpDistance))
+		} else {
+			AttackingCell | null attackCell = getLaserLineOfSight(reachableCell, targetLeek, castable)
+			
+			if (attackCell != null) {
+				push(attackingCells, attackCell)
+			}
+		}
+	}
+	
+	return attackingCells
+}
+/** MonteCarlo/Fight/FightHelpers/AreaPoint **/
+
+
+
+
+
+/** MonteCarlo/Fight/FightHelpers/CastConditions **/
+
+
+
+
+
+
+function cellsAreDiagonal(integer cellStart, integer cellEnd) {
+	CellXY cellStartXY = new CellXY(cellStart)
+	CellXY cellEndXY = new CellXY(cellEnd)
+	
+	integer deltaX = abs(cellStartXY.x - cellEndXY.x);
+    integer deltaY = abs(cellStartXY.y - cellEndXY.y);
+	
+	return deltaX == deltaY;
+}
+
+function canCastOnCellLaunchTypeCircle(integer castingCell, integer targetCell, LeekCastable castable) {
+	integer distance = getCellDistance(castingCell, targetCell)
+
+	if (distance >= castable.minRange && distance <= castable.maxRange) {
+		boolean lineOfSight = lineOfSight(castingCell, targetCell)
+
+		if (castable.needLos) {
+			if (lineOfSight) {
+				return true
+			}
+		} else {
+			return true
+		}
+	}
+	
+	return false
+}
+
+function canCastOnCellLaunchTypeLine(integer castingCell, integer targetCell, LeekCastable castable) {
+	if (isOnSameLine(castingCell, targetCell)) {
+		integer distance = getCellDistance(castingCell, targetCell)
+
+		if (distance >= castable.minRange && distance <= castable.maxRange) {
+			if (castable.needLos) {
+				boolean lineOfSight = lineOfSight(castingCell, targetCell)
+				if (lineOfSight) {
+					return true
+				}
+			} else {
+				return true
+			}
+		}
+	}
+	
+	return false
+}
+
+function canCastOnCellLaunchTypeDiagonal(integer castingCell, integer targetCell, LeekCastable castable) {
+	if (cellsAreDiagonal(castingCell, targetCell)) {
+		integer distance = getCellDistance(castingCell, targetCell)
+
+		if (distance >= castable.minRange && distance <= castable.maxRange) {
+			boolean lineOfSight = lineOfSight(castingCell, targetCell)
+
+			if (castable.needLos) {
+				if (lineOfSight) {
+					return true
+				}
+			} else {
+				return true
+			}
+		}
+	}
+	
+	return false
+}
+
+function canCastOnCellLaunchTypeStar(integer castingCell, integer targetCell, LeekCastable castable) {
+	if (cellsAreDiagonal(castingCell, targetCell) || isOnSameLine(castingCell, targetCell)) {
+		integer distance = getCellDistance(castingCell, targetCell)
+
+		if (distance >= castable.minRange && distance <= castable.maxRange) {
+			boolean lineOfSight = lineOfSight(castingCell, targetCell)
+
+			if (castable.needLos) {
+				if (lineOfSight) {
+					return true
+				}
+			} else {
+				return true
+			}
+		}
+	}
+	
+	return false
+}
+
+
+function getAreaPointAttackingCells(
+		Leek castingLeek,
+		Leek targetLeek,
+		Array<MapContentCell> mapCells,
+		LeekCastable castable,
+		Function<integer, integer, null | Array<integer> => null | Array<integer>> | Function<integer, integer => null | Array<integer>> getCellsToUseCastable) {
+
+	Array<AttackingCell> attackingCells = []
+	
+	if (castable.launchType == LAUNCH_TYPE_CIRCLE) {
+		for (MovementCell movableCell in castingLeek.movementCells) {
+			if (canCastOnCellLaunchTypeCircle(movableCell.cell, targetLeek.cell, castable)) {
+				push(attackingCells, new AttackingCell(movableCell.cell, targetLeek.cell, movableCell.mpDistance))
+			}
+		}
+	} else if (castable.launchType == LAUNCH_TYPE_LINE) {
+		for (MovementCell movableCell in castingLeek.movementCells) {
+			if (canCastOnCellLaunchTypeLine(movableCell.cell, targetLeek.cell, castable)) {
+				push(attackingCells, new AttackingCell(movableCell.cell, targetLeek.cell, movableCell.mpDistance))
+			}
+		}
+	} else if (castable.launchType == LAUNCH_TYPE_DIAGONAL) {
+		for (MovementCell movableCell in castingLeek.movementCells) {
+			if (canCastOnCellLaunchTypeDiagonal(movableCell.cell, targetLeek.cell, castable)) {
+				push(attackingCells, new AttackingCell(movableCell.cell, targetLeek.cell, movableCell.mpDistance))
+			}
+		}
+	}/* else if (castable.launchType == LAUNCH_TYPE_STAR) {
+		for (MapContentCell movableCell in castingLeek.movableCells) {
+			if (canCastOnCellLaunchTypeStar(movableCell.cell, targetLeek.cell, castable)) {
+				return new AttackingCell(movableCell.cell, targetLeek.cell)
+			}
+		}
+	} */else {
+		debug("💥 AreaPoint: launchType " + castable.launchType + " for castable " +  castable.name + " is not implemented!")
+	}
+
+	return attackingCells
+}
+
+function getAreaPointAttackingCell(
+		Leek castingLeek,
+		Leek targetLeek,
+		Array<MapContentCell> mapCells,
+		LeekCastable castable,
+		Function<integer, integer, null | Array<integer> => null | Array<integer>> | Function<integer, integer => null | Array<integer>> getCellsToUseCastable) {
+
+	if (castable.launchType == LAUNCH_TYPE_CIRCLE) {
+		for (MovementCell movableCell in castingLeek.movementCells) {
+			if (canCastOnCellLaunchTypeCircle(movableCell.cell, targetLeek.cell, castable)) {
+				return new AttackingCell(movableCell.cell, targetLeek.cell, movableCell.mpDistance)
+			}
+		}
+	} else if (castable.launchType == LAUNCH_TYPE_LINE) {
+		for (MovementCell movableCell in castingLeek.movementCells) {
+			if (canCastOnCellLaunchTypeLine(movableCell.cell, targetLeek.cell, castable)) {
+				return new AttackingCell(movableCell.cell, targetLeek.cell, movableCell.mpDistance)
+			}
+		}
+	} else if (castable.launchType == LAUNCH_TYPE_DIAGONAL) {
+		for (MovementCell movableCell in castingLeek.movementCells) {
+			if (canCastOnCellLaunchTypeDiagonal(movableCell.cell, targetLeek.cell, castable)) {
+				return new AttackingCell(movableCell.cell, targetLeek.cell, movableCell.mpDistance)
+			}
+		}
+	}/* else if (castable.launchType == LAUNCH_TYPE_STAR) {
+		for (MapContentCell movableCell in castingLeek.movableCells) {
+			if (canCastOnCellLaunchTypeStar(movableCell.cell, targetLeek.cell, castable)) {
+				return new AttackingCell(movableCell.cell, targetLeek.cell)
+			}
+		}
+	} */else {
+		debug("💥 AreaPoint: launchType " + castable.launchType + " for castable " +  castable.name + " is not implemented!")
+	}
+
+	return null
+}
+
+
+class LeekCastable {
+	public integer id
+	public string name
+	public boolean isChip
+	public integer chipCoolDown
+
+	public integer area
+	public integer cost
+	public Array <Array<real | integer>> effects
+	public integer launchType
+	public integer maxRange
+	public integer minRange
+	
+	public real potentialDamage
+	public real potentialDamageMax
+	
+	public Array<AttackCell> attackingCells
+
+	public boolean needLos
+
+	public bool isAttackCastable(integer casterId) {
+		if (!this.isChip || (this.isChip && getCooldown(this.id, casterId) == 0)) {
+			if (this.effects[0][0] == EFFECT_DAMAGE ||
+			    this.effects[0][0] == EFFECT_POISON ||
+			   	this.effects[0][0] == EFFECT_NOVA_DAMAGE) {
+				return true
+			}
+		}
+		return false
+	}
+	
+	public real getAverageAreaDamage() {
+		
+	}
+	
+	public real getPotentialDamage(Leek castingLeek, Leek targetLeek) {
+		DamageResult damageResult = new DamageResult(this.effects, castingLeek, targetLeek, 0)
+		real potentialDamage = (damageResult.baseDamage + damageResult.maxDamage) / 2
+		
+		real averageAreaMultiplicator = 
+		
+		this.potentialDamage = potentialDamage
+		return potentialDamage
+	}
+	
+	public real calculatePotentialMaxDamage(Leek castingLeek) {
+		integer startingTp = castingLeek.leekStats.tp
+		
+		// include the cost of equipping the weapon if not already equipped
+		if (castingLeek.equippedWeaponId != this.id && !this.isChip) {
+			startingTp -= 1
+		}
+		
+		real totalDamage = 0
+		
+		while (startingTp >= this.cost) {
+			totalDamage += this.potentialDamage
+			startingTp -= this.cost
+			
+			if (this.isChip && this.chipCoolDown > 0) {
+				// asssume we can only use chips with a cooldown once per turn
+				break
+			}
+		}
+		
+		return totalDamage
+	}
+	
+	public getAllAttackingCells(Leek castingLeek, Leek targetLeek, Array<MapContentCell> mapCells) {
+		Array<AttackingCell> attackingCells = []
+		
+		Array<integer> defaultAreas = [AREA_CIRCLE_1, AREA_CIRCLE_2, AREA_CIRCLE_3, AREA_PLUS_1, AREA_PLUS_2, AREA_PLUS_3, AREA_SQUARE_1, AREA_SQUARE_2, AREA_X_1, AREA_X_2, AREA_X_3]
+		
+		Function<integer, integer, null | Array<integer> => null | Array<integer>> | Function<integer, integer => null | Array<integer>> getCellsToUseCastable = this.isChip ? getCellsToUseChipOnCell : getCellsToUseWeaponOnCell		
+		Function<integer => null | Array<integer>> | Function<integer, null | integer, null | integer => null | Array<integer>> | Function<integer, null | integer => null | Array<integer>> getEffectiveArea = this.isChip ? getChipEffectiveArea : getWeaponEffectiveArea
+		
+		if (this.area == AREA_LASER_LINE) {
+			return getLaserLineAttackingCells(castingLeek, targetLeek, mapCells, this, getCellsToUseCastable)
+		} else if (this.area == AREA_POINT) {
+			return getAreaPointAttackingCells(castingLeek, targetLeek, mapCells, this, getCellsToUseCastable)
+		} else if (arraySome(defaultAreas, function(areaType) { return areaType == this.area })) {
+			Array<integer> areaWithEnemyCells = []
+			
+			if (this.isChip) {
+				areaWithEnemyCells = getChipEffectiveArea(this.id, targetLeek.cell, castingLeek.cell)
+			} else {
+				areaWithEnemyCells = getWeaponEffectiveArea(this.id, targetLeek.cell, castingLeek.cell)
+			}
+			
+			// sort by closest to enemy, the closer, the more damage
+			areaWithEnemyCells = arraySort(areaWithEnemyCells, function(integer cell1, integer cell2) {
+				return getCellDistance(cell1, targetLeek.cell) - getCellDistance(cell2, targetLeek.cell)
+			})
+			
+			// exclude the movable cells that are inside the AoE
+			Array<MovementCell> movableCellsOutsideOfArea = arrayFilter(castingLeek.movementCells, function(MovementCell movableCell) {
+				return !arraySome(areaWithEnemyCells, function(integer areaCell) {
+					return movableCell.cell == areaCell
+				})
+			})
+			
+			if (this.launchType == LAUNCH_TYPE_CIRCLE) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeCircle(movableCell.cell, areaWithEnemyCell, this)) {
+							push(attackingCells, new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance))
+						}
+					}
+				}
+			} else if (this.launchType == LAUNCH_TYPE_LINE) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeLine(movableCell.cell, areaWithEnemyCell, this)) {
+							push(attackingCells, new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance))
+						}
+					}
+				}
+			} else if (this.launchType == LAUNCH_TYPE_DIAGONAL) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeDiagonal(movableCell.cell, areaWithEnemyCell, this)) {
+							push(attackingCells, new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance))
+						}
+					}
+				}
+			} else if (this.launchType == LAUNCH_TYPE_STAR) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeDiagonal(movableCell.cell, areaWithEnemyCell, this) ||
+						   	canCastOnCellLaunchTypeLine(movableCell.cell, areaWithEnemyCell, this)) {
+							push(attackingCells, new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance))
+						}
+					}
+				}
+			} else {
+				debug("💥 launchType " + this.launchType + " for castable " + this.name + " is not implemented!")
+			}
+			
+		}
+		else {
+			debug("💥 area " + this.area + " for castable " + this.name + " is not implemented!")
+		}
+		
+		return attackingCells
+	}
+	
+	public getAttackingCell(Leek castingLeek, Leek targetLeek, Array<MapContentCell> mapCells) {
+		Array<integer> defaultAreas = [AREA_CIRCLE_1, AREA_CIRCLE_2, AREA_CIRCLE_3, AREA_PLUS_1, AREA_PLUS_2, AREA_PLUS_3, AREA_SQUARE_1, AREA_SQUARE_2, AREA_X_1, AREA_X_2, AREA_X_3]
+		
+		Function<integer, integer, null | Array<integer> => null | Array<integer>> | Function<integer, integer => null | Array<integer>> getCellsToUseCastable = this.isChip ? getCellsToUseChipOnCell : getCellsToUseWeaponOnCell		
+		Function<integer => null | Array<integer>> | Function<integer, null | integer, null | integer => null | Array<integer>> | Function<integer, null | integer => null | Array<integer>> getEffectiveArea = this.isChip ? getChipEffectiveArea : getWeaponEffectiveArea
+
+		if (this.area == AREA_LASER_LINE) {
+			return getLaserLineAttackingCell(castingLeek, targetLeek, mapCells, this, getCellsToUseCastable)
+		} else if (this.area == AREA_POINT) {
+			return getAreaPointAttackingCell(castingLeek, targetLeek, mapCells, this, getCellsToUseCastable)
+		} else if (arraySome(defaultAreas, function(areaType) { return areaType == this.area })) {
+			Array<integer> areaWithEnemyCells = []
+			
+			if (this.isChip) {
+				areaWithEnemyCells = getChipEffectiveArea(this.id, targetLeek.cell, castingLeek.cell)
+			} else {
+				areaWithEnemyCells = getWeaponEffectiveArea(this.id, targetLeek.cell, castingLeek.cell)
+			}
+			
+			// sort by closest to enemy, the closer, the more damage
+			areaWithEnemyCells = arraySort(areaWithEnemyCells, function(integer cell1, integer cell2) {
+				return getCellDistance(cell1, targetLeek.cell) - getCellDistance(cell2, targetLeek.cell)
+			})
+			
+			// exclude the movable cells that are inside the AoE
+			Array<MovementCell> movableCellsOutsideOfArea = arrayFilter(castingLeek.movementCells, function(MovementCell movableCell) {
+				return !arraySome(areaWithEnemyCells, function(integer areaCell) {
+					return movableCell.cell == areaCell
+				})
+			})
+			
+			if (this.launchType == LAUNCH_TYPE_CIRCLE) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeCircle(movableCell.cell, areaWithEnemyCell, this)) {
+							return new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance)
+						}
+					}
+				}
+			} else if (this.launchType == LAUNCH_TYPE_LINE) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeLine(movableCell.cell, areaWithEnemyCell, this)) {
+							return new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance)
+						}
+					}
+				}
+			} else if (this.launchType == LAUNCH_TYPE_DIAGONAL) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeDiagonal(movableCell.cell, areaWithEnemyCell, this)) {
+							return new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance)
+						}
+					}
+				}
+			} else if (this.launchType == LAUNCH_TYPE_STAR) {
+				for (MovementCell movableCell in movableCellsOutsideOfArea) {
+					for (integer areaWithEnemyCell in areaWithEnemyCells) {
+						if (canCastOnCellLaunchTypeDiagonal(movableCell.cell, areaWithEnemyCell, this) ||
+						   	canCastOnCellLaunchTypeLine(movableCell.cell, areaWithEnemyCell, this)) {
+							return new AttackingCell(movableCell.cell, areaWithEnemyCell, movableCell.mpDistance)
+						}
+					}
+				}
+			} else {
+				debug("💥 launchType " + this.launchType + " for castable " + this.name + " is not implemented!")
+			}
+			
+		}
+		else {
+			debug("💥 area " + this.area + " for castable " + this.name + " is not implemented!")
+		}
+		
+		return null
+	}
+}
+
+class LeekWeapon extends LeekCastable {
+	constructor(integer weaponId) {
+		this.name = getWeaponName(weaponId)
+		this.id = weaponId
+
+		this.area = getWeaponArea(weaponId)
+		this.cost = getWeaponCost(weaponId)
+		this.effects = getWeaponEffects(weaponId)
+		this.launchType = getWeaponLaunchType(weaponId)
+		this.maxRange = getWeaponMaxRange(weaponId)
+		this.minRange = getWeaponMinRange(weaponId)
+		
+		this.needLos = weaponNeedLos(weaponId)
+		
+		this.isChip = false
+	}
+}
+/** MonteCarlo/Fight/LeekChip **/
+
+
+
+class LeekChip extends LeekCastable {
+	constructor(integer chipId) {
+		this.name = getChipName(chipId)
+		this.id = chipId
+		
+		this.area = getChipArea(chipId)
+		this.cost = getChipCost(chipId)
+		this.effects = getChipEffects(chipId)
+		this.launchType = getChipLaunchType(chipId)
+		this.maxRange = getChipMaxRange(chipId)
+		this.minRange = getChipMinRange(chipId)
+		this.chipCoolDown = getChipCooldown(chipId)
+				
+		this.needLos = chipNeedLos(chipId)
+		
+		this.isChip = true
+	}
+}
+
+//include("../Fight/CastingResult");
+
+class Leek {
+	public integer id
+	public integer teamId
+	public LeekStats leekStats
+	public integer cell
+	public integer | null equippedWeaponId
+	
+	public string name
+	
+	public Array<MovementCell> movementCells = []
+	public Array<LeekWeapon> weapons = []
+	public Array<LeekChip> chips = []
+	
+	public Array<LeekWeapon> attackWeapons = []
+	public Array<LeekChip> attackChips = []
+	public Array<LeekCastable> attackCastables = []
+	
+	public Array<Array<integer>> effects = []
+	
+	public Map losCache = new Map()
+
+	constructor (integer id) {
+		this.id = id
+		this.teamId = getTeamID(id)
+		this.leekStats = new LeekStats(id)
+		this.cell = getCell(id)
+		this.equippedWeaponId = getWeapon(id)
+		this.effects = getEffects(id)
+		
+		this.name = getName(id)
+		
+		this.weapons = arrayMap(this.leekStats.weapons, function(weaponId) {
+			return new LeekWeapon(weaponId)
+		})
+		this.chips = arrayMap(this.leekStats.chips, function(chipId) {
+			return new LeekChip(chipId)
+		})
+		
+		this.getAttackChips()
+		this.getAttackWeapons()
+	}
+
+	public getNextTurnPoisonDamage() {
+		integer totalPoisonDamage = 0
+		
+		for (Array<integer> effect in this.effects) {
+			if (effect[0] == EFFECT_POISON) {
+				totalPoisonDamage += effect[1]
+			}
+		}
+		
+		return totalPoisonDamage
+	}
+
+	public getAttackChips() {
+		this.attackChips = arrayFilter(this.chips, function(LeekChip chip) {
+			return chip.isAttackCastable(this.id)
+		})
+
+		debug("attack chips: " + jsonEncode(this.attackChips))
+	}
+
+	public getAttackWeapons() {
+		this.attackWeapons = arrayFilter(this.weapons, function(LeekWeapon weapon) {
+			return weapon.isAttackCastable(this.id)
+		})
+	}
+
+	public sortAttackChips() {
+		this.attackChips = arraySort(this.attackChips, function(LeekChip chip1, LeekChip chip2) {
+			return chip2.potentialDamageMax - chip1.potentialDamageMax
+		})
+	}
+
+	public sortAttackWeapons() {
+		this.attackWeapons = arraySort(this.attackWeapons, function(LeekWeapon weapon1, LeekWeapon weapon2) {
+			return weapon2.potentialDamageMax - weapon1.potentialDamageMax
+		})
+	}
+
+	public sortAttackCastables() {
+		this.attackCastables = arrayConcat(this.attackChips, this.attackWeapons)
+		
+		this.attackCastables = arraySort(this.attackCastables, function(LeekCastable castable1, LeekCastable castable2) {
+			return castable2.potentialDamageMax - castable1.potentialDamageMax
+		})
+	}
+
+	public calculateMaxWeaponDamages(Leek enemyLeek) {
+		for (integer i = 0; i < count(this.attackWeapons); i++) {
+			this.attackWeapons[i].potentialDamage = this.attackWeapons[i].getPotentialDamage(this, enemyLeek)
+			this.attackWeapons[i].potentialDamageMax = this.attackWeapons[i].calculatePotentialMaxDamage(this)
+			
+			debug("[" + this.name + "] " + this.attackWeapons[i].name + " : " + this.attackWeapons[i].potentialDamageMax)
+		}
+	}
+
+	public calculateMaxChipDamages(Leek enemyLeek) {
+		for (integer i = 0; i < count(this.attackChips); i++) {
+			this.attackChips[i].potentialDamage = this.attackChips[i].getPotentialDamage(this, enemyLeek)
+			this.attackChips[i].potentialDamageMax = this.attackChips[i].calculatePotentialMaxDamage(this)
+			
+			debug("[" + this.name + "] " + this.attackChips[i].name + " : " + this.attackChips[i].potentialDamageMax)
+		}
+	}
+
+	public LeekWeapon | null getFinishingWeaponId(Leek enemyLeek) {
+		for (integer i = 0; i < count(this.attackWeapons); i++) {
+			if (this.attackWeapons[i].potentialDamageMax >= enemyLeek.leekStats.lifePoints) {
+				return this.attackWeapons[i]
+			}
+		}
+
+		return null
+	}
+
+	public getMovableCells(Array<MapContentCell> mapCells) {
+		this.movementCells = []
+		
+		for (MapContentCell cell in mapCells) {
+			if (!cell.isObstacle && (cell.entityId == -1 || cell.entityId == this.id)) {
+				integer cellDistance = getCellDistance(this.cell, cell.cell)
+				
+				if (cellDistance != -1 && cellDistance <= this.leekStats.mp) {
+					integer | null distanceToCell = getPathLength(this.cell, cell.cell)
+				
+					if (distanceToCell != null && distanceToCell <= this.leekStats.mp) {
+						push(this.movementCells, new MovementCell(cell.cell, distanceToCell))
+					}
+				}
+			}
+		}
+		
+		this.movementCells = arraySort(this.movementCells, function(cell1, cell2) {
+			return cell1.mpDistance - cell2.mpDistance
+		})
+	}
+
+	public boolean canKillEnemyLeek(Leek enemyLeek) {
+		// assume castables are already sorted by most maxPotentialDamage
+		if (count(this.attackCastables) > 0 && this.attackCastables[0].potentialDamageMax > enemyLeek.leekStats.lifePoints) {
+			debug("🚀 Can kill with " + this.attackCastables[0].name + " potentialDamageMax: " + this.attackCastables[0].potentialDamageMax + " enemyLifePoints: " + enemyLeek.leekStats.lifePoints)
+			return true
+		}
+		return false
+	}
+
+	public getBestRunAwayCell(Map<integer, real> damagePerCellDict, AttackingCell attackCell) {
+		integer remainingMp = this.leekStats.mp - attackCell.mpDistance
+		
+		Array<MovementCell> reachableMovementCells = arrayFilter(this.movementCells, function(MovementCell movementCell) {
+			return getPathLength(attackCell.reachableCell, movementCell.cell) <= remainingMp
+		})
+		
+		real leastDamage = 666666
+		integer lessDamageCell = 0
+		
+		for (MovementCell movementCell in reachableMovementCells) {
+			if (mapGet(damagePerCellDict, movementCell.cell) < leastDamage) {
+				leastDamage = mapGet(damagePerCellDict, movementCell.cell)
+				lessDamageCell = movementCell.cell
+			}
+		}
+		return new RunAwayCell(lessDamageCell, leastDamage)
+	}
+}
+
+
+function logOps(string debugStr) {
+    integer currentOps = getOperations()
+    integer maxOps = getMaxOperations()
+    integer spendOpsPercent = (currentOps / maxOps) * 100
+    debug("[" + debugStr + "] Total OPS: " + maxOps + " spent OPS: " + currentOps + " (" + spendOpsPercent + "%)")
+}
+
+class MapContext {
+	Array<MapContentCell> cells
+	Array<Leek> enemyLeeks
+	Array<Leek> monsters
+	Array<integer> allyLeekIds
+
+	constructor (integer myLeekId, integer myTeamId) {
+		getMapContent(myLeekId, myTeamId)
+	}
+
+	getMapContent(integer myLeekId, integer myTeamId) {
+		this.cells = []
+
+		for (var cell = 0; cell < 613; cell++) {
+			push(this.cells, new MapContentCell(cell, getCellContent(cell)))
+		}
+
+		Array<MapContentCell> cellsWithEnemyLeeks = arrayFilter(cells, function(MapContentCell mapContentCell) {
+			if (isEnemy(mapContentCell.entityId)) {
+				return mapContentCell.entityType == ENTITY_LEEK
+			}
+		})
+
+		Array<MapContentCell> cellsWithMonsters = arrayFilter(cells, function(MapContentCell mapContentCell) {
+			if (isEnemy(mapContentCell.entityId)) {
+				return mapContentCell.entityType == ENTITY_MOB
+			}
+		})
+
+		this.monsters = arrayMap(cellsWithMonsters, function(MapContentCell cell) {
+			return new Leek(cell.entityId)
+		})
+
+		this.enemyLeeks = arrayMap(cellsWithEnemyLeeks, function(MapContentCell cell) {
+			return new Leek(cell.entityId)
+		})
+
+		this.enemyLeeks = arrayConcat(this.monsters, this.enemyLeeks)
+
+		Array<MapContentCell> cellsWithAllyLeeks = arrayFilter(cells, function(MapContentCell mapContentCell) {
+			if (!isEnemy(mapContentCell.entityId)) {
+				return mapContentCell.entityType == ENTITY_LEEK
+			}
+		})
+
+		this.allyLeekIds = arrayMap(cellsWithAllyLeeks, function(MapContentCell cell) {
+			return cell.entityId
+		})
+	}
+
+	getClosestMonster(Leek currentLeek) {
+		integer closestDistance = 99999
+		Leek | null closestMonster = null
+
+		for (Leek monster in this.enemyLeeks) {
+			// ignore dead enemies
+			if (!isAlive(monster.id)) {
+				continue
+			}
+			integer dist = getCellDistance(currentLeek.cell, monster.cell)
+
+			if (dist < closestDistance) {
+				closestDistance = dist
+				closestMonster = monster
+			}
+		}
+		
+		return closestMonster
+	}
+}
+
+
+class GlobalContext {
+	public MapContext mapContext
+	public Leek myLeek
+
+	constructor () {
+		this.myLeek = new Leek(getEntity())
+		this.mapContext = new MapContext(
+			this.myLeek.id,
+			this.myLeek.teamId
+		)
+	}
+}
+
+clearMarks()
+
+GlobalContext context = new GlobalContext()
+
+Leek myLeek = context.myLeek
+Leek enemyLeek = Leek()
+
+if (count(context.mapContext.enemyLeeks) > 1) {
+	enemyLeek = context.mapContext.getClosestMonster(myLeek)
+} else {
+	enemyLeek = context.mapContext.enemyLeeks[0]
+}
+
+debug("Targetting enemy leek " + enemyLeek.id + " on cell " + enemyLeek.cell)
+
+debug("Enemy at distance: " + getCellDistance(enemyLeek.cell, myLeek.cell))
+
+myLeek.calculateMaxWeaponDamages(enemyLeek)
+myLeek.calculateMaxChipDamages(enemyLeek)
+myLeek.sortAttackCastables()
+
+for (Leek enemyEntity in context.mapContext.enemyLeeks) {
+	enemyEntity.calculateMaxWeaponDamages(myLeek)
+	enemyEntity.calculateMaxChipDamages(myLeek)
+	enemyEntity.sortAttackCastables()
+
+	debug("Enemy " + enemyEntity.id + " has " + count(enemyEntity.attackCastables) + " castables")
+}
+
+debug(count(context.mapContext.enemyLeeks) + " total enemies. Total available Ops: " + getMaxOperations())
+
+if (getTurn() == 1) {
+	useChip(CHIP_LEATHER_BOOTS)
+	myLeek.leekStats.mp = getMP()
+}
+
+boolean canKillEnemyLeek = myLeek.canKillEnemyLeek(enemyLeek)
+
+integer nextTurnPoisonDamage = myLeek.getNextTurnPoisonDamage()
+
+if (nextTurnPoisonDamage > 0) {
+	debug("🎶 nextTurnPoisonDamage: " + nextTurnPoisonDamage)
+	if (nextTurnPoisonDamage > 600) {
+		useChip(CHIP_ANTIDOTE)
+	}
+}
+
+if (!canKillEnemyLeek && (getLife() - nextTurnPoisonDamage) < getTotalLife() * 0.3 && getCooldown(CHIP_REGENERATION, myLeek.id) == 0) {
+	useChip(CHIP_REGENERATION)
+	myLeek.leekStats.lifePoints = getLife()
+}
+
+myLeek.leekStats.tp = getTP()
+
+myLeek.getMovableCells(context.mapContext.cells)
+
+integer bestWeaponId = -1
+
+for (integer i = 0; i < count(myLeek.attackCastables); i++) {
+	if (!myLeek.attackCastables[i].isChip) {
+		bestWeaponId = myLeek.attackCastables[i].id
+		break
+	}
+}
+
+if (myLeek.equippedWeaponId == null && bestWeaponId != -1 && getTurn() == 1) {
+	setWeapon(bestWeaponId)
+	myLeek.equippedWeaponId = bestWeaponId
+}
+
+mark(arrayMap(myLeek.movementCells, function(MovementCell movableCell) {
+	return movableCell.cell
+}), COLOR_GREEN)
+
+Map<integer, integer> damagePerCellDict = new Map()
+
+for (MovementCell myMovableCell in myLeek.movementCells) {
+	mapPut(damagePerCellDict, myMovableCell.cell, 0)
+	
+	for (Leek enemyEntity in context.mapContext.enemyLeeks) {
+		integer startTp = enemyEntity.leekStats.tp
+
+		real spentOps = getOperations() / getMaxOperations()
+
+		if (spentOps > 0.8) {
+			debug("[MovementCells] 1 spentOps > 0.8, stopping now, spentOps: " + spentOps)
+			break
+		}
+		enemyEntity.getMovableCells(context.mapContext.cells)
+
+		//debug("Compute damage for enemy: " + enemyEntity.id + " with " + count(enemyEntity.attackCastables) + " attacks")
+
+		for (LeekCastable castable in enemyEntity.attackCastables) {
+			integer startOps = getOperations()
+			
+			if (castable.potentialDamage == 0 ||
+				startTp <= castable.cost ||
+				(castable.isChip && getCooldown(castable.id, enemyEntity.id) != 0)) {
+
+				//debug("enemy: " + enemyEntity.id + " can't use " + castable.name)
+				continue
+			}
+			
+			myLeek.cell = myMovableCell.cell
+			
+			AttackingCell | null attackingCell = castable.getAttackingCell(enemyEntity, myLeek, context.mapContext.cells)
+			
+			if (attackingCell != null) {
+				startTp -= castable.cost
+				real totalDamage = castable.potentialDamage
+				
+				if ((castable.isChip && castable.chipCoolDown == 0) || !castable.isChip) {
+					while (startTp >= castable.cost) {
+						startTp -= castable.cost
+						totalDamage += castable.potentialDamage
+					}
+				}
+				
+				damagePerCellDict[myMovableCell.cell] += totalDamage
+			} else {
+				//debug("enemy: " + enemyEntity.id + " with " + count(enemyEntity.movementCells) + " movementCells can't reach " + myMovableCell.cell + " with " + castable.name + " (" + castable.id + ")")
+			}
+			
+			spentOps = getOperations() / getMaxOperations()
+			if (spentOps > 0.8) {
+				debug("[MovementCells] 1 spentOps > 0.8, stopping now, spentOps: " + spentOps)
+				break
+			}
+			//debug("Enemy castable: " + castable.name + " : " + (endOps - startOps))
+		}
+
+		spentOps = getOperations() / getMaxOperations()
+		if (spentOps > 0.8) {
+			debug("[MovementCells] 2 spentOps > 0.8, stopping now, spentOps: " + spentOps)
+			break
+		}
+	}
+
+	real spentOps = getOperations() / getMaxOperations()
+	if (spentOps > 0.8) {
+		debug("[MovementCells] 3 spentOps > 0.8, stopping now, spentOps: " + spentOps)
+		break
+	}
+}
+
+Array<integer> keys = mapKeys(damagePerCellDict)
+
+integer bestCoverCell = -1
+integer leastAttack = 666666
+integer mostAttack = -666666
+integer shortestDistanceToEnemy = 666666
+
+arrayMap(keys, function(cell) {
+	real damagePerCell = mapGet(damagePerCellDict, cell)
+	
+	markText(cell, damagePerCell as integer)
+	
+	if (damagePerCell > mostAttack) {
+		mostAttack = damagePerCell
+	}
+	if (damagePerCell < leastAttack) {
+		bestCoverCell = cell
+		leastAttack = damagePerCell
+	} else if (damagePerCell == leastAttack) {
+		integer | null distance = getPathLength(cell, enemyLeek.cell)
+		
+		// fallback when enemy cell is unreachable
+		if (distance == null) {
+			distance = getCellDistance(cell, enemyLeek.cell)
+		}
+		
+		if (distance != null && distance < shortestDistanceToEnemy) {
+			bestCoverCell = cell
+			leastAttack = damagePerCell
+			shortestDistanceToEnemy = distance
+		}
+	}
+	if (damagePerCell > 0) {
+		mark(cell, COLOR_RED)
+	}
+})
+
+myLeek.cell = getCell()
+
+for (LeekCastable castable in myLeek.attackCastables) {
+	if (castable.potentialDamage == 0 ||
+		getTP() <= castable.cost ||
+		(castable.isChip && getCooldown(castable.id, myLeek.id) != 0)) {
+		continue
+	}
+	
+	AttackingCell | null attackingCell = castable.getAttackingCell(myLeek, enemyLeek, context.mapContext.cells)
+	
+	if (attackingCell != null) {
+		debug("Can use " + castable.name + " from cell " + attackingCell.reachableCell + " on  cell " + attackingCell.targetCell)
+		if (myLeek.cell != attackingCell.reachableCell) {
+			moveTowardCell(attackingCell.reachableCell)
+			myLeek.cell = getCell()
+			myLeek.leekStats.mp = getMP()
+			myLeek.getMovableCells(context.mapContext.cells)
+		}
+		
+		if (!castable.isChip && myLeek.equippedWeaponId != castable.id) {
+			setWeapon(castable.id)
+			myLeek.equippedWeaponId = castable.id
+		}
+		
+		integer nbCast = getTP() / castable.cost
+		
+		while (nbCast > 0) {
+			myLeek.leekStats.tp = getTP()
+			
+			debug(castable.name + " : currentTp: " + myLeek.leekStats.tp)
+			
+			if (myLeek.leekStats.tp < castable.cost || (castable.isChip && getCooldown(castable.id, myLeek.id) != 0)) {
+				break
+			}
+			if (castable.isChip) {
+				useChipOnCell(castable.id, attackingCell.targetCell)
+			} else {
+				useWeaponOnCell(attackingCell.targetCell)
+			}
+			if (!isAlive(enemyLeek.id)) {
+				debug("Killed entity, break")
+				enemyLeek = context.mapContext.getClosestMonster(myLeek)
+				break
+			}
+			nbCast--
+		}
+	} else {
+		debug("Can't attack targetted entity with " + castable.name)
+	}
+	
+	real spentOps = getOperations() / getMaxOperations()
+	if (spentOps > 0.96) {
+		debug("spentOps > 0.96, stopping now, spentOps: " + spentOps)
+		break
+	}
+}
+
+debug("bestCoverCell: " + bestCoverCell + " leastAttack: " + leastAttack + " mostAttack: " + mostAttack + " shortestDistanceToEnemy: " + shortestDistanceToEnemy)
+
+if (mostAttack != leastAttack and getTurn() < 51) {
+	debug("Best Cover Cell: " + bestCoverCell)
+
+	if (mostAttack == -666666) {
+		moveToward(enemyLeek.id)
+	} else if (bestCoverCell != -1) {
+		moveTowardCell(bestCoverCell)
+	} else {
+		moveAwayFromCell(enemyLeek.cell)
+		moveAwayFrom(enemyLeek.id)
+	}
+}
+else {
+	debug("🌲🌲 mostAttack == leastAttack OR turn > 50 🌲🌲")
+	moveToward(enemyLeek.id)
+}
+
+Array<integer> healingChips = [
+	CHIP_DRIP,
+	CHIP_ARMORING,
+	CHIP_CURE,
+	CHIP_BANDAGE,
+	CHIP_REMISSION
+]
+
+if (getLife() < getTotalLife() * 0.8) {
+	for (integer healingChipId in healingChips) {
+		if (getCooldown(healingChipId, myLeek.id) == 0) {
+			if (healingChipId != CHIP_DRIP) {
+				useChip(healingChipId)
+			} else {
+				myLeek.cell = getCell()
+				useChipOnCell(healingChipId, myLeek.cell + 1)
+				if (getCooldown(healingChipId, myLeek.id) == 0) {
+					useChipOnCell(healingChipId, myLeek.cell - 1)
+				}
+			}
+		}
+	}
+}
+
+if (getTurn() > 1) {
+	debug("Can't use any weapon on enemy atm")
+
+	if (canUseChip(CHIP_SOLIDIFICATION, myLeek.id)) {
+		useChip(CHIP_SOLIDIFICATION)
+	}
+	if (canUseChip(CHIP_WALL, myLeek.id)) {
+		useChip(CHIP_WALL)
+	}
+	if (canUseChip(CHIP_SOLIDIFICATION, myLeek.id)) {
+		useChip(CHIP_SOLIDIFICATION)
+	}
+	if (canUseChip(CHIP_SHIELD, myLeek.id)) {
+		useChip(CHIP_SHIELD)
+	}
+	if (canUseChip(CHIP_HELMET, myLeek.id)) {
+		useChip(CHIP_HELMET)
+	}
+	if (canUseChip(CHIP_PROTEIN, myLeek.id)) {
+		useChip(CHIP_PROTEIN)
+	}
+	if (canUseChip(CHIP_ARMORING, myLeek.id)) {
+		useChip(CHIP_ARMORING)
+	}
+	if (canUseChip(CHIP_PRISM, myLeek.id)) {
+		useChip(CHIP_PRISM)
+	}
+	if (canUseChip(CHIP_MOTIVATION, myLeek.id)) {
+		useChip(CHIP_MOTIVATION)
+	}
+}
+
+integer nearestEnemy = getNearestEnemy()
+	
+integer fallbackChipId = -1;
+
+if (arraySome(myLeek.chips, function (LeekCastable chip) {
+	return chip.id == CHIP_SPARK
+})) {
+	fallbackChipId = CHIP_SPARK
+}
+
+if (arraySome(myLeek.chips, function (LeekCastable chip) {
+	return chip.id == CHIP_VENOM
+})) {
+	fallbackChipId = CHIP_VENOM
+}
+
+if (fallbackChipId != -1) {
+	for (var i = 0; i < 6; i++) {
+		if (getType(nearestEnemy) != ENTITY_CHEST) {
+			useChip(fallbackChipId, nearestEnemy)
+		}
+		nearestEnemy = getNearestEnemy()
+	}
+}
+
+if (myLeek.equippedWeaponId == WEAPON_SWORD) {
+	myLeek.cell = getCell()
+
+	nearestEnemy = getNearestEnemy()
+	integer nearestEnemyCell = getCell(nearestEnemy)
+	if (getCellDistance(nearestEnemyCell, myLeek.cell) == 1) {
+		useWeapon(nearestEnemy)
+	}
+	nearestEnemy = getNearestEnemy()
+	if (getCellDistance(nearestEnemyCell, myLeek.cell) == 1) {
+		useWeapon(nearestEnemy)
+	}
+
+	integer myLeekCellX = getCellX(myLeek.cell)
+	integer myLeekCellY = getCellY(myLeek.cell)
+
+	integer | null surroundingCell1 = getCellFromXY(myLeekCellX + 1, myLeekCellY)
+	integer | null surroundingCell2 = getCellFromXY(myLeekCellX - 1, myLeekCellY)
+	integer | null surroundingCell3 = getCellFromXY(myLeekCellX, myLeekCellY + 1)
+	integer | null surroundingCell4 = getCellFromXY(myLeekCellX, myLeekCellY - 1)
+
+	debug("surroundingCell1: " + surroundingCell1 + " surroundingCell2: " + surroundingCell2 + " surroundingCell3: " + surroundingCell3 + " surroundingCell4: " + surroundingCell4)
+
+	if (surroundingCell1 != null && canUseWeaponOnCell(surroundingCell1) && getEntityOnCell(surroundingCell1) == -1) {
+		useWeaponOnCell(surroundingCell1)
+		useWeaponOnCell(surroundingCell1)
+	}
+	if (surroundingCell2 != null && canUseWeaponOnCell(surroundingCell2) && getEntityOnCell(surroundingCell2) == -1) {
+		useWeaponOnCell(surroundingCell2)
+		useWeaponOnCell(surroundingCell2)
+	}
+	if (surroundingCell3 != null && canUseWeaponOnCell(surroundingCell3) && getEntityOnCell(surroundingCell3) == -1) {
+		useWeaponOnCell(surroundingCell3)
+		useWeaponOnCell(surroundingCell3)
+	}
+	if (surroundingCell4 != null && canUseWeaponOnCell(surroundingCell4) && getEntityOnCell(surroundingCell4) == -1) {
+		useWeaponOnCell(surroundingCell4)
+		useWeaponOnCell(surroundingCell4)
+	}
+}
+
+useChip(CHIP_LEATHER_BOOTS)
+
+/*
+if (getCellDistance(enemyLeek.cell, myLeek.cell) < 5) {
+	moveAwayFromCell(enemyLeek.cell)
+	moveAwayFrom(enemyLeek.id)
+} else {
+	moveTowardCell(enemyLeek.cell)
+	moveToward(enemyLeek.id)
+}
+*/
+
+debug("END OPS: " + getOperations() + " / " + OPERATIONS_LIMIT + " OPS")

@@ -1,0 +1,62 @@
+class LeekStats {
+	public integer absoluteShield
+	public integer agility
+	public Array<integer> chips
+	public integer damageReturn
+	public Array<Array<integer>> effects
+	public integer lifePoints
+	public integer magic
+	public integer mp
+	public Array<Array<integer>> passiveEffects
+	public integer power
+	public integer relativeShield
+	public integer resistance
+	public integer science
+	public integer summoner
+	
+	public integer strength
+	public integer tp
+	public integer type
+	
+	public integer | null equippedWeapon
+	public Array<integer> weapons
+	
+	public integer wisdom
+	
+	public boolean enemy
+	public boolean ally
+	public boolean summon
+
+	constructor (integer id) {
+		this.getStats(id)
+	}
+
+	getStats(integer id) {
+		this.absoluteShield = getAbsoluteShield(id)
+		this.agility = getAgility(id)
+		this.chips = getChips(id)
+		this.effects = getEffects(id)
+		this.damageReturn = getDamageReturn(id)
+		this.lifePoints = getLife(id)
+		this.magic = getMagic(id)
+		this.mp = getMP(id)
+		this.passiveEffects = getPassiveEffects(id)
+		this.power = getPower(id)
+		this.relativeShield = getRelativeShield(id)
+		this.resistance = getResistance(id)
+		this.science = getScience(id)
+		this.strength = getStrength(id)
+		this.summoner = getSummoner(id)
+		
+		this.tp = getTP(id)
+		this.type = getType(id)
+		this.equippedWeapon = getWeapon(id)
+		this.weapons = getWeapons(id)
+		
+		this.wisdom = getWisdom(id)
+		
+		this.enemy = isEnemy(id)
+		this.ally = isAlly(id)
+		this.summon = isSummon(id)
+	}
+}

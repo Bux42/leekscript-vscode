@@ -136,7 +136,7 @@ export class LeekScriptAnalyzer {
     return new Map(this.variableTypes);
   }
 
-  public analyze(): void {
+  public async analyze(): Promise<void> {
     // Clear previous results
     this.functions = [];
     this.classes = new Map();
@@ -150,37 +150,65 @@ export class LeekScriptAnalyzer {
     // Run comment extraction (for TODO counting)
     this.updateComments();
 
-    // Use the new TypeScript parser
+    // Use the new Compiler
     try {
-      const parser = new Parser(this.code, 2); // Version 2
-      const ast: Program = parser.parse();
+      const { Compiler } = await import("./compiler/Compiler");
+      const { AnalyzeErrorLevel } = await import("./compiler/ErrorSystem");
+      const { formatErrorMessage } = await import("./compiler/ErrorMessages");
 
-      // Extract information from AST
-      this.extractFromAST(ast);
+      // Create a mock Folder for resolving includes
+      const folder: any = {
+        path: "/",
+        getAIs: () => [],
+        resolve: (path: string) => {
+          // Try to find included file from workspace
+          // For now, return null (includes not yet supported in VSCode)
+          return null;
+        },
+      };
 
-      // Run semantic analysis
-      const semanticAnalyzer = new TSSemanticAnalyzer();
-      const result = semanticAnalyzer.analyze(ast);
+      // Create AIFile
+      const aiFile: any = {
+        id: 1,
+        path: this.name,
+        code: this.code,
+        version: 2, // LeekScript version 2
+        owner: 0,
+        folder: folder,
+        timestamp: Date.now(),
+        strict: false,
+        clearErrors: () => {},
+        setTokenStream: (tokens: any) => {},
+      };
 
-      // Convert semantic errors to problems
-      for (const error of result.errors) {
+      // Compile
+      const compiler = new Compiler();
+      const result = await compiler.analyze(aiFile, 2);
+
+      // Convert AnalyzeErrors to problems
+      for (const error of result.informations) {
+        const severity =
+          error.level === AnalyzeErrorLevel.ERROR
+            ? vscode.DiagnosticSeverity.Error
+            : error.level === AnalyzeErrorLevel.WARNING
+            ? vscode.DiagnosticSeverity.Warning
+            : vscode.DiagnosticSeverity.Information;
+
         this.problems.push({
-          line: error.line,
-          message: error.message,
-          severity: vscode.DiagnosticSeverity.Error,
+          line: error.location.startLine,
+          message: formatErrorMessage(error.errorType, error.parameters),
+          severity,
         });
-        this.errors++;
+
+        if (severity === vscode.DiagnosticSeverity.Error) {
+          this.errors++;
+        } else if (severity === vscode.DiagnosticSeverity.Warning) {
+          this.warnings++;
+        }
       }
 
-      // Convert semantic warnings to problems
-      for (const warning of result.warnings) {
-        this.problems.push({
-          line: warning.line,
-          message: warning.message,
-          severity: vscode.DiagnosticSeverity.Warning,
-        });
-        this.warnings++;
-      }
+      // Extract symbols from compiler for autocomplete
+      // TODO: Extract functions, classes, globals from SymbolTable
     } catch (error: any) {
       // Parse error - report it
       const errorMessage = error.message || "Parse error";

@@ -1,0 +1,29 @@
+class EntityClass {
+	public string name
+	constructor (integer entityId) {
+		this.name = getName(entityId)
+		debug("Entity : " + getName(entityId) + " instanciated")
+	}
+}
+
+integer enemy = getNearestEnemy();
+
+EntityClass enemyObj = EntityClass(enemy)
+EntityClass myObj = new EntityClass(getLeekID())
+
+if (count(getWeapons())) {
+	setWeapon(getWeapons()[0]);
+}
+
+moveToward(enemy);
+
+useWeapon(enemy);
+
+string name = getName()
+
+say("Hi my name is " + myObj.name)
+debug("Hi my name is " + myObj.name + " and I am attacking enemy with id: " + enemy)
+
+debug("His name is: " + enemyObj.name)
+
+integer nearestEnemyId = getNearestEnemy();
