@@ -26,8 +26,6 @@ Todo:
 - Run a custom version leek-wars-generator with the flag --start_code_server
   It will start a local web server to which the extension will send your .leek code files on all edit events, and tell you where the errors / warnings are in your code
 
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA READ THIS!!! => JUST PLUG VSCODE EXTENSION INTO LEEKWARS API YOU DUMMY STOP REINVENTING THE WHEEL
-
 ## How to use this project
 
 This project builds itself from the official leekwars project, you need to follow a few steps in order to do that
