@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 import { LeekWarsService } from "./services/leekwars";
+import { CodeAnalyzerService } from "./services/analyzer";
 
 // Load extracted data
 const functionsData = JSON.parse(
@@ -22,6 +23,12 @@ const DEBOUNCE_DELAY = 500;
 
 // Diagnostic collection for problems
 let diagnosticCollection: vscode.DiagnosticCollection;
+
+// Code Analyzer service (will be initialized in activate)
+let analyzerService: CodeAnalyzerService | null = null;
+
+// Map to store file path to AI ID mappings
+const fileToAIIdMap = new Map<string, number>();
 
 // Build a set of built-in function names for quick lookup
 const builtInFunctions = new Set<string>(functionsData.map((f: any) => f.name));
@@ -49,8 +56,82 @@ function getBuiltinFunctionTypeName(typeId: string): string {
   return builtinFunctionsTypeMap[typeId] || "any";
 }
 
+/**
+ * Get or create an AI ID for a given file path
+ */
+async function getOrCreateAIId(filePath: string): Promise<number | null> {
+  // Check if we already have an AI ID for this file
+  if (fileToAIIdMap.has(filePath)) {
+    return fileToAIIdMap.get(filePath)!;
+  }
+
+  if (!analyzerService) {
+    return null;
+  }
+
+  // Create a new AI file with the same name
+  const fileName = path.basename(filePath);
+  const ai = await analyzerService.createAI(0, fileName);
+
+  if (ai) {
+    fileToAIIdMap.set(filePath, ai.id);
+    console.log(`[LeekScript] Mapped ${fileName} to AI ID ${ai.id}`);
+    return ai.id;
+  }
+
+  return null;
+}
+
+/**
+ * Convert analysis errors to VSCode diagnostics
+ */
+function convertAnalysisErrorsToDiagnostics(
+  errors: import("./services/analyzer").AnalysisError[]
+): vscode.Diagnostic[] {
+  const diagnostics: vscode.Diagnostic[] = [];
+
+  for (const error of errors) {
+    const [
+      level,
+      aiId,
+      startLine,
+      startCol,
+      endLine,
+      endCol,
+      errorCode,
+      params,
+    ] = error;
+
+    // Convert to 0-based indexing (server uses 1-based)
+    const range = new vscode.Range(
+      Math.max(0, startLine - 1),
+      Math.max(0, startCol - 1),
+      Math.max(0, endLine - 1),
+      Math.max(0, endCol - 1)
+    );
+
+    const severity =
+      level === 0
+        ? vscode.DiagnosticSeverity.Error
+        : vscode.DiagnosticSeverity.Warning;
+
+    const message =
+      params.length > 0
+        ? `[${errorCode}] ${params.join(", ")}`
+        : `Error code: ${errorCode}`;
+
+    const diagnostic = new vscode.Diagnostic(range, message, severity);
+    diagnostic.source = "LeekScript Analyzer";
+    diagnostic.code = errorCode;
+
+    diagnostics.push(diagnostic);
+  }
+
+  return diagnostics;
+}
+
 // Analyze a LeekScript document
-function analyzeDocument(document: vscode.TextDocument): void {
+async function analyzeDocument(document: vscode.TextDocument): Promise<void> {
   if (
     document.languageId !== "leekscript" &&
     !document.fileName.endsWith(".leek")
@@ -60,6 +141,43 @@ function analyzeDocument(document: vscode.TextDocument): void {
 
   const code = document.getText();
   const name = path.basename(document.fileName);
+
+  // If analyzer service is not available or server is not running, skip analysis
+  if (!analyzerService || !analyzerService.getServerStatus()) {
+    return;
+  }
+
+  try {
+    // Get or create AI ID for this file
+    const aiId = await getOrCreateAIId(document.fileName);
+
+    if (!aiId) {
+      console.error(`[LeekScript] Failed to get AI ID for ${name}`);
+      return;
+    }
+
+    // Send code to analyzer and get results
+    const result = await analyzerService.saveAI(aiId, code);
+
+    if (result) {
+      const errors = result.result[aiId.toString()] || [];
+      const diagnostics = convertAnalysisErrorsToDiagnostics(errors);
+
+      // Update diagnostics for this document
+      diagnosticCollection.set(document.uri, diagnostics);
+
+      const errorCount = errors.filter((e) => e[0] === 0).length;
+      const warningCount = errors.filter((e) => e[0] === 1).length;
+
+      if (errorCount > 0 || warningCount > 0) {
+        console.log(
+          `[LeekScript] Analysis complete for ${name}: ${errorCount} errors, ${warningCount} warnings`
+        );
+      }
+    }
+  } catch (error) {
+    console.error(`[LeekScript] Analysis failed for ${name}:`, error);
+  }
 }
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -75,6 +193,19 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Check if token is configured on startup
   await leekWarsService.checkTokenAndNotify();
+
+  // Initialize Code Analyzer service
+  analyzerService = new CodeAnalyzerService(context);
+
+  // Check if analyzer server is running on startup
+  const isAnalyzerRunning = await analyzerService.checkServerStatus();
+  if (isAnalyzerRunning) {
+    console.log("[LeekScript] Code Analysis Server is running");
+  } else {
+    console.log(
+      "[LeekScript] Code Analysis Server is not running - real-time analysis disabled"
+    );
+  }
 
   // Register LeekWars commands
   context.subscriptions.push(
@@ -472,7 +603,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }
 
         // Analyze the document immediately
-        analyzeDocument(document);
+        await analyzeDocument(document);
 
         // Get relative path
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(
@@ -520,24 +651,26 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(deleteListener);
 
   // Analyze all currently open documents
-  vscode.workspace.textDocuments.forEach((document) => {
+  vscode.workspace.textDocuments.forEach(async (document) => {
     if (
       document.languageId === "leekscript" ||
       document.fileName.endsWith(".leek")
     ) {
-      analyzeDocument(document);
+      await analyzeDocument(document);
     }
   });
 
   // Register document open listener
-  const openListener = vscode.workspace.onDidOpenTextDocument((document) => {
-    if (
-      document.languageId === "leekscript" ||
-      document.fileName.endsWith(".leek")
-    ) {
-      analyzeDocument(document);
+  const openListener = vscode.workspace.onDidOpenTextDocument(
+    async (document) => {
+      if (
+        document.languageId === "leekscript" ||
+        document.fileName.endsWith(".leek")
+      ) {
+        await analyzeDocument(document);
+      }
     }
-  });
+  );
 
   context.subscriptions.push(openListener);
 
@@ -556,8 +689,8 @@ export async function activate(context: vscode.ExtensionContext) {
       }
 
       // Set new timer
-      const timer = setTimeout(() => {
-        analyzeDocument(document);
+      const timer = setTimeout(async () => {
+        await analyzeDocument(document);
         debounceTimers.delete(uri);
       }, DEBOUNCE_DELAY);
 
