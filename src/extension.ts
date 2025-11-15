@@ -27,7 +27,7 @@ let diagnosticCollection: vscode.DiagnosticCollection;
 const builtInFunctions = new Set<string>(functionsData.map((f: any) => f.name));
 
 // Type mappings
-const typeMap: { [key: string]: string } = {
+const builtinFunctionsTypeMap: { [key: string]: string } = {
   "-1": "any",
   "1": "number",
   "2": "string",
@@ -45,8 +45,8 @@ const typeMap: { [key: string]: string } = {
   "8": "map",
 };
 
-function getTypeName(typeId: string): string {
-  return typeMap[typeId] || "any";
+function getBuiltinFunctionTypeName(typeId: string): string {
+  return builtinFunctionsTypeMap[typeId] || "any";
 }
 
 // Analyze a LeekScript document
@@ -101,14 +101,18 @@ export function activate(context: vscode.ExtensionContext) {
           // Build function signature
           const params = func.arguments_names
             .map((name: string, index: number) => {
-              const type = getTypeName(func.arguments_types[index]);
+              const type = getBuiltinFunctionTypeName(
+                func.arguments_types[index]
+              );
               const isOptional = func.optional && func.optional[index] === true;
               const optionalMark = isOptional ? "?" : "";
               return `${name}${optionalMark}: ${type}`;
             })
             .join(", ");
 
-          const returnType = getTypeName(func.return_type.toString());
+          const returnType = getBuiltinFunctionTypeName(
+            func.return_type.toString()
+          );
           const returnName = func.return_name || "result";
           item.detail = `${func.name}(${params}): ${returnType} ${returnName}`;
 
@@ -132,7 +136,9 @@ export function activate(context: vscode.ExtensionContext) {
             const argDocKey = `func_${func.name}_arg_${index + 1}`;
             const argDoc = docData[argDocKey];
             if (argDoc) {
-              const argType = getTypeName(func.arguments_types[index]);
+              const argType = getBuiltinFunctionTypeName(
+                func.arguments_types[index]
+              );
               argDescriptions.push(`- **${argName}** (${argType}): ${argDoc}`);
             }
           });
@@ -320,14 +326,18 @@ export function activate(context: vscode.ExtensionContext) {
         // Build function signature
         const params = func.arguments_names
           .map((name: string, index: number) => {
-            const type = getTypeName(func.arguments_types[index]);
+            const type = getBuiltinFunctionTypeName(
+              func.arguments_types[index]
+            );
             const isOptional = func.optional && func.optional[index] === true;
             const optionalMark = isOptional ? "?" : "";
             return `${name}${optionalMark}: ${type}`;
           })
           .join(", ");
 
-        const returnType = getTypeName(func.return_type.toString());
+        const returnType = getBuiltinFunctionTypeName(
+          func.return_type.toString()
+        );
         const returnName = func.return_name || "result";
         const signature = `${func.name}(${params}): ${returnType} (${returnName})`;
 
@@ -351,7 +361,9 @@ export function activate(context: vscode.ExtensionContext) {
           const argDocKey = `func_${func.name}_arg_${index + 1}`;
           const argDoc = docData[argDocKey];
           if (argDoc) {
-            const argType = getTypeName(func.arguments_types[index]);
+            const argType = getBuiltinFunctionTypeName(
+              func.arguments_types[index]
+            );
             argDescriptions.push(`- **${argName}** (${argType}): ${argDoc}`);
           }
         });
