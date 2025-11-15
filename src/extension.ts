@@ -14,6 +14,9 @@ const constantsData = JSON.parse(
 const docData = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../extracted/doc.en.json"), "utf8")
 );
+const leekscriptConstants = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../extracted/leekscript_constants.json"), "utf8")
+);
 
 // Store debounce timers for each document
 const debounceTimers = new Map<string, NodeJS.Timeout>();
@@ -83,6 +86,17 @@ async function getOrCreateAIId(filePath: string): Promise<number | null> {
 }
 
 /**
+ * Format error message by replacing {0}, {1}, etc. with parameters
+ */
+function formatErrorMessage(template: string, params: string[]): string {
+  let message = template;
+  for (let i = 0; i < params.length; i++) {
+    message = message.replace(new RegExp(`\\{${i}\\}`, "g"), params[i]);
+  }
+  return message;
+}
+
+/**
  * Convert analysis errors to VSCode diagnostics
  */
 function convertAnalysisErrorsToDiagnostics(
@@ -115,10 +129,20 @@ function convertAnalysisErrorsToDiagnostics(
         ? vscode.DiagnosticSeverity.Error
         : vscode.DiagnosticSeverity.Warning;
 
-    const message =
-      params.length > 0
-        ? `[${errorCode}] ${params.join(", ")}`
-        : `Error code: ${errorCode}`;
+    // Get the error message template and format it with parameters
+    const errorKey = `error_${errorCode}`;
+    const errorTemplate = leekscriptConstants[errorKey];
+    let message: string;
+
+    if (errorTemplate) {
+      message = formatErrorMessage(errorTemplate, params);
+    } else {
+      // Fallback if error code is unknown
+      message =
+        params.length > 0
+          ? `[${errorCode}] ${params.join(", ")}`
+          : `Error code: ${errorCode}`;
+    }
 
     const diagnostic = new vscode.Diagnostic(range, message, severity);
     diagnostic.source = "LeekScript Analyzer";
