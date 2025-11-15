@@ -95,6 +95,40 @@ export class LeekWarsService {
   }
 
   /**
+   * Check if the API token is configured
+   * @returns true if token is configured, false otherwise
+   */
+  isTokenConfigured(): boolean {
+    return this.getToken() !== null;
+  }
+
+  /**
+   * Check if token is configured and show a warning notification if not
+   * @returns true if token is configured, false otherwise
+   */
+  async checkTokenAndNotify(): Promise<boolean> {
+    const hasToken = this.isTokenConfigured();
+
+    if (!hasToken) {
+      const configureButton = "Configure Token";
+      const result = await vscode.window.showWarningMessage(
+        "LeekWars API token is not configured. Remote requests will not work.",
+        configureButton
+      );
+
+      if (result === configureButton) {
+        // Open settings to the specific setting
+        await vscode.commands.executeCommand(
+          "workbench.action.openSettings",
+          "leekscript.leekwarsApiToken"
+        );
+      }
+    }
+
+    return hasToken;
+  }
+
+  /**
    * Get the API token from settings
    */
   private getToken(): string | null {

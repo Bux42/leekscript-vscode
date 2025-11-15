@@ -62,7 +62,7 @@ function analyzeDocument(document: vscode.TextDocument): void {
   const name = path.basename(document.fileName);
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   console.log("LeekScript extension is now active!");
 
   // Create diagnostic collection
@@ -72,6 +72,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Initialize LeekWars service
   const leekWarsService = new LeekWarsService(context);
+
+  // Check if token is configured on startup
+  await leekWarsService.checkTokenAndNotify();
 
   // Register LeekWars commands
   context.subscriptions.push(
