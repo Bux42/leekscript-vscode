@@ -386,20 +386,20 @@ curl http://localhost:8080/api/ai/list?folder_id=5
 
 ### POST `/api/ai-folder/new-name`
 
-Create a new folder.
+Create a new folder with an auto-generated ID.
 
 **Request Body**:
 
 ```json
 {
-  "folder_id": 0,
+  "parent_folder_id": 0,
   "name": "MyFolder"
 }
 ```
 
 **Parameters**:
 
-- `folder_id` (integer): Parent folder ID (0 for root)
+- `parent_folder_id` (integer): Parent folder ID (0 for root)
 - `name` (string): Name of the new folder
 
 **Response** (200 OK):
@@ -415,7 +415,45 @@ Create a new folder.
 ```bash
 curl -X POST http://localhost:8080/api/ai-folder/new-name \
   -H "Content-Type: application/json" \
-  -d '{"folder_id":0,"name":"MyFolder"}'
+  -d '{"parent_folder_id":0,"name":"MyFolder"}'
+```
+
+---
+
+### POST `/api/ai-folder/new-name-with-id`
+
+Create a new folder with a user-specified ID.
+
+**Request Body**:
+
+```json
+{
+  "folder_id": 9999,
+  "parent_folder_id": 0,
+  "name": "CustomFolder"
+}
+```
+
+**Parameters**:
+
+- `folder_id` (integer): The ID to assign to the new folder
+- `parent_folder_id` (integer): Parent folder ID (0 for root)
+- `name` (string): Name of the new folder
+
+**Response** (200 OK):
+
+```json
+{
+  "id": 9999
+}
+```
+
+**Example**:
+
+```bash
+curl -X POST http://localhost:8080/api/ai-folder/new-name-with-id \
+  -H "Content-Type: application/json" \
+  -d '{"folder_id":9999,"parent_folder_id":0,"name":"CustomFolder"}'
 ```
 
 ---
