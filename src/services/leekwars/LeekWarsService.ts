@@ -13,8 +13,86 @@ import {
 export class LeekWarsService {
   private apiService: LeekWarsApiService | null = null;
   private lastResponse: GetFarmerAIsResponse | null = null;
+  private static readonly STORAGE_KEY = "leekwars.farmerAIsResponse";
 
-  constructor(private context: vscode.ExtensionContext) {}
+  constructor(private context: vscode.ExtensionContext) {
+    // Load cached response on initialization
+    this.loadFarmerAIsResponse();
+  }
+
+  /**
+   * Store the GetFarmerAIsResponse object to persist across sessions
+   */
+  async storeFarmerAIsResponse(response: GetFarmerAIsResponse): Promise<void> {
+    try {
+      this.lastResponse = response;
+      await this.context.globalState.update(
+        LeekWarsService.STORAGE_KEY,
+        response
+      );
+      console.log(
+        "[LeekWars Service] Stored farmer AIs response to persistent storage"
+      );
+    } catch (error) {
+      console.error(
+        "[LeekWars Service] Failed to store farmer AIs response:",
+        error
+      );
+      vscode.window.showErrorMessage(
+        `Failed to store AI data: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    }
+  }
+
+  /**
+   * Load the GetFarmerAIsResponse object from persistent storage
+   */
+  private loadFarmerAIsResponse(): void {
+    try {
+      const stored = this.context.globalState.get<GetFarmerAIsResponse>(
+        LeekWarsService.STORAGE_KEY
+      );
+      if (stored) {
+        this.lastResponse = stored;
+        console.log(
+          "[LeekWars Service] Loaded farmer AIs response from persistent storage"
+        );
+      }
+    } catch (error) {
+      console.error(
+        "[LeekWars Service] Failed to load farmer AIs response:",
+        error
+      );
+    }
+  }
+
+  /**
+   * Get the currently stored GetFarmerAIsResponse object
+   */
+  getStoredFarmerAIsResponse(): GetFarmerAIsResponse | null {
+    return this.lastResponse;
+  }
+
+  /**
+   * Clear the stored GetFarmerAIsResponse object
+   */
+  async clearStoredFarmerAIsResponse(): Promise<void> {
+    try {
+      this.lastResponse = null;
+      await this.context.globalState.update(
+        LeekWarsService.STORAGE_KEY,
+        undefined
+      );
+      console.log("[LeekWars Service] Cleared stored farmer AIs response");
+    } catch (error) {
+      console.error(
+        "[LeekWars Service] Failed to clear farmer AIs response:",
+        error
+      );
+    }
+  }
 
   /**
    * Get the API token from settings
@@ -75,8 +153,8 @@ export class LeekWarsService {
             );
           }
 
-          // Store the response for later use
-          this.lastResponse = response;
+          // Store the response for later use and persist it
+          await this.storeFarmerAIsResponse(response);
 
           const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
 
