@@ -3,6 +3,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { LeekWarsService } from "./services/leekwars";
 import { CodeAnalyzerService } from "./services/analyzer";
+import { StatusBarService } from "./services/StatusBarService";
 
 // Load extracted data
 const functionsData = JSON.parse(
@@ -29,6 +30,9 @@ let diagnosticCollection: vscode.DiagnosticCollection;
 
 // Code Analyzer service (will be initialized in activate)
 let analyzerService: CodeAnalyzerService | null = null;
+
+// Status Bar service (will be initialized in activate)
+let statusBarService: StatusBarService | null = null;
 
 // Map to store file path to AI ID mappings
 const fileToAIIdMap = new Map<string, number>();
@@ -212,17 +216,27 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.languages.createDiagnosticCollection("leekscript");
   context.subscriptions.push(diagnosticCollection);
 
+  // Initialize Status Bar service
+  statusBarService = new StatusBarService(context);
+
   // Initialize LeekWars service
   const leekWarsService = new LeekWarsService(context);
 
   // Check if token is configured on startup
-  await leekWarsService.checkTokenAndNotify();
+  const isTokenConfigured = leekWarsService.isTokenConfigured();
+  statusBarService.setTokenStatus(isTokenConfigured);
+  
+  if (!isTokenConfigured) {
+    await leekWarsService.checkTokenAndNotify();
+  }
 
   // Initialize Code Analyzer service
   analyzerService = new CodeAnalyzerService(context);
 
   // Check if analyzer server is running on startup
   const isAnalyzerRunning = await analyzerService.checkServerStatus();
+  statusBarService.setAnalyzerServerStatus(isAnalyzerRunning);
+  
   if (isAnalyzerRunning) {
     console.log("[LeekScript] Code Analysis Server is running");
   } else {
@@ -234,7 +248,48 @@ export async function activate(context: vscode.ExtensionContext) {
   // Register LeekWars commands
   context.subscriptions.push(
     vscode.commands.registerCommand("leekscript.pullAllAIs", async () => {
-      await leekWarsService.pullAllAIs();
+      if (statusBarService) {
+        statusBarService.setBusy(true, "Pulling AIs...");
+      }
+      try {
+        await leekWarsService.pullAllAIs();
+      } finally {
+        if (statusBarService) {
+          statusBarService.setBusy(false);
+        }
+      }
+    })
+  );
+
+  // Register status bar commands
+  context.subscriptions.push(
+    vscode.commands.registerCommand("leekscript.showStatusMenu", async () => {
+      if (statusBarService) {
+        await statusBarService.showStatusMenu();
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("leekscript.refreshStatus", async () => {
+      if (!statusBarService || !analyzerService) {
+        return;
+      }
+
+      // Re-check token status
+      const tokenConfigured = leekWarsService.isTokenConfigured();
+      statusBarService.setTokenStatus(tokenConfigured);
+
+      // Re-check analyzer server status
+      statusBarService.setBusy(true, "Checking status...");
+      const serverRunning = await analyzerService.checkServerStatus();
+      statusBarService.setAnalyzerServerStatus(serverRunning);
+      statusBarService.setBusy(false);
+
+      const message = serverRunning && tokenConfigured
+        ? "All systems operational"
+        : "Some features unavailable - check status menu for details";
+      vscode.window.showInformationMessage(`LeekScript: ${message}`);
     })
   );
 
