@@ -223,7 +223,7 @@ export class LeekWarsService {
 
             // Add delay to avoid rate limiting (except for the first request)
             if (i > 0) {
-              await new Promise((resolve) => setTimeout(resolve, 500));
+              await new Promise((resolve) => setTimeout(resolve, 300));
             }
 
             // Get the AI code
