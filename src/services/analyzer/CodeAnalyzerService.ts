@@ -198,14 +198,36 @@ export class CodeAnalyzerService {
    */
   async notifyIfServerNotRunning(): Promise<boolean> {
     const isRunning = await this.checkServerStatus();
-    
+
     if (!isRunning) {
       vscode.window.showWarningMessage(
         "LeekScript Code Analysis Server is not running. Please start the server to use code analysis features."
       );
     }
-    
+
     return isRunning;
+  }
+
+  // ==================== System Operations ====================
+
+  /**
+   * Reset the entire system to its initial state
+   * WARNING: This operation is destructive and cannot be undone.
+   * Clears all AI files, folders, persisted data, and resets the owner ID to 0.
+   */
+  async resetSystem(): Promise<boolean> {
+    try {
+      const response = await this.request<{ message: string }>(
+        "POST",
+        "/api/reset",
+        {}
+      );
+      console.log(`[CodeAnalyzer] System reset: ${response.message}`);
+      return true;
+    } catch (error) {
+      this.handleError("Failed to reset system", error);
+      return false;
+    }
   }
 
   // ==================== Owner Management ====================
@@ -228,7 +250,10 @@ export class CodeAnalyzerService {
    */
   async getOwnerId(): Promise<number | null> {
     try {
-      const response = await this.request<OwnerIdResponse>("GET", "/api/owner/get-id");
+      const response = await this.request<OwnerIdResponse>(
+        "GET",
+        "/api/owner/get-id"
+      );
       return response.owner_id;
     } catch (error) {
       this.handleError("Failed to get owner ID", error);
@@ -241,13 +266,21 @@ export class CodeAnalyzerService {
   /**
    * Create a new AI file with default code
    */
-  async createAI(folderId: number, name: string, version: number = 4): Promise<AIFile | null> {
+  async createAI(
+    folderId: number,
+    name: string,
+    version: number = 4
+  ): Promise<AIFile | null> {
     try {
-      const response = await this.request<NewAIResponse>("POST", "/api/ai/new-name", {
-        folder_id: folderId,
-        version,
-        name,
-      });
+      const response = await this.request<NewAIResponse>(
+        "POST",
+        "/api/ai/new-name",
+        {
+          folder_id: folderId,
+          version,
+          name,
+        }
+      );
       console.log(`[CodeAnalyzer] Created AI: ${name} (ID: ${response.ai.id})`);
       return response.ai;
     } catch (error) {
@@ -261,16 +294,22 @@ export class CodeAnalyzerService {
    */
   async saveAI(aiId: number, code: string): Promise<SaveAIResponse | null> {
     try {
-      const response = await this.request<SaveAIResponse>("POST", "/api/ai/save", {
-        ai_id: aiId,
-        code,
-      });
-      
+      const response = await this.request<SaveAIResponse>(
+        "POST",
+        "/api/ai/save",
+        {
+          ai_id: aiId,
+          code,
+        }
+      );
+
       const errors = response.result[aiId.toString()];
-      const errorCount = errors.filter(e => e[0] === 0).length;
-      const warningCount = errors.filter(e => e[0] === 1).length;
-      
-      console.log(`[CodeAnalyzer] Saved AI ${aiId}: ${errorCount} errors, ${warningCount} warnings`);
+      const errorCount = errors.filter((e) => e[0] === 0).length;
+      const warningCount = errors.filter((e) => e[0] === 1).length;
+
+      console.log(
+        `[CodeAnalyzer] Saved AI ${aiId}: ${errorCount} errors, ${warningCount} warnings`
+      );
       return response;
     } catch (error) {
       this.handleError(`Failed to save AI ${aiId}`, error);
@@ -331,7 +370,10 @@ export class CodeAnalyzerService {
    */
   async getAI(aiId: number): Promise<AIFile | null> {
     try {
-      const response = await this.request<AIFile>("GET", `/api/ai/get?ai_id=${aiId}`);
+      const response = await this.request<AIFile>(
+        "GET",
+        `/api/ai/get?ai_id=${aiId}`
+      );
       return response;
     } catch (error) {
       this.handleError(`Failed to get AI ${aiId}`, error);
@@ -344,9 +386,10 @@ export class CodeAnalyzerService {
    */
   async listAIs(folderId?: number): Promise<AIFile[]> {
     try {
-      const path = folderId !== undefined 
-        ? `/api/ai/list?folder_id=${folderId}` 
-        : "/api/ai/list";
+      const path =
+        folderId !== undefined
+          ? `/api/ai/list?folder_id=${folderId}`
+          : "/api/ai/list";
       const response = await this.request<ListAIsResponse>("GET", path);
       return response.ais;
     } catch (error) {
@@ -360,13 +403,22 @@ export class CodeAnalyzerService {
   /**
    * Create a new folder with an auto-generated ID
    */
-  async createFolder(parentFolderId: number, name: string): Promise<number | null> {
+  async createFolder(
+    parentFolderId: number,
+    name: string
+  ): Promise<number | null> {
     try {
-      const response = await this.request<NewFolderResponse>("POST", "/api/ai-folder/new-name", {
-        parent_folder_id: parentFolderId,
-        name,
-      });
-      console.log(`[CodeAnalyzer] Created folder: ${name} (ID: ${response.id})`);
+      const response = await this.request<NewFolderResponse>(
+        "POST",
+        "/api/ai-folder/new-name",
+        {
+          parent_folder_id: parentFolderId,
+          name,
+        }
+      );
+      console.log(
+        `[CodeAnalyzer] Created folder: ${name} (ID: ${response.id})`
+      );
       return response.id;
     } catch (error) {
       this.handleError(`Failed to create folder: ${name}`, error);
@@ -377,14 +429,24 @@ export class CodeAnalyzerService {
   /**
    * Create a new folder with a user-specified ID
    */
-  async createFolderWithId(folderId: number, parentFolderId: number, name: string): Promise<number | null> {
+  async createFolderWithId(
+    folderId: number,
+    parentFolderId: number,
+    name: string
+  ): Promise<number | null> {
     try {
-      const response = await this.request<NewFolderResponse>("POST", "/api/ai-folder/new-name-with-id", {
-        folder_id: folderId,
-        parent_folder_id: parentFolderId,
-        name,
-      });
-      console.log(`[CodeAnalyzer] Created folder with ID: ${name} (ID: ${response.id})`);
+      const response = await this.request<NewFolderResponse>(
+        "POST",
+        "/api/ai-folder/new-name-with-id",
+        {
+          folder_id: folderId,
+          parent_folder_id: parentFolderId,
+          name,
+        }
+      );
+      console.log(
+        `[CodeAnalyzer] Created folder with ID: ${name} (ID: ${response.id})`
+      );
       return response.id;
     } catch (error) {
       this.handleError(`Failed to create folder with ID: ${name}`, error);
@@ -414,7 +476,9 @@ export class CodeAnalyzerService {
    */
   async deleteFolder(folderId: number): Promise<boolean> {
     try {
-      await this.request("DELETE", "/api/ai-folder/delete", { folder_id: folderId });
+      await this.request("DELETE", "/api/ai-folder/delete", {
+        folder_id: folderId,
+      });
       console.log(`[CodeAnalyzer] Deleted folder ${folderId} and its contents`);
       return true;
     } catch (error) {
@@ -426,13 +490,18 @@ export class CodeAnalyzerService {
   /**
    * Move a folder to a different parent folder
    */
-  async changeFolderParent(folderId: number, destFolderId: number): Promise<boolean> {
+  async changeFolderParent(
+    folderId: number,
+    destFolderId: number
+  ): Promise<boolean> {
     try {
       await this.request("POST", "/api/ai-folder/change-folder", {
         folder_id: folderId,
         dest_folder_id: destFolderId,
       });
-      console.log(`[CodeAnalyzer] Moved folder ${folderId} to folder ${destFolderId}`);
+      console.log(
+        `[CodeAnalyzer] Moved folder ${folderId} to folder ${destFolderId}`
+      );
       return true;
     } catch (error) {
       this.handleError(`Failed to move folder ${folderId}`, error);
@@ -445,7 +514,10 @@ export class CodeAnalyzerService {
    */
   async getFolder(folderId: number): Promise<Folder | null> {
     try {
-      const response = await this.request<Folder>("GET", `/api/ai-folder/get?folder_id=${folderId}`);
+      const response = await this.request<Folder>(
+        "GET",
+        `/api/ai-folder/get?folder_id=${folderId}`
+      );
       return response;
     } catch (error) {
       this.handleError(`Failed to get folder ${folderId}`, error);
@@ -458,7 +530,10 @@ export class CodeAnalyzerService {
    */
   async listFolders(): Promise<Folder[]> {
     try {
-      const response = await this.request<ListFoldersResponse>("GET", "/api/ai-folder/list");
+      const response = await this.request<ListFoldersResponse>(
+        "GET",
+        "/api/ai-folder/list"
+      );
       return response.folders;
     } catch (error) {
       this.handleError("Failed to list folders", error);
@@ -487,32 +562,28 @@ export class CodeAnalyzerService {
       } else if (error.statusCode) {
         const statusCode = error.statusCode;
         const errorData = error.message;
-        
+
         if (statusCode === 404) {
           vscode.window.showErrorMessage(
             `${message}: Resource not found - ${errorData}`
           );
         } else if (statusCode === 405) {
-          vscode.window.showErrorMessage(
-            `${message}: Invalid HTTP method`
-          );
+          vscode.window.showErrorMessage(`${message}: Invalid HTTP method`);
         } else {
           vscode.window.showErrorMessage(
             `${message}: ${errorData || "Unknown error"}`
           );
         }
       } else if (error.message) {
-        vscode.window.showErrorMessage(
-          `${message}: ${error.message}`
-        );
+        vscode.window.showErrorMessage(`${message}: ${error.message}`);
       } else {
-        vscode.window.showErrorMessage(
-          `${message}: Unknown error`
-        );
+        vscode.window.showErrorMessage(`${message}: Unknown error`);
       }
     } else {
       vscode.window.showErrorMessage(
-        `${message}: ${error instanceof Error ? error.message : "Unknown error"}`
+        `${message}: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
       );
     }
   }
