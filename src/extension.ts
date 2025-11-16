@@ -16,7 +16,10 @@ const docData = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../extracted/doc.en.json"), "utf8")
 );
 const leekscriptConstants = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "../extracted/leekscript_constants.json"), "utf8")
+  fs.readFileSync(
+    path.join(__dirname, "../extracted/leekscript_constants.json"),
+    "utf8"
+  )
 );
 
 // Store debounce timers for each document
@@ -211,6 +214,12 @@ async function analyzeDocument(document: vscode.TextDocument): Promise<void> {
 export async function activate(context: vscode.ExtensionContext) {
   console.log("LeekScript extension is now active!");
 
+  // print globalstate leekwars.farmerAIsResponse for debugging
+  const farmerAIsResponse = context.globalState.get(
+    "leekwars.farmerAIsResponse"
+  );
+  console.log("LeekWars Farmer AIs Response:", farmerAIsResponse);
+
   // Create diagnostic collection
   diagnosticCollection =
     vscode.languages.createDiagnosticCollection("leekscript");
@@ -225,7 +234,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // Check if token is configured on startup
   const isTokenConfigured = leekWarsService.isTokenConfigured();
   statusBarService.setTokenStatus(isTokenConfigured);
-  
+
   if (!isTokenConfigured) {
     await leekWarsService.checkTokenAndNotify();
   }
@@ -236,7 +245,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // Check if analyzer server is running on startup
   const isAnalyzerRunning = await analyzerService.checkServerStatus();
   statusBarService.setAnalyzerServerStatus(isAnalyzerRunning);
-  
+
   if (isAnalyzerRunning) {
     console.log("[LeekScript] Code Analysis Server is running");
   } else {
@@ -286,9 +295,10 @@ export async function activate(context: vscode.ExtensionContext) {
       statusBarService.setAnalyzerServerStatus(serverRunning);
       statusBarService.setBusy(false);
 
-      const message = serverRunning && tokenConfigured
-        ? "All systems operational"
-        : "Some features unavailable - check status menu for details";
+      const message =
+        serverRunning && tokenConfigured
+          ? "All systems operational"
+          : "Some features unavailable - check status menu for details";
       vscode.window.showInformationMessage(`LeekScript: ${message}`);
     })
   );

@@ -15,11 +15,12 @@ The LeekScript Code Analysis Server is an HTTP server that maintains a local rep
 
 1. [Server Status](#server-status)
 2. [Owner Management](#owner-management)
-3. [AI File Operations](#ai-file-operations)
-4. [Folder Operations](#folder-operations)
-5. [Error Handling](#error-handling)
-6. [Data Structures](#data-structures)
-7. [Persistence](#persistence)
+3. [System Operations](#system-operations)
+4. [AI File Operations](#ai-file-operations)
+5. [Folder Operations](#folder-operations)
+6. [Error Handling](#error-handling)
+7. [Data Structures](#data-structures)
+8. [Persistence](#persistence)
 
 ---
 
@@ -84,6 +85,47 @@ Retrieve the current owner ID.
 ```bash
 curl http://localhost:8080/api/owner/get-id
 ```
+
+---
+
+## System Operations
+
+### POST `/api/reset`
+
+Reset the entire system to its initial state. This clears all AI files, folders, persisted data, and resets the owner ID to 0.
+
+**Warning**: This operation is destructive and cannot be undone. All data will be permanently deleted.
+
+**Request Body**:
+
+```json
+{}
+```
+
+**Response** (200 OK):
+
+```json
+{
+  "message": "System reset successfully"
+}
+```
+
+**Example**:
+
+```bash
+curl -X POST http://localhost:8080/api/reset \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+**Effects**:
+
+- Clears all AI files from memory and disk
+- Removes all folders (except root folder)
+- Deletes all persisted state from `extension_server_ais/` directory
+- Resets owner ID to 0
+- Resets AI ID counter to 1000000
+- Reinitializes storage structure
 
 ---
 
