@@ -263,6 +263,9 @@ export class LeekWarsService {
 
           // Sync with CodeBaseStateManager if available
           if (this.codebaseStateManager) {
+            progress.report({ message: "Resetting codebase state..." });
+            await this.codebaseStateManager.clearState();
+
             progress.report({ message: "Updating codebase state..." });
             await this.codebaseStateManager.syncFromLeekWars(
               response.ais,
