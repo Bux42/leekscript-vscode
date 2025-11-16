@@ -6,6 +6,7 @@ import {
   LeekWarsAIInfo,
   GetFarmerAIsResponse,
 } from "./LeekWarsApi";
+import { CodeBaseStateManager } from "../codebase";
 
 /**
  * Service for managing LeekWars AI synchronization
@@ -14,10 +15,18 @@ export class LeekWarsService {
   private apiService: LeekWarsApiService | null = null;
   private lastResponse: GetFarmerAIsResponse | null = null;
   private static readonly STORAGE_KEY = "leekwars.farmerAIsResponse";
+  private codebaseStateManager: CodeBaseStateManager | null = null;
 
   constructor(private context: vscode.ExtensionContext) {
     // Load cached response on initialization
     this.loadFarmerAIsResponse();
+  }
+
+  /**
+   * Set the codebase state manager
+   */
+  setCodeBaseStateManager(manager: CodeBaseStateManager): void {
+    this.codebaseStateManager = manager;
   }
 
   /**
@@ -196,7 +205,8 @@ export class LeekWarsService {
             throw new Error("No workspace folder open");
           }
 
-          const leekwarsDir = path.join(workspaceFolder.uri.fsPath, "leekwars");
+          const workspaceRoot = workspaceFolder.uri.fsPath;
+          const leekwarsDir = path.join(workspaceRoot, "leekwars");
 
           // Create leekwars root directory if it doesn't exist
           if (!fs.existsSync(leekwarsDir)) {
@@ -249,6 +259,17 @@ export class LeekWarsService {
 
             fs.writeFileSync(aiFilePath, ai.code, "utf8");
             console.log(`[LeekWars Service] Created AI file: ${aiFilePath}`);
+          }
+
+          // Sync with CodeBaseStateManager if available
+          if (this.codebaseStateManager) {
+            progress.report({ message: "Updating codebase state..." });
+            await this.codebaseStateManager.syncFromLeekWars(
+              response.ais,
+              response.folders,
+              workspaceRoot,
+              leekwarsDir
+            );
           }
 
           vscode.window.showInformationMessage(

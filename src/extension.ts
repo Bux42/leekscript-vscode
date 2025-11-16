@@ -3,6 +3,7 @@ import { LeekWarsService } from "./services/leekwars";
 import { CodeAnalyzerService } from "./services/analyzer";
 import { StatusBarService } from "./services/StatusBarService";
 import { DiagnosticService } from "./services/DiagnosticService";
+import { CodeBaseStateManager } from "./services/codebase";
 import { DataLoader } from "./utils/DataLoader";
 import { CommandRegistry } from "./utils/CommandRegistry";
 import { DocumentEventHandler } from "./utils/DocumentEventHandler";
@@ -15,6 +16,7 @@ import {
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
+let codebaseStateManager: CodeBaseStateManager | null = null;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("LeekScript extension is now active!");
@@ -28,10 +30,18 @@ export async function activate(context: vscode.ExtensionContext) {
   // Initialize Data Loader
   const dataLoader = DataLoader.getInstance(context.extensionPath);
 
+  // Initialize CodeBase State Manager
+  codebaseStateManager = new CodeBaseStateManager(context);
+
+  console.log("codebaseStateManager initialized.", codebaseStateManager);
+
   // Initialize services
   const statusBarService = new StatusBarService(context);
   const leekWarsService = new LeekWarsService(context);
   const analyzerService = new CodeAnalyzerService(context);
+
+  // Link services with codebase state manager
+  leekWarsService.setCodeBaseStateManager(codebaseStateManager);
 
   // Create diagnostic collection and service
   const diagnosticCollection =
