@@ -100,6 +100,8 @@ export class DiagnosticService {
       const errorTemplate = leekscriptConstants[errorKey];
       let message: string;
 
+      console.log("error: ", error, errorTemplate, params);
+
       if (errorTemplate) {
         message = this.formatErrorMessage(errorTemplate, params);
       } else {

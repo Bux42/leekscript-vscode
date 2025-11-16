@@ -17,6 +17,7 @@ import {
   SyncStatus,
 } from "./CodeBaseState";
 import { LeekWarsAIInfo } from "../leekwars/LeekWarsApi";
+import { CodeAnalyzerService } from "../analyzer/CodeAnalyzerService";
 
 /**
  * Service for managing the complete codebase state
@@ -24,9 +25,17 @@ import { LeekWarsAIInfo } from "../leekwars/LeekWarsApi";
 export class CodeBaseStateManager {
   private state: CodeBaseState;
   private static readonly STORAGE_KEY = "codebase.state";
+  private codeAnalyzerService: CodeAnalyzerService | null = null;
 
   constructor(private context: vscode.ExtensionContext) {
     this.state = this.loadState();
+  }
+
+  /**
+   * Set the CodeAnalyzerService instance
+   */
+  setCodeAnalyzerService(service: CodeAnalyzerService): void {
+    this.codeAnalyzerService = service;
   }
 
   /**
@@ -142,6 +151,7 @@ export class CodeBaseStateManager {
       size: stats.size,
       lastModified: stats.mtimeMs,
       contentHash: hash,
+      code: content,
     };
 
     const existingFile = this.state.files.get(absolutePath);
@@ -457,6 +467,7 @@ export class CodeBaseStateManager {
           size: stats.size,
           lastModified: stats.mtimeMs,
           contentHash: hash,
+          code: content,
         };
 
         if (existingFile) {
@@ -614,5 +625,164 @@ export class CodeBaseStateManager {
       lastFullSync: this.state.lastFullSync,
       ownerId: this.state.ownerId,
     };
+  }
+
+  // ==================== Force Sync Operations ====================
+
+  /**
+   * Force sync the CodeAnalyzer server with the current state
+   * WARNING: This will reset the entire analyzer server and rebuild it from scratch
+   * using the LeekWars IDs stored in the state.
+   */
+  async forceSyncToAnalyzer(): Promise<{
+    success: boolean;
+    foldersCreated: number;
+    filesCreated: number;
+    errors: string[];
+  }> {
+    const errors: string[] = [];
+
+    if (!this.codeAnalyzerService) {
+      errors.push("CodeAnalyzerService not initialized");
+      return { success: false, foldersCreated: 0, filesCreated: 0, errors };
+    }
+
+    try {
+      // Step 1: Check server status
+      const isRunning = await this.codeAnalyzerService.checkServerStatus();
+      if (!isRunning) {
+        errors.push("CodeAnalyzer server is not running");
+        return { success: false, foldersCreated: 0, filesCreated: 0, errors };
+      }
+
+      console.log("[CodeBaseState] Starting force sync to analyzer...");
+
+      // Step 2: Reset the analyzer server
+      const resetSuccess = await this.codeAnalyzerService.resetSystem();
+      if (!resetSuccess) {
+        errors.push("Failed to reset analyzer server");
+        return { success: false, foldersCreated: 0, filesCreated: 0, errors };
+      }
+
+      // Step 3: Set owner ID if available
+      if (this.state.ownerId) {
+        await this.codeAnalyzerService.setOwnerId(this.state.ownerId);
+      }
+
+      // Step 4: Rebuild folder structure
+      const foldersToCreate: Array<{
+        leekwarsId: number;
+        parentId: number;
+        name: string;
+      }> = [];
+
+      for (const [folderId, folder] of this.state.folders.entries()) {
+        if (folder.leekwars) {
+          foldersToCreate.push({
+            leekwarsId: folder.leekwars.id,
+            parentId: folder.leekwars.parentFolderId,
+            name: folder.leekwars.name,
+          });
+        }
+      }
+
+      const folderResults =
+        await this.codeAnalyzerService.rebuildFolderStructure(foldersToCreate);
+
+      let foldersCreated = 0;
+      for (const [leekwarsId, success] of folderResults.entries()) {
+        if (success) {
+          foldersCreated++;
+          // Update analyzer state for this folder
+          const folder = CodeBaseStateHelpers.findFolderByLeekWarsId(
+            this.state,
+            leekwarsId
+          );
+          if (folder) {
+            const folderId = Array.from(this.state.folders.entries()).find(
+              ([_, f]) => f === folder
+            )?.[0];
+            if (folderId) {
+              this.updateFolderAnalyzerState(folderId, {
+                folderId: leekwarsId,
+                existsOnServer: true,
+              });
+            }
+          }
+        } else {
+          errors.push(`Failed to create folder with LeekWars ID ${leekwarsId}`);
+        }
+      }
+
+      // Step 5: Rebuild AI files
+      const filesToCreate: Array<{
+        leekwarsId: number;
+        name: string;
+        folderId: number;
+        version: number;
+        code?: string;
+      }> = [];
+
+      for (const [filePath, file] of this.state.files.entries()) {
+        if (file.leekwars) {
+          filesToCreate.push({
+            leekwarsId: file.leekwars.id,
+            name: file.leekwars.name,
+            folderId: file.leekwars.folderId,
+            version: file.leekwars.version,
+            code: file.local?.code, // Use code from local state
+          });
+        }
+      }
+
+      const fileResults = await this.codeAnalyzerService.rebuildAIFiles(
+        filesToCreate
+      );
+
+      let filesCreated = 0;
+      for (const [leekwarsId, ai] of fileResults.entries()) {
+        if (ai) {
+          filesCreated++;
+          // Update analyzer state for this file
+          const file = CodeBaseStateHelpers.findFileByLeekWarsId(
+            this.state,
+            leekwarsId
+          );
+          if (file) {
+            const filePath = Array.from(this.state.files.entries()).find(
+              ([_, f]) => f === file
+            )?.[0];
+            if (filePath) {
+              this.updateFileAnalyzerState(filePath, {
+                aiId: ai.id,
+                existsOnServer: true,
+              });
+            }
+          }
+        } else {
+          errors.push(`Failed to create AI with LeekWars ID ${leekwarsId}`);
+        }
+      }
+
+      // Save the updated state
+      await this.saveState();
+
+      console.log(
+        `[CodeBaseState] Force sync completed: ${foldersCreated} folders, ${filesCreated} files`
+      );
+
+      return {
+        success: errors.length === 0,
+        foldersCreated,
+        filesCreated,
+        errors,
+      };
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      errors.push(`Force sync failed: ${errorMessage}`);
+      console.error("[CodeBaseState] Force sync error:", error);
+      return { success: false, foldersCreated: 0, filesCreated: 0, errors };
+    }
   }
 }

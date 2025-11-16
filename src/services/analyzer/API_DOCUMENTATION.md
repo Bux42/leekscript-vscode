@@ -175,6 +175,60 @@ curl -X POST http://localhost:8080/api/ai/new-name \
 
 ---
 
+### POST `/api/ai/new-name-with-id`
+
+Create a new AI file with a specific ID and custom code.
+
+**Request Body**:
+
+```json
+{
+  "ai_id": 5000000,
+  "folder_id": 0,
+  "version": 4,
+  "name": "customAI.leek",
+  "code": "var x = 42;\ndebug(x);"
+}
+```
+
+**Parameters**:
+
+- `ai_id` (integer): The specific AI ID to use
+- `folder_id` (integer): Parent folder ID (0 for root)
+- `version` (integer, optional): LeekScript version (default: 4)
+- `name` (string): Name of the AI file (should end with `.leek`)
+- `code` (string): The custom LeekScript code for the AI
+
+**Response** (200 OK):
+
+```json
+{
+  "ai": {
+    "id": 5000000,
+    "name": "customAI.leek",
+    "level": 1,
+    "code": "var x = 42;\ndebug(x);",
+    "folder": 0
+  }
+}
+```
+
+**Example**:
+
+```bash
+curl -X POST http://localhost:8080/api/ai/new-name-with-id \
+  -H "Content-Type: application/json" \
+  -d '{"ai_id":5000000,"folder_id":0,"version":4,"name":"customAI.leek","code":"var x = 42;\\ndebug(x);"}'
+```
+
+**Notes**:
+
+- Unlike `/api/ai/new-name`, this endpoint allows you to specify both the AI ID and the initial code
+- Useful for importing AIs or creating AIs with specific IDs
+- The AI ID must not already exist
+
+---
+
 ### POST `/api/ai/save`
 
 Save code to an AI file and run analysis to detect errors.

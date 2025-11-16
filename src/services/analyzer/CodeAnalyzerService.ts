@@ -98,6 +98,85 @@ export class CodeAnalyzerService {
     }
   }
 
+  /**
+   * Rebuild the entire folder structure on the analyzer server
+   * Uses LeekWars IDs to maintain consistency
+   * @param folders Array of folders with LeekWars state
+   * @returns Map of LeekWars folder ID to success status
+   */
+  async rebuildFolderStructure(
+    folders: Array<{ leekwarsId: number; parentId: number; name: string }>
+  ): Promise<Map<number, boolean>> {
+    const results = new Map<number, boolean>();
+
+    // Sort folders by depth (root folders first)
+    const sortedFolders = [...folders].sort((a, b) => {
+      if (a.parentId === 0 && b.parentId !== 0) return -1;
+      if (a.parentId !== 0 && b.parentId === 0) return 1;
+      return 0;
+    });
+
+    for (const folder of sortedFolders) {
+      try {
+        const createdId = await this.createFolderWithId(
+          folder.leekwarsId,
+          folder.parentId,
+          folder.name
+        );
+        results.set(folder.leekwarsId, createdId !== null);
+      } catch (error) {
+        ErrorHandler.logError(
+          `Failed to recreate folder ${folder.name} (ID: ${folder.leekwarsId})`,
+          error
+        );
+        results.set(folder.leekwarsId, false);
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Rebuild all AI files on the analyzer server
+   * Uses LeekWars IDs and folder structure
+   * @param files Array of files with LeekWars state
+   * @returns Map of LeekWars AI ID to created AIFile (or null if failed)
+   */
+  async rebuildAIFiles(
+    files: Array<{
+      leekwarsId: number;
+      name: string;
+      folderId: number;
+      version: number;
+      code?: string;
+    }>
+  ): Promise<Map<number, AIFile | null>> {
+    const results = new Map<number, AIFile | null>();
+
+    for (const file of files) {
+      try {
+        // Create the AI with its LeekWars ID and code in a single call
+        const ai = await this.createAIWithId(
+          file.leekwarsId,
+          file.folderId,
+          file.name,
+          file.version,
+          file.code
+        );
+
+        results.set(file.leekwarsId, ai);
+      } catch (error) {
+        ErrorHandler.logError(
+          `Failed to recreate AI ${file.name} (ID: ${file.leekwarsId})`,
+          error
+        );
+        results.set(file.leekwarsId, null);
+      }
+    }
+
+    return results;
+  }
+
   // ==================== Owner Management ====================
 
   /**
@@ -153,6 +232,43 @@ export class CodeAnalyzerService {
       return response.ai;
     } catch (error) {
       this.handleError(`Failed to create AI: ${name}`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Create a new AI file with a user-specified ID
+   */
+  async createAIWithId(
+    aiId: number,
+    folderId: number,
+    name: string,
+    version: number = 4,
+    code?: string
+  ): Promise<AIFile | null> {
+    try {
+      const body: any = {
+        ai_id: aiId,
+        folder_id: folderId,
+        version,
+        name,
+      };
+
+      if (code !== undefined) {
+        body.code = code;
+      }
+
+      const response = await this.request<NewAIResponse>(
+        "POST",
+        "/api/ai/new-name-with-id",
+        body
+      );
+      ErrorHandler.logInfo(
+        `Created AI with ID: ${name} (ID: ${response.ai.id})`
+      );
+      return response.ai;
+    } catch (error) {
+      this.handleError(`Failed to create AI with ID: ${name}`, error);
       return null;
     }
   }

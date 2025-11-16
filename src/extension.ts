@@ -42,6 +42,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Link services with codebase state manager
   leekWarsService.setCodeBaseStateManager(codebaseStateManager);
+  codebaseStateManager.setCodeAnalyzerService(analyzerService);
 
   // Create diagnostic collection and service
   const diagnosticCollection =
@@ -79,7 +80,8 @@ export async function activate(context: vscode.ExtensionContext) {
     context,
     leekWarsService,
     analyzerService,
-    statusBarService
+    statusBarService,
+    codebaseStateManager
   );
   commandRegistry.registerAll();
 

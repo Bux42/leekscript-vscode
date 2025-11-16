@@ -72,6 +72,8 @@ export interface LocalFileState {
   lastModified: number;
   /** File content hash (for change detection) */
   contentHash?: string;
+  /** File code content */
+  code?: string;
 }
 
 /**
