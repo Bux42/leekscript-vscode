@@ -10,9 +10,6 @@
   "categories": [
     "Programming Languages"
   ],
-  "activationEvents": [
-    "onLanguage:leekscript"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
@@ -62,6 +59,16 @@
       {
         "command": "leekscript.pullAI",
         "title": "LeekWars: Pull AI",
+        "category": "LeekScript"
+      },
+      {
+        "command": "leekscript.showStatusMenu",
+        "title": "Show Status Menu",
+        "category": "LeekScript"
+      },
+      {
+        "command": "leekscript.refreshStatus",
+        "title": "Refresh Status",
         "category": "LeekScript"
       }
     ]
