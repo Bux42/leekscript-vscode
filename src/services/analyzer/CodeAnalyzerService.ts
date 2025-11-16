@@ -1,5 +1,16 @@
 import * as vscode from "vscode";
-import * as http from "http";
+import { HttpClient } from "../../utils/HttpClient";
+import { ErrorHandler } from "../../utils/ErrorHandler";
+import {
+  AIFile,
+  Folder,
+  SaveAIResponse,
+  NewAIResponse,
+  OwnerIdResponse,
+  ListAIsResponse,
+  NewFolderResponse,
+  ListFoldersResponse,
+} from "./types";
 
 /**
  * Configuration for the LeekScript Code Analysis Server
@@ -8,93 +19,15 @@ const SERVER_HOST = "localhost";
 const SERVER_PORT = 8080;
 
 /**
- * AI File Object structure
- */
-export interface AIFile {
-  id: number;
-  name: string;
-  folder_id: number;
-  code?: string;
-  version: number;
-  level?: number;
-}
-
-/**
- * Folder Object structure
- */
-export interface Folder {
-  id: number;
-  name: string;
-  parent_id: number;
-}
-
-/**
- * Analysis Error Format
- * [level, ai_id, start_line, start_column, end_line, end_column, error_code, parameters]
- */
-export type AnalysisError = [
-  number, // level: 0 = error, 1 = warning
-  number, // ai_id
-  number, // start_line
-  number, // start_column
-  number, // end_line
-  number, // end_column
-  number, // error_code
-  string[] // parameters
-];
-
-/**
- * Save AI Response structure
- */
-export interface SaveAIResponse {
-  result: {
-    [ai_id: string]: AnalysisError[];
-  };
-  modified: number;
-}
-
-/**
- * Owner ID Response structure
- */
-export interface OwnerIdResponse {
-  owner_id: number;
-}
-
-/**
- * New AI Response structure
- */
-export interface NewAIResponse {
-  ai: AIFile;
-}
-
-/**
- * New Folder Response structure
- */
-export interface NewFolderResponse {
-  id: number;
-}
-
-/**
- * List AIs Response structure
- */
-export interface ListAIsResponse {
-  ais: AIFile[];
-}
-
-/**
- * List Folders Response structure
- */
-export interface ListFoldersResponse {
-  folders: Folder[];
-}
-
-/**
  * Service for interacting with the LeekScript Code Analysis Server
  */
 export class CodeAnalyzerService {
   private isServerRunning: boolean = false;
+  private httpClient: HttpClient;
 
-  constructor(private context: vscode.ExtensionContext) {}
+  constructor(private context: vscode.ExtensionContext) {
+    this.httpClient = new HttpClient(SERVER_HOST, SERVER_PORT);
+  }
 
   /**
    * Make an HTTP request to the Code Analysis Server
@@ -104,72 +37,7 @@ export class CodeAnalyzerService {
     path: string,
     body?: any
   ): Promise<T> {
-    return new Promise((resolve, reject) => {
-      const options: http.RequestOptions = {
-        hostname: SERVER_HOST,
-        port: SERVER_PORT,
-        path: path,
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        timeout: 5000,
-      };
-
-      const req = http.request(options, (res) => {
-        let data = "";
-
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        res.on("end", () => {
-          if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-            try {
-              // Handle empty responses or plain text
-              if (!data || data.trim().length === 0) {
-                resolve([] as any);
-              } else if (data.startsWith("{") || data.startsWith("[")) {
-                resolve(JSON.parse(data));
-              } else {
-                // Plain text response
-                resolve(data as any);
-              }
-            } catch (error) {
-              reject(new Error(`Failed to parse response: ${error}`));
-            }
-          } else {
-            // Error response
-            reject({
-              statusCode: res.statusCode,
-              message: data,
-            });
-          }
-        });
-      });
-
-      req.on("error", (error) => {
-        reject({
-          code: (error as any).code || "UNKNOWN",
-          message: error.message,
-        });
-      });
-
-      req.on("timeout", () => {
-        req.destroy();
-        reject({
-          code: "ETIMEDOUT",
-          message: "Request timeout",
-        });
-      });
-
-      // Write body if present
-      if (body) {
-        req.write(JSON.stringify(body));
-      }
-
-      req.end();
-    });
+    return this.httpClient.request<T>(method, path, body);
   }
 
   /**
@@ -222,7 +90,7 @@ export class CodeAnalyzerService {
         "/api/reset",
         {}
       );
-      console.log(`[CodeAnalyzer] System reset: ${response.message}`);
+      ErrorHandler.logInfo(`System reset: ${response.message}`);
       return true;
     } catch (error) {
       this.handleError("Failed to reset system", error);
@@ -238,7 +106,7 @@ export class CodeAnalyzerService {
   async setOwnerId(ownerId: number): Promise<void> {
     try {
       await this.request("POST", "/api/owner/set-id", { owner_id: ownerId });
-      console.log(`[CodeAnalyzer] Owner ID set to ${ownerId}`);
+      ErrorHandler.logInfo(`Owner ID set to ${ownerId}`);
     } catch (error) {
       this.handleError("Failed to set owner ID", error);
       throw error;
@@ -281,7 +149,7 @@ export class CodeAnalyzerService {
           name,
         }
       );
-      console.log(`[CodeAnalyzer] Created AI: ${name} (ID: ${response.ai.id})`);
+      ErrorHandler.logInfo(`Created AI: ${name} (ID: ${response.ai.id})`);
       return response.ai;
     } catch (error) {
       this.handleError(`Failed to create AI: ${name}`, error);
@@ -307,8 +175,8 @@ export class CodeAnalyzerService {
       const errorCount = errors.filter((e) => e[0] === 0).length;
       const warningCount = errors.filter((e) => e[0] === 1).length;
 
-      console.log(
-        `[CodeAnalyzer] Saved AI ${aiId}: ${errorCount} errors, ${warningCount} warnings`
+      ErrorHandler.logInfo(
+        `Saved AI ${aiId}: ${errorCount} errors, ${warningCount} warnings`
       );
       return response;
     } catch (error) {
@@ -326,7 +194,7 @@ export class CodeAnalyzerService {
         ai_id: aiId,
         new_name: newName,
       });
-      console.log(`[CodeAnalyzer] Renamed AI ${aiId} to ${newName}`);
+      ErrorHandler.logInfo(`Renamed AI ${aiId} to ${newName}`);
       return true;
     } catch (error) {
       this.handleError(`Failed to rename AI ${aiId}`, error);
@@ -340,7 +208,7 @@ export class CodeAnalyzerService {
   async deleteAI(aiId: number): Promise<boolean> {
     try {
       await this.request("DELETE", "/api/ai/delete", { ai_id: aiId });
-      console.log(`[CodeAnalyzer] Deleted AI ${aiId}`);
+      ErrorHandler.logInfo(`Deleted AI ${aiId}`);
       return true;
     } catch (error) {
       this.handleError(`Failed to delete AI ${aiId}`, error);
@@ -357,7 +225,7 @@ export class CodeAnalyzerService {
         ai_id: aiId,
         folder_id: folderId,
       });
-      console.log(`[CodeAnalyzer] Moved AI ${aiId} to folder ${folderId}`);
+      ErrorHandler.logInfo(`Moved AI ${aiId} to folder ${folderId}`);
       return true;
     } catch (error) {
       this.handleError(`Failed to move AI ${aiId}`, error);
@@ -416,9 +284,7 @@ export class CodeAnalyzerService {
           name,
         }
       );
-      console.log(
-        `[CodeAnalyzer] Created folder: ${name} (ID: ${response.id})`
-      );
+      ErrorHandler.logInfo(`Created folder: ${name} (ID: ${response.id})`);
       return response.id;
     } catch (error) {
       this.handleError(`Failed to create folder: ${name}`, error);
@@ -444,8 +310,8 @@ export class CodeAnalyzerService {
           name,
         }
       );
-      console.log(
-        `[CodeAnalyzer] Created folder with ID: ${name} (ID: ${response.id})`
+      ErrorHandler.logInfo(
+        `Created folder with ID: ${name} (ID: ${response.id})`
       );
       return response.id;
     } catch (error) {
@@ -463,7 +329,7 @@ export class CodeAnalyzerService {
         folder_id: folderId,
         new_name: newName,
       });
-      console.log(`[CodeAnalyzer] Renamed folder ${folderId} to ${newName}`);
+      ErrorHandler.logInfo(`Renamed folder ${folderId} to ${newName}`);
       return true;
     } catch (error) {
       this.handleError(`Failed to rename folder ${folderId}`, error);
@@ -479,7 +345,7 @@ export class CodeAnalyzerService {
       await this.request("DELETE", "/api/ai-folder/delete", {
         folder_id: folderId,
       });
-      console.log(`[CodeAnalyzer] Deleted folder ${folderId} and its contents`);
+      ErrorHandler.logInfo(`Deleted folder ${folderId} and its contents`);
       return true;
     } catch (error) {
       this.handleError(`Failed to delete folder ${folderId}`, error);
@@ -499,8 +365,8 @@ export class CodeAnalyzerService {
         folder_id: folderId,
         dest_folder_id: destFolderId,
       });
-      console.log(
-        `[CodeAnalyzer] Moved folder ${folderId} to folder ${destFolderId}`
+      ErrorHandler.logInfo(
+        `Moved folder ${folderId} to folder ${destFolderId}`
       );
       return true;
     } catch (error) {
@@ -547,44 +413,6 @@ export class CodeAnalyzerService {
    * Handle errors and display user-friendly messages
    */
   private handleError(message: string, error: any): void {
-    console.error(`[CodeAnalyzer] ${message}:`, error);
-
-    // Check if it's our custom error object from the request method
-    if (error && typeof error === "object") {
-      if (error.code === "ECONNREFUSED") {
-        vscode.window.showErrorMessage(
-          `${message}: Code Analysis Server is not running. Please start the server.`
-        );
-      } else if (error.code === "ETIMEDOUT") {
-        vscode.window.showErrorMessage(
-          `${message}: Request timeout. Server may be unresponsive.`
-        );
-      } else if (error.statusCode) {
-        const statusCode = error.statusCode;
-        const errorData = error.message;
-
-        if (statusCode === 404) {
-          vscode.window.showErrorMessage(
-            `${message}: Resource not found - ${errorData}`
-          );
-        } else if (statusCode === 405) {
-          vscode.window.showErrorMessage(`${message}: Invalid HTTP method`);
-        } else {
-          vscode.window.showErrorMessage(
-            `${message}: ${errorData || "Unknown error"}`
-          );
-        }
-      } else if (error.message) {
-        vscode.window.showErrorMessage(`${message}: ${error.message}`);
-      } else {
-        vscode.window.showErrorMessage(`${message}: Unknown error`);
-      }
-    } else {
-      vscode.window.showErrorMessage(
-        `${message}: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
-    }
+    ErrorHandler.handleCodeAnalyzerError(message, error);
   }
 }
