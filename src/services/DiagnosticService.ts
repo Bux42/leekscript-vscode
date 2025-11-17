@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { CodeAnalyzerService, AnalysisError } from "../services/analyzer";
 import { DataLoader } from "../utils/DataLoader";
-import { CodeBaseState, CodeBaseStateManager } from "./codebase";
+import { CodeBaseStateManager } from "./codebase";
 
 /**
  * Debounce delay in milliseconds
@@ -17,7 +17,6 @@ export class DiagnosticService {
   private analyzerService: CodeAnalyzerService;
   private dataLoader: DataLoader;
   private debounceTimers = new Map<string, NodeJS.Timeout>();
-  private fileToAIIdMap = new Map<string, number>();
   private globalState: CodeBaseStateManager;
 
   constructor(
@@ -30,40 +29,6 @@ export class DiagnosticService {
     this.analyzerService = analyzerService;
     this.dataLoader = dataLoader;
     this.globalState = codebaseStateManager;
-  }
-
-  /**
-   * Get or create an AI ID for a given file path
-   */
-  private async getOrCreateAIId(filePath: string): Promise<number | null> {
-    // get current AI id from globalState
-    const aiIdFromGlobalState = this.globalState
-      .getAllFiles()
-      .filter((ai) => ai.local?.absolutePath === filePath);
-    console.log("aiIdFromGlobalState: ", aiIdFromGlobalState);
-    if (
-      aiIdFromGlobalState.length > 0 &&
-      aiIdFromGlobalState[0].analyzer?.aiId
-    ) {
-      return aiIdFromGlobalState[0].analyzer.aiId;
-    }
-
-    // Check if we already have an AI ID for this file
-    if (this.fileToAIIdMap.has(filePath)) {
-      return this.fileToAIIdMap.get(filePath)!;
-    }
-
-    // Create a new AI file with the same name
-    const fileName = path.basename(filePath);
-    const ai = await this.analyzerService.createAI(0, fileName);
-
-    if (ai) {
-      this.fileToAIIdMap.set(filePath, ai.id);
-      console.log(`[LeekScript] Mapped ${fileName} to AI ID ${ai.id}`);
-      return ai.id;
-    }
-
-    return null;
   }
 
   /**
@@ -154,44 +119,56 @@ export class DiagnosticService {
       return;
     }
 
-    const code = document.getText();
-    const name = path.basename(document.fileName);
+    const workspaceFolders = vscode.workspace.workspaceFolders;
 
     // If analyzer service is not available or server is not running, skip analysis
     if (!this.analyzerService.getServerStatus()) {
       return;
     }
 
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      console.error("[LeekScript] No workspace folder found");
+      return;
+    }
+
     try {
-      // Get or create AI ID for this file
-      const aiId = await this.getOrCreateAIId(document.fileName);
+      // Get relative path from workspace
+      const workspaceRoot = workspaceFolders[0].uri.fsPath;
+      let relativePath = path.relative(workspaceRoot, document.fileName);
 
-      if (!aiId) {
-        console.error(`[LeekScript] Failed to get AI ID for ${name}`);
-        return;
-      }
+      // Normalize path separators to forward slashes
+      relativePath = relativePath.replace(/\\/g, "/");
 
-      // Send code to analyzer and get results
-      const result = await this.analyzerService.saveAI(aiId, code);
+      // Prepend "user-code/"
+      const filePath = `user-code/${relativePath}`;
+
+      // Analyze file with new endpoint (file must be saved on disk)
+      const result = await this.analyzerService.analyzeFile(filePath);
 
       if (result) {
-        const errors = result.result[aiId.toString()] || [];
-        const diagnostics = this.convertAnalysisErrorsToDiagnostics(errors);
+        const diagnostics = this.convertAnalysisErrorsToDiagnostics(
+          result.errors
+        );
 
         // Update diagnostics for this document
         this.diagnosticCollection.set(document.uri, diagnostics);
 
-        const errorCount = errors.filter((e) => e[0] === 0).length;
-        const warningCount = errors.filter((e) => e[0] === 1).length;
+        const errorCount = result.errors.filter((e) => e[0] === 0).length;
+        const warningCount = result.errors.filter((e) => e[0] === 1).length;
 
         if (errorCount > 0 || warningCount > 0) {
           console.log(
-            `[LeekScript] Analysis complete for ${name}: ${errorCount} errors, ${warningCount} warnings`
+            `[LeekScript] Analysis complete for ${path.basename(
+              document.fileName
+            )}: ${errorCount} errors, ${warningCount} warnings`
           );
         }
       }
     } catch (error) {
-      console.error(`[LeekScript] Analysis failed for ${name}:`, error);
+      console.error(
+        `[LeekScript] Analysis failed for ${path.basename(document.fileName)}:`,
+        error
+      );
     }
   }
 

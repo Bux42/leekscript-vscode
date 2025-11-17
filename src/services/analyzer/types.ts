@@ -57,6 +57,14 @@ export interface SaveAIResponse {
 }
 
 /**
+ * Response from analyzing a file
+ */
+export interface AnalyzeFileResponse {
+  /** Array of errors and warnings found during analysis */
+  errors: AnalysisError[];
+}
+
+/**
  * Response from creating a new AI file
  */
 export interface NewAIResponse {

@@ -291,6 +291,99 @@ curl -X POST http://localhost:8080/api/ai/save \
 
 ---
 
+### POST `/api/ai/analyze-file`
+
+Analyze a LeekScript file directly from disk using the NativeFileSystem resolver. This endpoint mimics the `--analyze` command-line functionality and does not use the in-memory codebase. It's useful for analyzing files outside the managed codebase structure.
+
+**Request Body**:
+
+```json
+{
+  "file_path": "user-code/MyFolder/myScript.leek"
+}
+```
+
+**Parameters**:
+
+- `file_path` (string): Relative or absolute path to the LeekScript file on disk
+
+**Response** (200 OK):
+
+```json
+{
+  "result": {
+    "1234567890": []
+  },
+  "modified": 1763150074820,
+  "file_path": "user-code/MyFolder/myScript.leek",
+  "success": true
+}
+```
+
+**Response with Errors**:
+
+```json
+{
+  "result": {
+    "1234567890": [
+      [0, 1234567890, 1, 9, 1, 10, 24, []],
+      [1, 1234567890, 3, 1, 3, 5, 15, ["variable_x"]]
+    ]
+  },
+  "modified": 1763150074820,
+  "file_path": "user-code/MyFolder/myScript.leek",
+  "success": false
+}
+```
+
+**Response Fields**:
+
+- `result`: Object containing analysis results keyed by synthetic AI ID
+- `modified`: Timestamp of the analysis
+- `file_path`: Echo of the requested file path
+- `success`: Boolean indicating if the analysis succeeded without errors
+
+**Synthetic AI ID**: The AI ID in the result is generated from the file path hash and is used only for response formatting.
+
+**Error Format**: `[level, ai_id, start_line, start_column, end_line, end_column, error_code, [parameters]]`
+
+- `level`: 0 = error, 1 = warning
+- `ai_id`: The synthetic AI file ID
+- `start_line`, `start_column`: Error start position
+- `end_line`, `end_column`: Error end position
+- `error_code`: Numeric error code
+- `parameters`: Optional array of error-specific parameters
+
+**Error Response** (404 Not Found):
+
+```json
+"File not found: user-code/MyFolder/myScript.leek"
+```
+
+**Error Response** (400 Bad Request):
+
+```json
+"Missing file_path parameter"
+```
+
+**Example**:
+
+```bash
+curl -X POST http://localhost:8080/api/ai/analyze-file \
+  -H "Content-Type: application/json" \
+  -d '{"file_path":"user-code/DeepBlue/DebugBlue.leek"}'
+```
+
+**Notes**:
+
+- This endpoint uses the NativeFileSystem resolver, which can access files directly from the filesystem
+- Unlike `/api/ai/save`, this does not modify or store any state in the in-memory codebase
+- The file path is resolved relative to the server's working directory
+- Include statements within the analyzed file will be resolved using the NativeFileSystem's folder structure
+- This endpoint is useful for one-off analysis of files without managing them in the codebase
+
+---
+
 ### POST `/api/ai/rename`
 
 Rename an AI file.

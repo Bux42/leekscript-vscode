@@ -5,6 +5,7 @@ import {
   AIFile,
   Folder,
   SaveAIResponse,
+  AnalyzeFileResponse,
   NewAIResponse,
   OwnerIdResponse,
   ListAIsResponse,
@@ -269,6 +270,34 @@ export class CodeAnalyzerService {
       return response.ai;
     } catch (error) {
       this.handleError(`Failed to create AI with ID: ${name}`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Analyze a file directly from disk using the NativeFileSystem resolver
+   * The file must exist on disk and will be read by the analyzer server
+   */
+  async analyzeFile(filePath: string): Promise<AnalyzeFileResponse | null> {
+    try {
+      const response = await this.request<any>("POST", "/api/ai/analyze-file", {
+        file_path: filePath,
+      });
+
+      // Extract errors from the result object (keyed by synthetic AI ID)
+      const syntheticAiId = Object.keys(response.result)[0];
+      const errors = response.result[syntheticAiId] || [];
+
+      const errorCount = errors.filter((e: any) => e[0] === 0).length;
+      const warningCount = errors.filter((e: any) => e[0] === 1).length;
+
+      ErrorHandler.logInfo(
+        `Analyzed file ${filePath}: ${errorCount} errors, ${warningCount} warnings`
+      );
+
+      return { errors };
+    } catch (error) {
+      this.handleError(`Failed to analyze file ${filePath}`, error);
       return null;
     }
   }
