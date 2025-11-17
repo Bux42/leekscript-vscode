@@ -71,6 +71,11 @@ export class DiagnosticService {
    */
   private formatErrorMessage(template: string, params: string[]): string {
     let message = template;
+
+    if (!params || params.length === 0) {
+      return message;
+    }
+
     for (let i = 0; i < params.length; i++) {
       message = message.replace(new RegExp(`\\{${i}\\}`, "g"), params[i]);
     }
