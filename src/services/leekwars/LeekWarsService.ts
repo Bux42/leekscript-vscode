@@ -206,7 +206,7 @@ export class LeekWarsService {
           }
 
           const workspaceRoot = workspaceFolder.uri.fsPath;
-          const leekwarsDir = path.join(workspaceRoot, "leekwars");
+          const leekwarsDir = path.join(workspaceRoot, ".");
 
           // Create leekwars root directory if it doesn't exist
           if (!fs.existsSync(leekwarsDir)) {
@@ -375,7 +375,7 @@ export class LeekWarsService {
             throw new Error("No workspace folder open");
           }
 
-          const leekwarsDir = path.join(workspaceFolder.uri.fsPath, "leekwars");
+          const leekwarsDir = path.join(workspaceFolder.uri.fsPath, ".");
 
           if (!fs.existsSync(leekwarsDir)) {
             fs.mkdirSync(leekwarsDir, { recursive: true });
