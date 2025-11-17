@@ -70,11 +70,6 @@
         "command": "leekscript.refreshStatus",
         "title": "Refresh Status",
         "category": "LeekScript"
-      },
-      {
-        "command": "leekscript.forceSyncCodeServer",
-        "title": "Force Sync Code Server",
-        "category": "LeekScript"
       }
     ]
   },

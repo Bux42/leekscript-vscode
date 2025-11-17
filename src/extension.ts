@@ -81,8 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
     context,
     leekWarsService,
     analyzerService,
-    statusBarService,
-    codebaseStateManager
+    statusBarService
   );
   commandRegistry.registerAll();
 

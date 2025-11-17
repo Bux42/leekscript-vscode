@@ -12,8 +12,7 @@ export class CommandRegistry {
     private context: vscode.ExtensionContext,
     private leekWarsService: LeekWarsService,
     private analyzerService: CodeAnalyzerService,
-    private statusBarService: StatusBarService,
-    private codebaseStateManager: CodeBaseStateManager
+    private statusBarService: StatusBarService
   ) {}
 
   /**
@@ -22,7 +21,6 @@ export class CommandRegistry {
   registerAll(): void {
     this.registerLeekWarsCommands();
     this.registerStatusBarCommands();
-    this.registerAnalyzerCommands();
     this.registerMiscCommands();
   }
 
@@ -70,56 +68,6 @@ export class CommandRegistry {
             : "Some features unavailable - check status menu for details";
         vscode.window.showInformationMessage(`LeekScript: ${message}`);
       })
-    );
-  }
-
-  /**
-   * Register Code Analyzer related commands
-   */
-  private registerAnalyzerCommands(): void {
-    this.context.subscriptions.push(
-      vscode.commands.registerCommand(
-        "leekscript.forceSyncCodeServer",
-        async () => {
-          // Confirm with user before proceeding
-          const confirm = await vscode.window.showWarningMessage(
-            "This will reset the Code Analysis Server and rebuild it from your LeekWars state. Continue?",
-            { modal: true },
-            "Yes",
-            "No"
-          );
-
-          if (confirm !== "Yes") {
-            return;
-          }
-
-          this.statusBarService.setBusy(true, "Syncing code server...");
-
-          try {
-            const result =
-              await this.codebaseStateManager.forceSyncToAnalyzer();
-
-            if (result.success) {
-              vscode.window.showInformationMessage(
-                `Code server sync complete! Created ${result.foldersCreated} folders and ${result.filesCreated} files.`
-              );
-            } else {
-              const errorMsg = result.errors.join("\n");
-              vscode.window.showErrorMessage(
-                `Code server sync completed with errors:\n${errorMsg}`
-              );
-            }
-          } catch (error) {
-            vscode.window.showErrorMessage(
-              `Failed to sync code server: ${
-                error instanceof Error ? error.message : String(error)
-              }`
-            );
-          } finally {
-            this.statusBarService.setBusy(false);
-          }
-        }
-      )
     );
   }
 
