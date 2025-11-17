@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { CodeAnalyzerService, AnalysisError } from "../services/analyzer";
 import { DataLoader } from "../utils/DataLoader";
+import { CodeBaseState, CodeBaseStateManager } from "./codebase";
 
 /**
  * Debounce delay in milliseconds
@@ -17,21 +18,36 @@ export class DiagnosticService {
   private dataLoader: DataLoader;
   private debounceTimers = new Map<string, NodeJS.Timeout>();
   private fileToAIIdMap = new Map<string, number>();
+  private globalState: CodeBaseStateManager;
 
   constructor(
     diagnosticCollection: vscode.DiagnosticCollection,
     analyzerService: CodeAnalyzerService,
-    dataLoader: DataLoader
+    dataLoader: DataLoader,
+    codebaseStateManager: CodeBaseStateManager
   ) {
     this.diagnosticCollection = diagnosticCollection;
     this.analyzerService = analyzerService;
     this.dataLoader = dataLoader;
+    this.globalState = codebaseStateManager;
   }
 
   /**
    * Get or create an AI ID for a given file path
    */
   private async getOrCreateAIId(filePath: string): Promise<number | null> {
+    // get current AI id from globalState
+    const aiIdFromGlobalState = this.globalState
+      .getAllFiles()
+      .filter((ai) => ai.local?.absolutePath === filePath);
+    console.log("aiIdFromGlobalState: ", aiIdFromGlobalState);
+    if (
+      aiIdFromGlobalState.length > 0 &&
+      aiIdFromGlobalState[0].analyzer?.aiId
+    ) {
+      return aiIdFromGlobalState[0].analyzer.aiId;
+    }
+
     // Check if we already have an AI ID for this file
     if (this.fileToAIIdMap.has(filePath)) {
       return this.fileToAIIdMap.get(filePath)!;

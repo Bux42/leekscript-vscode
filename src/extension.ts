@@ -52,7 +52,8 @@ export async function activate(context: vscode.ExtensionContext) {
   diagnosticService = new DiagnosticService(
     diagnosticCollection,
     analyzerService,
-    dataLoader
+    dataLoader,
+    codebaseStateManager
   );
 
   // Check token configuration
