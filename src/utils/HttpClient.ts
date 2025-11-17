@@ -24,18 +24,24 @@ export class HttpClient {
    */
   async request<T>(method: string, path: string, body?: any): Promise<T> {
     return new Promise((resolve, reject) => {
+      // Prepare body data with proper UTF-8 encoding
+      const bodyData = body ? Buffer.from(JSON.stringify(body), "utf8") : null;
+
       const options: http.RequestOptions = {
         hostname: this.hostname,
         port: this.port,
         path: path,
         method: method,
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json; charset=utf-8",
+          ...(bodyData && { "Content-Length": bodyData.length }),
         },
         timeout: this.timeout,
       };
 
       const req = http.request(options, (res) => {
+        // Set encoding to UTF-8 to properly handle emojis and special characters
+        res.setEncoding("utf8");
         let data = "";
 
         res.on("data", (chunk) => {
@@ -49,7 +55,10 @@ export class HttpClient {
               if (!data || data.trim().length === 0) {
                 resolve([] as any);
               } else if (data.startsWith("{") || data.startsWith("[")) {
-                resolve(JSON.parse(data));
+                // Sanitize the response to handle control characters
+                // that may not be properly escaped by the server
+                const sanitizedData = this.sanitizeJsonString(data);
+                resolve(JSON.parse(sanitizedData));
               } else {
                 // Plain text response
                 resolve(data as any);
@@ -80,12 +89,39 @@ export class HttpClient {
         reject(this.createError("ETIMEDOUT", "Request timeout"));
       });
 
-      // Write body if present
-      if (body) {
-        req.write(JSON.stringify(body));
+      // Write body if present (already UTF-8 encoded)
+      if (bodyData) {
+        req.write(bodyData);
       }
 
       req.end();
+    });
+  }
+
+  /**
+   * Sanitize a JSON string by properly escaping control characters
+   * that may not be escaped by the server
+   */
+  private sanitizeJsonString(jsonString: string): string {
+    // This regex matches control characters (ASCII 0-31) except for already escaped ones
+    // We need to be careful not to double-escape characters
+    return jsonString.replace(/[\x00-\x1F]/g, (char) => {
+      switch (char) {
+        case "\n":
+          return "\\n";
+        case "\r":
+          return "\\r";
+        case "\t":
+          return "\\t";
+        case "\b":
+          return "\\b";
+        case "\f":
+          return "\\f";
+        default:
+          // For other control characters, use unicode escape
+          const code = char.charCodeAt(0);
+          return "\\u" + ("0000" + code.toString(16)).slice(-4);
+      }
     });
   }
 
