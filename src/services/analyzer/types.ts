@@ -65,6 +65,46 @@ export interface AnalyzeFileResponse {
 }
 
 /**
+ * Request for getting definitions at cursor position
+ */
+export interface GetDefinitionsRequest {
+  /** Line number of cursor position */
+  cursor_line: number;
+  /** Column number of cursor position */
+  cursor_column: number;
+  /** Path to the file */
+  file_path: string;
+  /** Content of the file */
+  file_code: string;
+}
+
+/**
+ * Represents a definition suggestion
+ */
+export interface DefinitionSuggestion {
+  /** Column position of the definition */
+  columnPos: number;
+  /** Type of definition (1 = function, etc.) */
+  definitionType: number;
+  /** File containing the definition */
+  file: string;
+  /** Line position of the definition */
+  linePos: number;
+  /** Name of the definition */
+  name: string;
+  /** Parameters of the definition (if applicable) */
+  parameters: any[];
+}
+
+/**
+ * Response from get-definitions endpoint
+ */
+export interface GetDefinitionsResponse {
+  /** Array of definition suggestions */
+  suggestions: DefinitionSuggestion[];
+}
+
+/**
  * Response from creating a new AI file
  */
 export interface NewAIResponse {

@@ -6,6 +6,8 @@ import {
   Folder,
   SaveAIResponse,
   AnalyzeFileResponse,
+  GetDefinitionsRequest,
+  GetDefinitionsResponse,
   NewAIResponse,
   OwnerIdResponse,
   ListAIsResponse,
@@ -298,6 +300,41 @@ export class CodeAnalyzerService {
       return { errors };
     } catch (error) {
       this.handleError(`Failed to analyze file ${filePath}`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Get definitions at cursor position
+   */
+  async getDefinitions(
+    cursorLine: number,
+    cursorColumn: number,
+    filePath: string,
+    fileCode: string
+  ): Promise<GetDefinitionsResponse | null> {
+    try {
+      const response = await this.request<GetDefinitionsResponse>(
+        "POST",
+        "/api/get-definitions",
+        {
+          cursor_line: cursorLine,
+          cursor_column: cursorColumn,
+          file_path: filePath,
+          file_code: fileCode,
+        }
+      );
+
+      ErrorHandler.logInfo(
+        `Found ${response.suggestions.length} definition(s) at ${filePath}:${cursorLine}:${cursorColumn}`
+      );
+
+      return response;
+    } catch (error) {
+      this.handleError(
+        `Failed to get definitions at ${filePath}:${cursorLine}:${cursorColumn}`,
+        error
+      );
       return null;
     }
   }
