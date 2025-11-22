@@ -5,10 +5,16 @@ export interface GetDefinitionsResponse2 {
   variables: UserVariable[];
 }
 
+export interface UserClassField {
+  name: string;
+  type: string;
+  level: string;
+}
+
 export interface UserClass {
   col: number;
   constructors: UserMethod[];
-  fields: any[];
+  fields: UserClassField[];
   fileName: string;
   folderName: string;
   isStatic: boolean;
