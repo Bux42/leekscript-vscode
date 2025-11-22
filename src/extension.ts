@@ -15,6 +15,10 @@ import {
 import { UserCodeCompletionProvider } from "./providers/user-code/CompletionProvider";
 import { DefinitionManager } from "./providers/user-code/DefinitionManager";
 import { UserCodeHoverProvider } from "./providers/user-code/HoverProvider";
+import {
+  UserCodeSemanticTokensProvider,
+  legend,
+} from "./providers/user-code/SemanticTokensProvider";
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
@@ -77,6 +81,13 @@ export async function activate(context: vscode.ExtensionContext) {
       new UserCodeDefinitionProvider(definitionManager)
     );
 
+  const userCodeSemanticTokensProvider =
+    vscode.languages.registerDocumentSemanticTokensProvider(
+      "leekscript",
+      new UserCodeSemanticTokensProvider(definitionManager),
+      legend
+    );
+
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "myExt.openDefinition",
@@ -91,6 +102,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(userCodeHoverProvider);
   context.subscriptions.push(userCodeCompletionProviderRegistration);
   context.subscriptions.push(userCodeDefinitionProvider);
+  context.subscriptions.push(userCodeSemanticTokensProvider);
   diagnosticService = new DiagnosticService(
     diagnosticCollection,
     analyzerService,
