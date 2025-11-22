@@ -86,6 +86,8 @@ export interface DefinitionSuggestion {
   columnPos: number;
   /** Type of definition (1 = function, etc.) */
   definitionType: number;
+  /** Folder containing the definition */
+  folder: string;
   /** File containing the definition */
   file: string;
   /** Line position of the definition */

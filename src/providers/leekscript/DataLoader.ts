@@ -1,5 +1,10 @@
 import * as path from "path";
 import * as fs from "fs";
+import {
+  UserClass,
+  UserFunction,
+  UserVariable,
+} from "../../services/analyzer/definitions.types";
 
 /**
  * Function data structure from functions.json
@@ -49,14 +54,38 @@ export const TYPE_MAP: { [key: string]: string } = {
 export class DataLoader {
   private static instance: DataLoader | null = null;
 
-  private functionsData: FunctionData[] = [];
-  private constantsData: ConstantData[] = [];
-  private docData: { [key: string]: string } = {};
+  // Builtin data
+  private builtinFunctionsData: FunctionData[] = [];
+  private builtinConstantsData: ConstantData[] = [];
+  private builtinDocData: { [key: string]: string } = {};
   private leekscriptConstants: { [key: string]: string } = {};
   private builtInFunctions: Set<string> = new Set();
 
   private constructor(extensionPath: string) {
     this.loadData(extensionPath);
+  }
+
+  /**
+   * Append a user-defined function to the data
+   */
+  public appendFunctionData(func: FunctionData): void {
+    if (DataLoader.instance) {
+      this.builtinFunctionsData.push(func);
+    } else {
+      throw new Error("DataLoader instance is not initialized.");
+    }
+  }
+
+  /**
+   * Prepend a user-defined function to the data
+   */
+  public prependFunctionData(func: FunctionData): void {
+    if (DataLoader.instance) {
+      console.log("Prepending function:", func);
+      this.builtinFunctionsData.unshift(func);
+    } else {
+      throw new Error("DataLoader instance is not initialized.");
+    }
   }
 
   /**
@@ -80,15 +109,15 @@ export class DataLoader {
   private loadData(extensionPath: string): void {
     const extractedPath = path.join(extensionPath, "extracted");
 
-    this.functionsData = JSON.parse(
+    this.builtinFunctionsData = JSON.parse(
       fs.readFileSync(path.join(extractedPath, "functions.json"), "utf8")
     );
 
-    this.constantsData = JSON.parse(
+    this.builtinConstantsData = JSON.parse(
       fs.readFileSync(path.join(extractedPath, "constants.json"), "utf8")
     );
 
-    this.docData = JSON.parse(
+    this.builtinDocData = JSON.parse(
       fs.readFileSync(path.join(extractedPath, "doc.en.json"), "utf8")
     );
 
@@ -100,28 +129,30 @@ export class DataLoader {
     );
 
     // Build set of built-in function names
-    this.builtInFunctions = new Set(this.functionsData.map((f) => f.name));
+    this.builtInFunctions = new Set(
+      this.builtinFunctionsData.map((f) => f.name)
+    );
   }
 
   /**
    * Get all functions data
    */
   public getFunctions(): FunctionData[] {
-    return this.functionsData;
+    return this.builtinFunctionsData;
   }
 
   /**
    * Get all constants data
    */
   public getConstants(): ConstantData[] {
-    return this.constantsData;
+    return this.builtinConstantsData;
   }
 
   /**
    * Get documentation data
    */
   public getDocData(): { [key: string]: string } {
-    return this.docData;
+    return this.builtinDocData;
   }
 
   /**
@@ -139,17 +170,24 @@ export class DataLoader {
   }
 
   /**
+   * Get built-in functions array
+   */
+  public getBuiltInFunctionsArray(): FunctionData[] {
+    return this.builtinFunctionsData;
+  }
+
+  /**
    * Find a function by name
    */
-  public findFunction(name: string): FunctionData | undefined {
-    return this.functionsData.find((f) => f.name === name);
+  public findBuiltinFunction(name: string): FunctionData | undefined {
+    return this.builtinFunctionsData.find((f) => f.name === name);
   }
 
   /**
    * Find a constant by name
    */
   public findConstant(name: string): ConstantData | undefined {
-    return this.constantsData.find((c) => c.name === name);
+    return this.builtinConstantsData.find((c) => c.name === name);
   }
 
   /**

@@ -1,8 +1,10 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { CodeAnalyzerService, AnalysisError } from "../services/analyzer";
-import { DataLoader } from "../utils/DataLoader";
+import { DataLoader, FunctionData } from "../providers/leekscript/DataLoader";
 import { CodeBaseStateManager } from "./codebase";
+import { UserCodeCompletionProvider } from "../providers/user-code/CompletionProvider";
+import { DefinitionManager } from "../providers/user-code/DefinitionManager";
 
 /**
  * Debounce delay in milliseconds
@@ -18,17 +20,20 @@ export class DiagnosticService {
   private dataLoader: DataLoader;
   private debounceTimers = new Map<string, NodeJS.Timeout>();
   private globalState: CodeBaseStateManager;
+  private userCodeDefinitionManager: DefinitionManager;
 
   constructor(
     diagnosticCollection: vscode.DiagnosticCollection,
     analyzerService: CodeAnalyzerService,
     dataLoader: DataLoader,
-    codebaseStateManager: CodeBaseStateManager
+    codebaseStateManager: CodeBaseStateManager,
+    userCodeDefinitionManager: DefinitionManager
   ) {
     this.diagnosticCollection = diagnosticCollection;
     this.analyzerService = analyzerService;
     this.dataLoader = dataLoader;
     this.globalState = codebaseStateManager;
+    this.userCodeDefinitionManager = userCodeDefinitionManager;
   }
 
   /**
@@ -119,6 +124,9 @@ export class DiagnosticService {
       return;
     }
 
+    // // clear user-defined functions before analysis
+    // this.dataLoader.clearUserDefinedFunctions();
+
     const workspaceFolders = vscode.workspace.workspaceFolders;
 
     // If analyzer service is not available or server is not running, skip analysis
@@ -131,45 +139,76 @@ export class DiagnosticService {
       return;
     }
 
+    // Get relative path from workspace
+    const workspaceRoot = workspaceFolders[0].uri.fsPath;
+    let relativePath = path.relative(workspaceRoot, document.fileName);
+
+    // Normalize path separators to forward slashes
+    relativePath = relativePath.replace(/\\/g, "/");
+
+    // Prepend "user-code/"
+    const filePath = `user-code/${relativePath}`;
+
     try {
-      // Get relative path from workspace
-      const workspaceRoot = workspaceFolders[0].uri.fsPath;
-      let relativePath = path.relative(workspaceRoot, document.fileName);
+      const currentDocumentCode = document.getText();
 
-      // Normalize path separators to forward slashes
-      relativePath = relativePath.replace(/\\/g, "/");
+      const activeEditor = vscode.window.activeTextEditor;
+      if (activeEditor) {
+        console.log("line" + activeEditor.selection.active.line);
+        console.log("column" + activeEditor.selection.active.character);
 
-      // Prepend "user-code/"
-      const filePath = `user-code/${relativePath}`;
-
-      // Analyze file with new endpoint (file must be saved on disk)
-      const result = await this.analyzerService.analyzeFile(filePath);
-
-      if (result) {
-        const diagnostics = this.convertAnalysisErrorsToDiagnostics(
-          result.errors
+        const x = await this.analyzerService.getDefinitions(
+          activeEditor.selection.active.line + 1,
+          activeEditor.selection.active.character + 1,
+          filePath,
+          currentDocumentCode
         );
+        console.log(x);
 
-        // Update diagnostics for this document
-        this.diagnosticCollection.set(document.uri, diagnostics);
-
-        const errorCount = result.errors.filter((e) => e[0] === 0).length;
-        const warningCount = result.errors.filter((e) => e[0] === 1).length;
-
-        if (errorCount > 0 || warningCount > 0) {
-          console.log(
-            `[LeekScript] Analysis complete for ${path.basename(
-              document.fileName
-            )}: ${errorCount} errors, ${warningCount} warnings`
-          );
+        if (x) {
+          this.userCodeDefinitionManager.setUserDefinedClasses(x.classes);
+          this.userCodeDefinitionManager.setUserDefinedFunctions(x.functions);
+          this.userCodeDefinitionManager.setUserDefinedVariables(x.variables);
         }
       }
     } catch (error) {
       console.error(
-        `[LeekScript] Analysis failed for ${path.basename(document.fileName)}:`,
+        `[LeekScript] User definition retrieval failed for ${path.basename(
+          document.fileName
+        )}:`,
         error
       );
     }
+
+    // Analyze file with new endpoint (file must be saved on disk)
+    // try {
+    //   const result = await this.analyzerService.analyzeFile(filePath);
+
+    //   if (result) {
+    //     const diagnostics = this.convertAnalysisErrorsToDiagnostics(
+    //       result.errors
+    //     );
+
+    //     // Update diagnostics for this document
+    //     this.diagnosticCollection.set(document.uri, diagnostics);
+
+    //     const errorCount = result.errors.filter((e) => e[0] === 0).length;
+    //     const warningCount = result.errors.filter((e) => e[0] === 1).length;
+
+    //     if (errorCount > 0 || warningCount > 0) {
+    //       console.log(
+    //         `[LeekScript] Analysis complete for ${path.basename(
+    //           document.fileName
+    //         )}: ${errorCount} errors, ${warningCount} warnings`
+    //       );
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.error(
+    //     `[LeekScript] Analysis failed for ${path.basename(document.fileName)}:`,
+    //     error
+    //   );
+    // }
   }
 
   /**

@@ -14,6 +14,8 @@ import {
   NewFolderResponse,
   ListFoldersResponse,
 } from "./types";
+import { Console } from "console";
+import { GetDefinitionsResponse2 } from "./definitions.types";
 
 /**
  * Configuration for the LeekScript Code Analysis Server
@@ -312,9 +314,9 @@ export class CodeAnalyzerService {
     cursorColumn: number,
     filePath: string,
     fileCode: string
-  ): Promise<GetDefinitionsResponse | null> {
+  ): Promise<GetDefinitionsResponse2 | null> {
     try {
-      const response = await this.request<GetDefinitionsResponse>(
+      const response = await this.request<GetDefinitionsResponse2>(
         "POST",
         "/api/get-definitions",
         {
@@ -324,10 +326,11 @@ export class CodeAnalyzerService {
           file_code: fileCode,
         }
       );
+      console.log(`Received definitions response: ${JSON.stringify(response)}`);
 
-      ErrorHandler.logInfo(
-        `Found ${response.suggestions.length} definition(s) at ${filePath}:${cursorLine}:${cursorColumn}`
-      );
+      // ErrorHandler.logInfo(
+      //   `Found ${response.suggestions.length} definition(s) at ${filePath}:${cursorLine}:${cursorColumn}`
+      // );
 
       return response;
     } catch (error) {

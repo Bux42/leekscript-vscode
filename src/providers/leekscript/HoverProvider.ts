@@ -1,5 +1,9 @@
 import * as vscode from "vscode";
-import { DataLoader, FunctionData, ConstantData } from "../utils/DataLoader";
+import { DataLoader, FunctionData, ConstantData } from "./DataLoader";
+import {
+  UserArgument,
+  UserFunction,
+} from "../../services/analyzer/definitions.types";
 
 /**
  * Provides hover information for LeekScript symbols
@@ -21,12 +25,17 @@ export class LeekScriptHoverProvider implements vscode.HoverProvider {
     const range = document.getWordRangeAtPosition(position);
     const word = document.getText(range);
 
-    // TODO: Check user-defined symbols first
+    // TODO: Check user-defined symbols first (WE HANDLE USER DEFINED SYMBOLS IN IT'S OWN HOVER PRODVIDER)
+    // Check if it's a user-defined function
+    // const userFunc = this.dataLoader.findUserDefinedFunction(word);
+    // if (userFunc) {
+    //   return this.createUserFunctionHover(userFunc);
+    // }
 
     // Check if it's a built-in function
-    const func = this.dataLoader.findFunction(word);
-    if (func) {
-      return this.createFunctionHover(func);
+    const builtinFunc = this.dataLoader.findBuiltinFunction(word);
+    if (builtinFunc) {
+      return this.createBuiltinFunctionHover(builtinFunc);
     }
 
     // Check if it's a constant
@@ -37,11 +46,40 @@ export class LeekScriptHoverProvider implements vscode.HoverProvider {
 
     return null;
   }
+  createUserFunctionHover(func: UserFunction): vscode.Hover | null {
+    const docData = this.dataLoader.getDocData();
+
+    // Build function signature
+    const params = func.arguments
+      .map((arg: UserArgument, index: number) => {
+        const isOptional = arg.optional;
+        const optionalMark = isOptional ? "?" : "";
+        return `${arg.name}${optionalMark}: ${arg.type}`;
+      })
+      .join(", ");
+
+    const signature = `function ${func.name}(${params}): ${func.returnType}`;
+
+    // Create markdown content
+    const markdown = new vscode.MarkdownString();
+    markdown.supportHtml = true;
+    markdown.appendCodeblock(signature, "leekscript");
+
+    // Add return value description
+    const returnDocKey = `func_${func.name}_return`;
+    const returnDoc = docData[returnDocKey];
+    if (returnDoc) {
+      markdown.appendMarkdown("\n\n**Returns:**\n");
+      markdown.appendMarkdown(`${returnDoc}`);
+    }
+
+    return new vscode.Hover(markdown);
+  }
 
   /**
    * Create hover information for a function
    */
-  private createFunctionHover(func: FunctionData): vscode.Hover {
+  private createBuiltinFunctionHover(func: FunctionData): vscode.Hover {
     const docData = this.dataLoader.getDocData();
 
     // Build function signature

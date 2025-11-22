@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { DiagnosticService } from "../services/DiagnosticService";
+import { DataLoader } from "../providers/leekscript/DataLoader";
 
 /**
  * Handles all document-related events
@@ -7,7 +8,8 @@ import { DiagnosticService } from "../services/DiagnosticService";
 export class DocumentEventHandler {
   constructor(
     private context: vscode.ExtensionContext,
-    private diagnosticService: DiagnosticService
+    private diagnosticService: DiagnosticService,
+    private dataLoader: DataLoader
   ) {}
 
   /**
@@ -19,6 +21,7 @@ export class DocumentEventHandler {
     this.registerOpenListener();
     this.registerChangeListener();
     this.registerCloseListener();
+    this.registerTextEditorSelectionChangeListener();
   }
 
   /**
@@ -69,7 +72,7 @@ export class DocumentEventHandler {
       });
     });
 
-    this.context.subscriptions.push(deleteListener);
+    // this.context.subscriptions.push(deleteListener);
   }
 
   /**
@@ -102,6 +105,21 @@ export class DocumentEventHandler {
   }
 
   /**
+   * Register text editor selection change listener (need to update function definitions based on cursor position)
+   */
+  private registerTextEditorSelectionChangeListener(): void {
+    const textEditorSelectionChangeListener =
+      vscode.window.onDidChangeTextEditorSelection((e) => {
+        // console.log(`onDidChangeTextEditorSelection: ${JSON.stringify(e)}`);
+        console.log(
+          `onDidChangeTextEditorSelection: Uncomment the line above to get details.`
+        );
+      });
+
+    this.context.subscriptions.push(textEditorSelectionChangeListener);
+  }
+
+  /**
    * Register document close listener
    */
   private registerCloseListener(): void {
@@ -112,6 +130,7 @@ export class DocumentEventHandler {
         // Clear any pending debounce timer
         this.diagnosticService.clearDebounceTimer(uri);
         console.log(`LeekScript document closed: ${document.fileName}`);
+        // this.use
       }
     );
 

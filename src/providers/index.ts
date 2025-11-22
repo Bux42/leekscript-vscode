@@ -1,9 +1,6 @@
 /**
  * Export all language providers
  */
-export {
-  LeekScriptCompletionProvider,
-  LeekScriptMemberCompletionProvider,
-} from "./CompletionProvider";
-export { LeekScriptHoverProvider } from "./HoverProvider";
-export { LeekScriptDefinitionProvider } from "./DefinitionProvider";
+export { LeekScriptHoverProvider } from "./leekscript/HoverProvider";
+export { LeekScriptCompletionProvider } from "./leekscript/CompletionProvider";
+export { UserCodeDefinitionProvider } from "./user-code/DefinitionProvider";

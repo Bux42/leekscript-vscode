@@ -4,15 +4,17 @@ import { CodeAnalyzerService } from "./services/analyzer";
 import { StatusBarService } from "./services/StatusBarService";
 import { DiagnosticService } from "./services/DiagnosticService";
 import { CodeBaseStateManager } from "./services/codebase";
-import { DataLoader } from "./utils/DataLoader";
+import { DataLoader } from "./providers/leekscript/DataLoader";
 import { CommandRegistry } from "./utils/CommandRegistry";
 import { DocumentEventHandler } from "./utils/DocumentEventHandler";
 import {
   LeekScriptCompletionProvider,
-  LeekScriptMemberCompletionProvider,
   LeekScriptHoverProvider,
-  LeekScriptDefinitionProvider,
+  UserCodeDefinitionProvider,
 } from "./providers";
+import { UserCodeCompletionProvider } from "./providers/user-code/CompletionProvider";
+import { DefinitionManager } from "./providers/user-code/DefinitionManager";
+import { UserCodeHoverProvider } from "./providers/user-code/HoverProvider";
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
@@ -29,6 +31,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Initialize Data Loader
   const dataLoader = DataLoader.getInstance(context.extensionPath);
+
+  // Initialize user Definition Manager
+  const definitionManager = DefinitionManager.getInstance(
+    context.extensionPath
+  );
 
   // Initialize CodeBase State Manager
   codebaseStateManager = new CodeBaseStateManager(context);
@@ -49,11 +56,47 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.languages.createDiagnosticCollection("leekscript");
   context.subscriptions.push(diagnosticCollection);
 
+  // Register user code providers
+  const userCodeCompletionProvider = new UserCodeCompletionProvider(
+    definitionManager
+  );
+  const userCodeCompletionProviderRegistration =
+    vscode.languages.registerCompletionItemProvider(
+      "leekscript",
+      userCodeCompletionProvider
+    );
+
+  const userCodeHoverProvider = vscode.languages.registerHoverProvider(
+    "leekscript",
+    new UserCodeHoverProvider(definitionManager)
+  );
+
+  const userCodeDefinitionProvider =
+    vscode.languages.registerDefinitionProvider(
+      "leekscript",
+      new UserCodeDefinitionProvider(definitionManager)
+    );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "myExt.openDefinition",
+      (uri: vscode.Uri, pos: vscode.Position) => {
+        vscode.window.showTextDocument(uri, {
+          selection: new vscode.Range(pos, pos),
+        });
+      }
+    )
+  );
+
+  context.subscriptions.push(userCodeHoverProvider);
+  context.subscriptions.push(userCodeCompletionProviderRegistration);
+  context.subscriptions.push(userCodeDefinitionProvider);
   diagnosticService = new DiagnosticService(
     diagnosticCollection,
     analyzerService,
     dataLoader,
-    codebaseStateManager
+    codebaseStateManager,
+    definitionManager
   );
 
   // Check token configuration
@@ -85,20 +128,13 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   commandRegistry.registerAll();
 
-  // Register language providers
-  const completionProvider = vscode.languages.registerCompletionItemProvider(
-    "leekscript",
-    new LeekScriptCompletionProvider(dataLoader)
-  );
-  context.subscriptions.push(completionProvider);
-
-  const memberCompletionProvider =
+  // Register leekscript providers
+  const leekScriptCompletionProvider =
     vscode.languages.registerCompletionItemProvider(
       "leekscript",
-      new LeekScriptMemberCompletionProvider(),
-      "."
+      new LeekScriptCompletionProvider(dataLoader)
     );
-  context.subscriptions.push(memberCompletionProvider);
+  context.subscriptions.push(leekScriptCompletionProvider);
 
   const hoverProvider = vscode.languages.registerHoverProvider(
     "leekscript",
@@ -106,16 +142,11 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(hoverProvider);
 
-  const definitionProvider = vscode.languages.registerDefinitionProvider(
-    "leekscript",
-    new LeekScriptDefinitionProvider()
-  );
-  context.subscriptions.push(definitionProvider);
-
   // Register document event handlers
   const documentEventHandler = new DocumentEventHandler(
     context,
-    diagnosticService
+    diagnosticService,
+    dataLoader
   );
   documentEventHandler.registerAll();
 
