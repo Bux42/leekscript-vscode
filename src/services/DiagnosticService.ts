@@ -5,6 +5,7 @@ import { DataLoader, FunctionData } from "../providers/leekscript/DataLoader";
 import { CodeBaseStateManager } from "./codebase";
 import { UserCodeCompletionProvider } from "../providers/user-code/CompletionProvider";
 import { DefinitionManager } from "../providers/user-code/DefinitionManager";
+import { UserCodeSemanticTokensProvider } from "../providers/user-code/SemanticTokensProvider";
 
 /**
  * Debounce delay in milliseconds
@@ -21,6 +22,7 @@ export class DiagnosticService {
   private debounceTimers = new Map<string, NodeJS.Timeout>();
   private globalState: CodeBaseStateManager;
   private userCodeDefinitionManager: DefinitionManager;
+  private semanticTokensProvider: UserCodeSemanticTokensProvider | null = null;
 
   constructor(
     diagnosticCollection: vscode.DiagnosticCollection,
@@ -34,6 +36,15 @@ export class DiagnosticService {
     this.dataLoader = dataLoader;
     this.globalState = codebaseStateManager;
     this.userCodeDefinitionManager = userCodeDefinitionManager;
+  }
+
+  /**
+   * Set the semantic tokens provider for refreshing
+   */
+  public setSemanticTokensProvider(
+    provider: UserCodeSemanticTokensProvider
+  ): void {
+    this.semanticTokensProvider = provider;
   }
 
   /**
@@ -169,6 +180,11 @@ export class DiagnosticService {
           this.userCodeDefinitionManager.setUserDefinedClasses(x.classes);
           this.userCodeDefinitionManager.setUserDefinedFunctions(x.functions);
           this.userCodeDefinitionManager.setUserDefinedVariables(x.variables);
+
+          // Refresh semantic tokens to update highlighting
+          if (this.semanticTokensProvider) {
+            this.semanticTokensProvider.refresh();
+          }
         }
       }
     } catch (error) {

@@ -81,10 +81,13 @@ export async function activate(context: vscode.ExtensionContext) {
       new UserCodeDefinitionProvider(definitionManager)
     );
 
+  const semanticTokensProviderInstance = new UserCodeSemanticTokensProvider(
+    definitionManager
+  );
   const userCodeSemanticTokensProvider =
     vscode.languages.registerDocumentSemanticTokensProvider(
       "leekscript",
-      new UserCodeSemanticTokensProvider(definitionManager),
+      semanticTokensProviderInstance,
       legend
     );
 
@@ -110,6 +113,9 @@ export async function activate(context: vscode.ExtensionContext) {
     codebaseStateManager,
     definitionManager
   );
+
+  // Link semantic tokens provider to diagnostic service for refresh
+  diagnosticService.setSemanticTokensProvider(semanticTokensProviderInstance);
 
   // Check token configuration
   const isTokenConfigured = leekWarsService.isTokenConfigured();

@@ -9,9 +9,19 @@ export class UserCodeSemanticTokensProvider
   implements vscode.DocumentSemanticTokensProvider
 {
   private definitionManager: DefinitionManager;
+  private _onDidChangeSemanticTokens = new vscode.EventEmitter<void>();
+  public readonly onDidChangeSemanticTokens =
+    this._onDidChangeSemanticTokens.event;
 
   constructor(definitionManager: DefinitionManager) {
     this.definitionManager = definitionManager;
+  }
+
+  /**
+   * Trigger a refresh of semantic tokens
+   */
+  public refresh(): void {
+    this._onDidChangeSemanticTokens.fire();
   }
 
   async provideDocumentSemanticTokens(
