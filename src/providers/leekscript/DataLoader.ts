@@ -1,10 +1,5 @@
 import * as path from "path";
 import * as fs from "fs";
-import {
-  UserClass,
-  UserFunction,
-  UserVariable,
-} from "../../services/analyzer/definitions.types";
 
 /**
  * Function data structure from functions.json
