@@ -170,6 +170,19 @@ export class UserCodeCompletionProvider
           );
           completionItems.push(item);
         }
+
+        // Fields
+        for (const field of userClass.fields) {
+          const item = new vscode.CompletionItem(
+            field.name,
+            vscode.CompletionItemKind.Field
+          );
+          item.detail = `var ${field.name}: ${field.type}`;
+          item.documentation = new vscode.MarkdownString(
+            `Field of class **${userClass.name}**`
+          );
+          completionItems.push(item);
+        }
       }
     }
     return completionItems;
