@@ -25,6 +25,8 @@ export class UserCodeDefinitionProvider implements vscode.DefinitionProvider {
     // check if cursor is after a dot (.)
     const lineText = document.lineAt(position).text;
     const charIndex = position.character - 1;
+
+    console.log("lineText:", lineText, "charIndex:", charIndex);
     if (charIndex >= 0 && lineText.charAt(charIndex) === ".") {
       console.log("Definition request triggered after a dot, ignoring.");
       return null;

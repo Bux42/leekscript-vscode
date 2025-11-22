@@ -27,9 +27,9 @@ export class LeekScriptCompletionProvider
     const charIndex = position.character - 1;
 
     if (charIndex >= 0 && lineText.charAt(charIndex) === ".") {
-      console.log(
-        "Definition request triggered after a dot in LeekScriptCompletionProvider, ignoring."
-      );
+      // console.log(
+      //   "Definition request triggered after a dot in LeekScriptCompletionProvider, ignoring."
+      // );
       return [];
     }
 

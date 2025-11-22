@@ -33,9 +33,52 @@ export class UserCodeCompletionProvider
     const charIndex = position.character - 1;
 
     if (charIndex >= 0 && lineText.charAt(charIndex) === ".") {
-      console.log(
-        "Completion request triggered after a dot in UserCodeCompletionProvider, ignoring."
-      );
+      // get word before dot
+      const wordBeforeDot = lineText.substring(0, charIndex).split(/\W+/).pop();
+      console.log("Word before dot:", wordBeforeDot);
+
+      const userVariable: UserVariable | null =
+        this.definitionProvider.findUserDefinedVariable(wordBeforeDot || "");
+
+      if (userVariable) {
+        console.log(
+          `Providing member completions for variable: ${userVariable.name}`
+        );
+        const userVariableType = userVariable.type;
+
+        const userClass: UserClass | null =
+          this.definitionProvider.findUserDefinedClass(userVariableType);
+
+        if (userClass) {
+          console.log(
+            `Found class ${userClass.name} for variable ${userVariable.name}, providing member completions for ${userClass.methods.length} methods.`
+          );
+          // Provide class member completions (methods and fields)
+          // Methods
+          for (const method of userClass.methods) {
+            const item = new vscode.CompletionItem(
+              method.name,
+              vscode.CompletionItemKind.Method
+            );
+
+            const params = method.arguments
+              .map(
+                (arg, index) => `${arg.name}: ${method.arguments[index].type}`
+              )
+              .join(", ");
+            item.detail = `${method.name}(${params}): ${
+              method.returnType || "void"
+            }`;
+            item.documentation = new vscode.MarkdownString(
+              `Method of class **${userClass.name}**`
+            );
+            completionItems.push(item);
+          }
+          // Fields - TODO: implement when fields are defined in UserClass
+
+          return completionItems;
+        }
+      }
       return [];
     }
 
@@ -92,13 +135,6 @@ export class UserCodeCompletionProvider
       );
       completionItems.push(item);
     }
-
-    // // Check if user typed "ClassName."
-    // if (linePrefix.endsWith("testInstance.")) {
-    //   completionItems.push(
-    //     createMethodCompletion("publicRealMethod", "real", "A property")
-    //   );
-    // }
 
     return completionItems;
   }
