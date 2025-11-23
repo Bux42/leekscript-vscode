@@ -24,13 +24,11 @@ export class LeekScriptHoverProvider implements vscode.HoverProvider {
   ): vscode.Hover | null {
     const range = document.getWordRangeAtPosition(position);
     const word = document.getText(range);
+    const line = document.lineAt(position).text;
 
-    // TODO: Check user-defined symbols first (WE HANDLE USER DEFINED SYMBOLS IN IT'S OWN HOVER PRODVIDER)
-    // Check if it's a user-defined function
-    // const userFunc = this.dataLoader.findUserDefinedFunction(word);
-    // if (userFunc) {
-    //   return this.createUserFunctionHover(userFunc);
-    // }
+    console.log(
+      `Hover requested for LeekScript symbol: ${word} in line: ${line}`
+    );
 
     // Check if it's a built-in function
     const builtinFunc = this.dataLoader.findBuiltinFunction(word);
