@@ -173,6 +173,12 @@ export class UserCodeCompletionProvider
 
         // Fields
         for (const field of userClass.fields) {
+          // if (field.level !== "public") {
+          //   console.log(
+          //     `Skipping non-public field: ${field.name} (level: ${field.level})`
+          //   );
+          //   continue; // skip non-public fields
+          // }
           const item = new vscode.CompletionItem(
             field.name,
             vscode.CompletionItemKind.Field
