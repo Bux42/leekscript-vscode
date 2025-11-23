@@ -9,6 +9,10 @@ export interface UserClassField {
   name: string;
   type: string;
   level: string;
+  col: number;
+  line: number;
+  fileName: string;
+  folderName: string;
 }
 
 export interface UserClass {
