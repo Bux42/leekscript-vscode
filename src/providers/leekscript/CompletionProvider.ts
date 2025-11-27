@@ -218,6 +218,7 @@ export class LeekScriptCompletionProvider
       "instanceof",
       "as",
       "final",
+      "Array",
     ];
 
     return keywords.map((keyword) => {

@@ -19,6 +19,7 @@ import {
   UserCodeSemanticTokensProvider,
   legend,
 } from "./providers/user-code/SemanticTokensProvider";
+import { UserDotCodeCompletionProvider } from "./providers/user-code/DotCompletionProvider";
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
@@ -64,10 +65,21 @@ export async function activate(context: vscode.ExtensionContext) {
   const userCodeCompletionProvider = new UserCodeCompletionProvider(
     definitionManager
   );
+  const userDotCodeCompletionProvider = new UserDotCodeCompletionProvider(
+    definitionManager
+  );
+
   const userCodeCompletionProviderRegistration =
     vscode.languages.registerCompletionItemProvider(
       "leekscript",
       userCodeCompletionProvider
+    );
+
+  const userDotCodeCompletionProviderRegistration =
+    vscode.languages.registerCompletionItemProvider(
+      "leekscript",
+      userDotCodeCompletionProvider,
+      "."
     );
 
   const userCodeHoverProvider = vscode.languages.registerHoverProvider(

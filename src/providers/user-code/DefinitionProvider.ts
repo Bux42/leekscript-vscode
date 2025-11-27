@@ -27,15 +27,37 @@ export class UserCodeDefinitionProvider implements vscode.DefinitionProvider {
     const charIndex = position.character - 1;
 
     console.log("lineText:", lineText, "charIndex:", charIndex);
-    if (charIndex >= 0 && lineText.charAt(charIndex) === ".") {
-      console.log("Definition request triggered after a dot, ignoring.");
-      return null;
-    }
 
     const range = document.getWordRangeAtPosition(position);
     const word = document.getText(range);
 
     console.log(`Looking for definition of: ${word}`);
+
+    // check if character before word is a dot (.)
+    if (range) {
+      const tokenBeforeWord = lineText.charAt(range!.start.character - 1);
+      console.log("tokenBeforeWord:", tokenBeforeWord);
+
+      if (tokenBeforeWord === ".") {
+        // get word before the dot
+        const wordBeforeDotRange = document.getWordRangeAtPosition(
+          new vscode.Position(position.line, range!.start.character - 2)
+        );
+        const tokenBeforeDot = document.getText(wordBeforeDotRange);
+
+        console.log(
+          "Definition request triggered after a dot",
+          "tokenBeforeDot:",
+          tokenBeforeDot
+        );
+        return this.createMemberDefinition(
+          range,
+          document.getText(range),
+          lineText,
+          tokenBeforeDot
+        );
+      }
+    }
 
     // Check if it's a user function
     const userFunc = this.definitionProvider.findUserDefinedFunction(word);
@@ -53,6 +75,84 @@ export class UserCodeDefinitionProvider implements vscode.DefinitionProvider {
     const userVariable = this.definitionProvider.findUserDefinedVariable(word);
     if (userVariable) {
       return this.createUserVariableDefinition(userVariable);
+    }
+    return null;
+  }
+
+  createMemberDefinition(
+    range: vscode.Range,
+    word: string,
+    lineText: string,
+    tokenBeforeWord: string
+  ): vscode.Definition | null {
+    // get token before the dot
+
+    console.log("searching for member definition of word:", tokenBeforeWord);
+    const userVariable: UserVariable | null =
+      this.definitionProvider.findUserDefinedVariable(tokenBeforeWord || "");
+
+    if (userVariable) {
+      console.log(
+        `Providing member definition for variable: ${userVariable.name} of type: ${userVariable.type}`
+      );
+
+      // Check if the variable's type is a user-defined class
+      const userClass = this.definitionProvider.findUserDefinedClass(
+        userVariable.type
+      );
+
+      if (userClass) {
+        console.log(
+          `Search member definition for class: ${userClass.name} members`
+        );
+        // Check if the member is a field
+        const classField = userClass.fields.find(
+          (field) => field.name === word
+        );
+        if (classField) {
+          console.log(
+            `Found member definition for field: ${classField.name} of class: ${userClass.name}`
+          );
+          const position = new vscode.Position(
+            classField.line - 1,
+            classField.col
+          );
+
+          return new vscode.Location(
+            vscode.Uri.file(
+              getDefinitionAbsolutePath(
+                classField.fileName,
+                classField.folderName
+              )!
+            ),
+            position
+          );
+        }
+
+        // Check if the member is a method
+        const classMethod = userClass.methods.find(
+          (method) => method.name === word
+        );
+        if (classMethod) {
+          console.log(
+            `Found member definition for method: ${classMethod.name} of class: ${userClass.name}`
+          );
+          const position = new vscode.Position(
+            classMethod.line - 1,
+            classMethod.col
+          );
+
+          return new vscode.Location(
+            vscode.Uri.file(
+              getDefinitionAbsolutePath(
+                classMethod.fileName,
+                classMethod.folderName
+              )!
+            ),
+            position
+          );
+        }
+      }
     }
     return null;
   }
