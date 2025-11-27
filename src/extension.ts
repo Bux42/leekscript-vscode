@@ -20,6 +20,10 @@ import {
   legend,
 } from "./providers/user-code/SemanticTokensProvider";
 import { UserDotCodeCompletionProvider } from "./providers/user-code/DotCompletionProvider";
+import {
+  LeekScriptFormattingProvider,
+  LeekScriptRangeFormattingProvider,
+} from "./providers/leekscript/FormattingProvider";
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
@@ -171,6 +175,21 @@ export async function activate(context: vscode.ExtensionContext) {
     new LeekScriptHoverProvider(dataLoader)
   );
   context.subscriptions.push(hoverProvider);
+
+  // Register formatting providers
+  const formattingProvider =
+    vscode.languages.registerDocumentFormattingEditProvider(
+      "leekscript",
+      new LeekScriptFormattingProvider()
+    );
+  context.subscriptions.push(formattingProvider);
+
+  const rangeFormattingProvider =
+    vscode.languages.registerDocumentRangeFormattingEditProvider(
+      "leekscript",
+      new LeekScriptRangeFormattingProvider()
+    );
+  context.subscriptions.push(rangeFormattingProvider);
 
   // Register document event handlers
   const documentEventHandler = new DocumentEventHandler(
