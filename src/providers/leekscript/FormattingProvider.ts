@@ -1,6 +1,37 @@
 import * as vscode from "vscode";
 import { js_beautify } from "js-beautify";
 
+function fixArrays(text: string): string {
+  // find all occurrences of Array<...> remove spaces
+  const regex = /Array\s*<\s*(?:Array\s*<\s*[^>]+?\s*>\s*|[^>]+?)\s*>/g;
+  return text.replace(regex, (match) => {
+    return (
+      match
+        // remove all spaces around < and >
+        .replace(/\s+/g, "")
+        // put back spaces around |
+        .replace(/\|/g, " | ")
+    );
+  });
+}
+
+function fixMaps(text: string): string {
+  // find all occurrences of Map<...> remove spaces
+  const regex =
+    /Map\s*<\s*(?:Map\s*<\s*[^>]+?\s*>\s*|[^>]+?)\s*,\s*(?:Map\s*<\s*[^>]+?\s*>\s*|[^>]+?)\s*>/g;
+  return text.replace(regex, (match) => {
+    return (
+      match
+        // remove all spaces around < and >
+        .replace(/\s+/g, "")
+        // put back spaces around |
+        .replace(/\|/g, " | ")
+        // put back spaces after commas
+        .replace(/,/g, ", ")
+    );
+  });
+}
+
 /**
  * Provides document formatting for LeekScript
  */
@@ -35,7 +66,10 @@ export class LeekScriptFormattingProvider
     };
 
     // Format the code using js-beautify
-    const formattedText = js_beautify(text, beautifyOptions);
+    let formattedText = js_beautify(text, beautifyOptions);
+
+    formattedText = fixArrays(formattedText);
+    formattedText = fixMaps(formattedText);
 
     // Create a single edit that replaces the entire document
     const fullRange = new vscode.Range(
@@ -84,7 +118,10 @@ export class LeekScriptRangeFormattingProvider
     };
 
     // Format the code using js-beautify
-    const formattedText = js_beautify(text, beautifyOptions);
+    let formattedText = js_beautify(text, beautifyOptions);
+
+    formattedText = fixArrays(formattedText);
+    formattedText = fixMaps(formattedText);
 
     edits.push(vscode.TextEdit.replace(range, formattedText));
 

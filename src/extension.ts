@@ -177,19 +177,19 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(hoverProvider);
 
   // Register formatting providers (disabled for now, issues with Array<type> syntax)
-  // const formattingProvider =
-  //   vscode.languages.registerDocumentFormattingEditProvider(
-  //     "leekscript",
-  //     new LeekScriptFormattingProvider()
-  //   );
-  // context.subscriptions.push(formattingProvider);
+  const formattingProvider =
+    vscode.languages.registerDocumentFormattingEditProvider(
+      "leekscript",
+      new LeekScriptFormattingProvider()
+    );
+  context.subscriptions.push(formattingProvider);
 
-  // const rangeFormattingProvider =
-  //   vscode.languages.registerDocumentRangeFormattingEditProvider(
-  //     "leekscript",
-  //     new LeekScriptRangeFormattingProvider()
-  //   );
-  // context.subscriptions.push(rangeFormattingProvider);
+  const rangeFormattingProvider =
+    vscode.languages.registerDocumentRangeFormattingEditProvider(
+      "leekscript",
+      new LeekScriptRangeFormattingProvider()
+    );
+  context.subscriptions.push(rangeFormattingProvider);
 
   // Register document event handlers
   const documentEventHandler = new DocumentEventHandler(
