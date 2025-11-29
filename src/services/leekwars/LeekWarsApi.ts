@@ -138,4 +138,13 @@ export class LeekWarsApiService {
   async getAI(aiId: number): Promise<GetAIResponse> {
     return this.request("GET", `ai/get/${aiId}`);
   }
+
+  /**
+   * Delete a folder by its ID
+   */
+  async deleteFolder(
+    folderId: number
+  ): Promise<{ success: boolean; error?: string }> {
+    return this.request("POST", `ai-folder/delete/${folderId}`);
+  }
 }
