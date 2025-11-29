@@ -7,6 +7,7 @@ import {
   GetFarmerAIsResponse,
 } from "./LeekWarsApi";
 import { CodeBaseStateManager } from "../codebase";
+import { LocalFilesService } from "../local-files/LocalFilesService";
 
 /**
  * Service for managing LeekWars AI synchronization
@@ -173,6 +174,12 @@ export class LeekWarsService {
       // pull all AIs to get the latest data in lastResponse
       const farmerAIs = await this.apiService!.getFarmerAIs();
       console.log("[LeekWars Service] getFarmerAIs response:", farmerAIs);
+
+      const localFilesService = LocalFilesService.getInstance();
+      const localFilesState = await localFilesService.getLocalFilesState();
+
+      console.log("Local Files State:", localFilesState.root[0].children);
+
       // Store the response for later use and persist it
       await this.storeFarmerAIsResponse(farmerAIs);
     } catch (error: any) {
