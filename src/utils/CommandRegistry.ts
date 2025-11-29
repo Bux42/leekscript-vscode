@@ -28,11 +28,24 @@ export class CommandRegistry {
    * Register LeekWars-related commands
    */
   private registerLeekWarsCommands(): void {
+    // pullAI command
     this.context.subscriptions.push(
       vscode.commands.registerCommand("leekscript.pullAllAIs", async () => {
         this.statusBarService.setBusy(true, "Pulling AIs...");
         try {
           await this.leekWarsService.pullAllAIs();
+        } finally {
+          this.statusBarService.setBusy(false);
+        }
+      })
+    );
+
+    // getAIDiffs command
+    this.context.subscriptions.push(
+      vscode.commands.registerCommand("leekscript.getAIDiffs", async () => {
+        this.statusBarService.setBusy(true, "Getting AI diffs...");
+        try {
+          await this.leekWarsService.getAIDiffs();
         } finally {
           this.statusBarService.setBusy(false);
         }

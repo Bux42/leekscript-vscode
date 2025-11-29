@@ -163,6 +163,26 @@ export class LeekWarsService {
   }
 
   /**
+   * Get diffs of local AIs against LeekWars versions
+   */
+  async getAIDiffs(): Promise<void> {
+    if (!this.initializeApi()) {
+      return;
+    }
+    try {
+      // pull all AIs to get the latest data in lastResponse
+      const farmerAIs = await this.apiService!.getFarmerAIs();
+      console.log("[LeekWars Service] getFarmerAIs response:", farmerAIs);
+      // Store the response for later use and persist it
+      await this.storeFarmerAIsResponse(farmerAIs);
+    } catch (error: any) {
+      vscode.window.showErrorMessage(
+        `Failed to get AI diffs: ${error.message}`
+      );
+    }
+  }
+
+  /**
    * Pull all AIs from LeekWars and save them locally
    */
   async pullAllAIs(): Promise<void> {

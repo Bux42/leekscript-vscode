@@ -57,6 +57,11 @@
         "category": "LeekScript"
       },
       {
+        "command": "leekscript.getAIDiffs",
+        "title": "LeekWars: Get AI Diffs",
+        "category": "LeekScript"
+      },
+      {
         "command": "leekscript.pullAI",
         "title": "LeekWars: Pull AI",
         "category": "LeekScript"
