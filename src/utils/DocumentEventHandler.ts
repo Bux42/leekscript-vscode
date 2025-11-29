@@ -110,10 +110,16 @@ export class DocumentEventHandler {
   private registerTextEditorSelectionChangeListener(): void {
     const textEditorSelectionChangeListener =
       vscode.window.onDidChangeTextEditorSelection((e) => {
-        // console.log(`onDidChangeTextEditorSelection: ${JSON.stringify(e)}`);
-        console.log(
-          `onDidChangeTextEditorSelection: Uncomment the line above to get details.`
-        );
+        // Only proceed if the document is a LeekScript document
+        if (
+          !e.textEditor ||
+          !this.isLeekScriptDocument(e.textEditor.document)
+        ) {
+          return;
+        }
+
+        // Get user-defined code definitions at cursor position
+        this.diagnosticService.getUserCodeDefinitions();
       });
 
     this.context.subscriptions.push(textEditorSelectionChangeListener);

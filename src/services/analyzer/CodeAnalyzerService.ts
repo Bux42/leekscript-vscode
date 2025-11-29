@@ -316,6 +316,8 @@ export class CodeAnalyzerService {
     fileCode: string
   ): Promise<GetDefinitionsResponse2 | null> {
     try {
+      // time the request
+      const startTime = Date.now();
       const response = await this.request<GetDefinitionsResponse2>(
         "POST",
         "/api/get-definitions",
@@ -326,7 +328,16 @@ export class CodeAnalyzerService {
           file_code: fileCode,
         }
       );
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+
       console.log(`Received definitions response: ${JSON.stringify(response)}`);
+
+      const sizeOfResponse = JSON.stringify(response).length;
+
+      console.log(
+        `getDefinitions request took ${duration} ms response size: ${sizeOfResponse} bytes for ${filePath}:${cursorLine}:${cursorColumn}`
+      );
 
       // ErrorHandler.logInfo(
       //   `Found ${response.suggestions.length} definition(s) at ${filePath}:${cursorLine}:${cursorColumn}`

@@ -125,32 +125,23 @@ export class DiagnosticService {
   }
 
   /**
-   * Analyze a LeekScript document
+   * Get definitions for user code and update definition manager
    */
-  async analyzeDocument(document: vscode.TextDocument): Promise<void> {
-    if (
-      document.languageId !== "leekscript" &&
-      !document.fileName.endsWith(".leek")
-    ) {
-      return;
-    }
-
-    // // clear user-defined functions before analysis
-    // this.dataLoader.clearUserDefinedFunctions();
-
+  async getUserCodeDefinitions() {
+    // Get relative path from workspace
     const workspaceFolders = vscode.workspace.workspaceFolders;
-
-    // If analyzer service is not available or server is not running, skip analysis
-    if (!this.analyzerService.getServerStatus()) {
-      return;
-    }
 
     if (!workspaceFolders || workspaceFolders.length === 0) {
       console.error("[LeekScript] No workspace folder found");
       return;
     }
 
-    // Get relative path from workspace
+    const document = vscode.window.activeTextEditor?.document;
+    if (!document) {
+      console.error("[LeekScript] No active document found");
+      return;
+    }
+
     const workspaceRoot = workspaceFolders[0].uri.fsPath;
     let relativePath = path.relative(workspaceRoot, document.fileName);
 
@@ -195,36 +186,70 @@ export class DiagnosticService {
         error
       );
     }
+  }
+
+  /**
+   * Analyze a LeekScript document
+   */
+  async analyzeDocument(document: vscode.TextDocument): Promise<void> {
+    if (
+      document.languageId !== "leekscript" &&
+      !document.fileName.endsWith(".leek")
+    ) {
+      return;
+    }
+
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+
+    // If analyzer service is not available or server is not running, skip analysis
+    if (!this.analyzerService.getServerStatus()) {
+      return;
+    }
+
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      console.error("[LeekScript] No workspace folder found");
+      return;
+    }
+
+    // Get relative path from workspace
+    const workspaceRoot = workspaceFolders[0].uri.fsPath;
+    let relativePath = path.relative(workspaceRoot, document.fileName);
+
+    // Normalize path separators to forward slashes
+    relativePath = relativePath.replace(/\\/g, "/");
+
+    // Prepend "user-code/"
+    const filePath = `user-code/${relativePath}`;
 
     // Analyze file with new endpoint (file must be saved on disk)
-    // try {
-    //   const result = await this.analyzerService.analyzeFile(filePath);
+    try {
+      const result = await this.analyzerService.analyzeFile(filePath);
 
-    //   if (result) {
-    //     const diagnostics = this.convertAnalysisErrorsToDiagnostics(
-    //       result.errors
-    //     );
+      if (result) {
+        const diagnostics = this.convertAnalysisErrorsToDiagnostics(
+          result.errors
+        );
 
-    //     // Update diagnostics for this document
-    //     this.diagnosticCollection.set(document.uri, diagnostics);
+        // Update diagnostics for this document
+        this.diagnosticCollection.set(document.uri, diagnostics);
 
-    //     const errorCount = result.errors.filter((e) => e[0] === 0).length;
-    //     const warningCount = result.errors.filter((e) => e[0] === 1).length;
+        const errorCount = result.errors.filter((e) => e[0] === 0).length;
+        const warningCount = result.errors.filter((e) => e[0] === 1).length;
 
-    //     if (errorCount > 0 || warningCount > 0) {
-    //       console.log(
-    //         `[LeekScript] Analysis complete for ${path.basename(
-    //           document.fileName
-    //         )}: ${errorCount} errors, ${warningCount} warnings`
-    //       );
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error(
-    //     `[LeekScript] Analysis failed for ${path.basename(document.fileName)}:`,
-    //     error
-    //   );
-    // }
+        if (errorCount > 0 || warningCount > 0) {
+          console.log(
+            `[LeekScript] Analysis complete for ${path.basename(
+              document.fileName
+            )}: ${errorCount} errors, ${warningCount} warnings`
+          );
+        }
+      }
+    } catch (error) {
+      console.error(
+        `[LeekScript] Analysis failed for ${path.basename(document.fileName)}:`,
+        error
+      );
+    }
   }
 
   /**
