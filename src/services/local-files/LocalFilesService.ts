@@ -6,6 +6,7 @@ import {
   LocalFilesState,
   TreeNode,
 } from "./LocalFilesService.types";
+import { GetFarmerAIsResponse } from "../leekwars/LeekWarsApi";
 
 export class LocalFilesService {
   private static instance: LocalFilesService;
@@ -39,6 +40,118 @@ export class LocalFilesService {
     }
 
     return { root };
+  }
+
+  /**
+   * Converts a GetFarmerAIsResponse to LocalFilesState format
+   */
+  public farmersAIToLocalFileState(
+    response: GetFarmerAIsResponse
+  ): LocalFilesState {
+    if (!response.ais || !response.folders) {
+      return { root: [] };
+    }
+
+    // Create a map of folder ID to folder info
+    const folderMap = new Map<
+      number,
+      { id: number; name: string; folder: number }
+    >();
+    response.folders.forEach((folder) => {
+      folderMap.set(folder.id, folder);
+    });
+
+    // Create a map to hold folder nodes by their ID
+    const folderNodesMap = new Map<number, FolderNode>();
+
+    // Initialize root node (folder ID 0)
+    const rootChildren: TreeNode[] = [];
+
+    // Create all folder nodes first
+    response.folders.forEach((folder) => {
+      const folderNode: FolderNode = {
+        name: folder.name,
+        path: `/${folder.name}`,
+        type: "folder",
+        children: [],
+        leekWarsFolderInfo: folder,
+      };
+      folderNodesMap.set(folder.id, folderNode);
+    });
+
+    // Add AI files to their respective folders
+    response.ais.forEach((ai) => {
+      const fileNode: FileNode = {
+        name: ai.name,
+        path: ai.name,
+        type: "file",
+        leekWarsAIInfo: ai,
+      };
+
+      if (ai.folder === 0) {
+        // AI is in root
+        rootChildren.push(fileNode);
+      } else {
+        // AI is in a folder
+        const parentFolder = folderNodesMap.get(ai.folder);
+        if (parentFolder) {
+          parentFolder.children.push(fileNode);
+          // Update path to include parent folder
+          fileNode.path = `${parentFolder.path}/${ai.name}`;
+        }
+      }
+    });
+
+    // Build the folder hierarchy
+    response.folders.forEach((folder) => {
+      const folderNode = folderNodesMap.get(folder.id);
+      if (!folderNode) return;
+
+      if (folder.folder === 0) {
+        // This folder is at root level
+        if (folderNode.children.length > 0) {
+          rootChildren.push(folderNode);
+        }
+      } else {
+        // This folder is nested in another folder
+        const parentFolder = folderNodesMap.get(folder.folder);
+        if (parentFolder) {
+          if (folderNode.children.length > 0) {
+            parentFolder.children.push(folderNode);
+            // Update path to include parent folder
+            folderNode.path = `${parentFolder.path}/${folderNode.name}`;
+            // Update all children paths recursively
+            this.updateChildrenPaths(folderNode);
+          }
+        }
+      }
+    });
+
+    // If we have a single workspace-like root, wrap it
+    if (rootChildren.length > 0) {
+      const workspaceRoot: FolderNode = {
+        name: "LeekWars AIs",
+        path: "/",
+        type: "folder",
+        children: rootChildren,
+        leekWarsFolderInfo: { id: 0, name: "LeekWars AIs", folder: 0 },
+      };
+      return { root: [workspaceRoot] };
+    }
+
+    return { root: [] };
+  }
+
+  /**
+   * Helper method to recursively update paths for all children nodes
+   */
+  private updateChildrenPaths(folderNode: FolderNode): void {
+    folderNode.children.forEach((child) => {
+      child.path = `${folderNode.path}/${child.name}`;
+      if (child.type === "folder") {
+        this.updateChildrenPaths(child);
+      }
+    });
   }
 
   /**

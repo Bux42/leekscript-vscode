@@ -8,6 +8,7 @@ import {
 } from "./LeekWarsApi";
 import { CodeBaseStateManager } from "../codebase";
 import { LocalFilesService } from "../local-files/LocalFilesService";
+import { FileNode, FolderNode } from "../local-files/LocalFilesService.types";
 
 /**
  * Service for managing LeekWars AI synchronization
@@ -173,15 +174,26 @@ export class LeekWarsService {
     try {
       // pull all AIs to get the latest data in lastResponse
       const farmerAIs = await this.apiService!.getFarmerAIs();
-      console.log("[LeekWars Service] getFarmerAIs response:", farmerAIs);
+      // Store the response for later use and persist it
+      await this.storeFarmerAIsResponse(farmerAIs);
 
       const localFilesService = LocalFilesService.getInstance();
       const localFilesState = await localFilesService.getLocalFilesState();
 
       console.log("Local Files State:", localFilesState.root[0].children);
 
-      // Store the response for later use and persist it
-      await this.storeFarmerAIsResponse(farmerAIs);
+      const farmersAIToLocalFileState =
+        localFilesService.farmersAIToLocalFileState(farmerAIs);
+
+      console.log(
+        "Farmer's AIs to Local File State:",
+        farmersAIToLocalFileState.root[0].children
+      );
+
+      const localFilesRoot: (FolderNode | FileNode)[] =
+        localFilesState.root[0].children;
+      const remoteFilesRoot: (FolderNode | FileNode)[] =
+        farmersAIToLocalFileState.root[0].children;
     } catch (error: any) {
       vscode.window.showErrorMessage(
         `Failed to get AI diffs: ${error.message}`
