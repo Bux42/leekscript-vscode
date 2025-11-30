@@ -202,6 +202,7 @@ export class LeekWarsApiService {
 
   /**
    * Get a specific AI with its code
+   * @param aiId ID of the AI to retrieve
    */
   async getAI(aiId: number): Promise<GetAIResponse> {
     return this.request("GET", `ai/get/${aiId}`);
@@ -209,6 +210,8 @@ export class LeekWarsApiService {
 
   /**
    * Create a new folder
+   * @param name Name of the new folder
+   * @param parentFolderId ID of the parent folder (default is 0 for root)
    */
   async createFolder(
     name: string,
@@ -222,6 +225,7 @@ export class LeekWarsApiService {
 
   /**
    * Delete a folder by its ID
+   * @param folderId ID of the folder to delete
    */
   async deleteFolder(
     folderId: number
@@ -233,8 +237,28 @@ export class LeekWarsApiService {
 
   /**
    * Delete an AI by its ID
+   * @param aiId ID of the AI to delete
    */
   async deleteAI(aiId: number): Promise<{ success: boolean; error?: string }> {
     return this.requestWithBody("DELETE", `ai/delete/`, { ai_id: aiId });
+  }
+
+  /**
+   * Create new AI
+   * @param folder_id ID of the folder to create the AI in
+   * @param name Name of the new AI
+   */
+  async createAI({
+    folder_id,
+    name,
+  }: {
+    folder_id: number;
+    name: string;
+  }): Promise<{ id: number }> {
+    return this.requestWithBody("POST", "ai/new-name", {
+      folder_id,
+      name,
+      version: 4, // default to version 4
+    });
   }
 }
