@@ -8,7 +8,11 @@ import {
 } from "./LeekWarsApi";
 import { CodeBaseStateManager } from "../codebase";
 import { LocalFilesService } from "../local-files/LocalFilesService";
-import { FileNode, FolderNode } from "../local-files/LocalFilesService.types";
+import {
+  FileNode,
+  FolderNode,
+  LocalFilesState,
+} from "../local-files/LocalFilesService.types";
 
 /**
  * Service for managing LeekWars AI synchronization
@@ -255,6 +259,97 @@ export class LeekWarsService {
   }
 
   /**
+   * Find folders that exist in local but not in remote
+   */
+  private findNewFolders(
+    local: (FolderNode | FileNode)[],
+    remote: (FolderNode | FileNode)[]
+  ): FolderNode[] {
+    const newFolders: FolderNode[] = [];
+
+    // Create a map of remote folder names for quick lookup
+    const remoteFolderMap = new Map<string, FolderNode>();
+    for (const node of remote) {
+      if (node.type === "folder") {
+        remoteFolderMap.set(node.name, node as FolderNode);
+      }
+    }
+
+    // Check each local folder
+    for (const localNode of local) {
+      if (localNode.type === "folder") {
+        const localFolder = localNode as FolderNode;
+        const remoteFolder = remoteFolderMap.get(localFolder.name);
+
+        if (!remoteFolder) {
+          // Folder doesn't exist remotely - add it and all its subfolders
+          newFolders.push(localFolder);
+          // Recursively collect all subfolders within this new folder
+          const allSubFolders = this.collectAllSubFolders(localFolder);
+          newFolders.push(...allSubFolders);
+        } else {
+          // Folder exists, recursively check children
+          const newSubFolders = this.findNewFolders(
+            localFolder.children,
+            remoteFolder.children
+          );
+          newFolders.push(...newSubFolders);
+        }
+      }
+    }
+
+    return newFolders;
+  }
+
+  /**
+   * Recursively collect all subfolders from a folder
+   */
+  private collectAllSubFolders(folder: FolderNode): FolderNode[] {
+    const subFolders: FolderNode[] = [];
+
+    for (const child of folder.children) {
+      if (child.type === "folder") {
+        const childFolder = child as FolderNode;
+        subFolders.push(childFolder);
+        // Recursively collect subfolders of this subfolder
+        const nestedSubFolders = this.collectAllSubFolders(childFolder);
+        subFolders.push(...nestedSubFolders);
+      }
+    }
+
+    return subFolders;
+  }
+
+  /**
+   * Get farmers AI file state
+   */
+  async getFarmersAIFileState(): Promise<(FolderNode | FileNode)[] | null> {
+    if (!this.initializeApi() || !this.apiService) {
+      console.error("[LeekWars Service] API service not initialized");
+      return null;
+    }
+
+    try {
+      // pull all AIs to get the latest data in lastResponse
+      const farmerAIs = await this.apiService.getFarmerAIs();
+      // Store the response for later use and persist it
+      await this.storeFarmerAIsResponse(farmerAIs);
+
+      const localFilesService = LocalFilesService.getInstance();
+      const farmerAIFileState =
+        localFilesService.farmersAIToLocalFileState(farmerAIs);
+
+      return farmerAIFileState.root[0].children;
+    } catch (error) {
+      console.error(
+        "[LeekWars Service] Error getting farmer AI file state:",
+        error
+      );
+      return null;
+    }
+  }
+
+  /**
    * Get diffs of local AIs against LeekWars versions
    */
   async getAIDiffs(): Promise<void> {
@@ -274,18 +369,19 @@ export class LeekWarsService {
 
       console.log("Local Files State:", localFilesState.root[0].children);
 
-      const farmersAIToLocalFileState =
-        localFilesService.farmersAIToLocalFileState(farmerAIs);
+      let remoteFilesRoot = await this.getFarmersAIFileState();
 
-      console.log(
-        "Farmer's AIs to Local File State:",
-        farmersAIToLocalFileState.root[0].children
-      );
+      if (!remoteFilesRoot) {
+        console.error(
+          "[LeekWars Service] Failed to get farmer's AI file state"
+        );
+        return;
+      }
+
+      console.log("Farmer's AIs to Local File State:", remoteFilesRoot);
 
       const localFilesRoot: (FolderNode | FileNode)[] =
         localFilesState.root[0].children;
-      const remoteFilesRoot: (FolderNode | FileNode)[] =
-        farmersAIToLocalFileState.root[0].children;
 
       /* ---- STEP 1: DELETE REMOTE FOLDERS THAT DON'T EXIST LOCALLY ---- */
 
@@ -306,7 +402,9 @@ export class LeekWarsService {
           console.log(
             `Deleting remote folder: ${folder.leekWarsFolderInfo.name} (ID: ${folder.leekWarsFolderInfo.id})`
           );
-          // await this.apiService.deleteFolder(folder.leekWarsFolderInfo.id);
+          // sleep for 200ms to avoid rate limiting
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          await this.apiService.deleteFolder(folder.leekWarsFolderInfo.id);
         }
       }
 
@@ -326,16 +424,138 @@ export class LeekWarsService {
           console.log(
             `Deleting remote AI: ${file.leekWarsAIInfo.name} (ID: ${file.leekWarsAIInfo.id})`
           );
-          // await this.apiService.deleteAI(file.leekWarsAIInfo.id);
+          // sleep for 200ms to avoid rate limiting
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          await this.apiService.deleteAI(file.leekWarsAIInfo.id);
         }
       }
 
       /* ---- STEP 3: CREATE FOLDERS THAT EXIST LOCALLY BUT NOT REMOTELY ---- */
+
+      // Find folders that exist locally but not remotely
+
+      const newFolders = this.findNewFolders(localFilesRoot, remoteFilesRoot);
+
+      console.log("New folders (in local but not in remote):", newFolders);
+
+      // Create new folders on LeekWars
+      for (const new_local_folder of newFolders) {
+        console.log(
+          `Creating remote folder: ${new_local_folder.name} with path ${new_local_folder.path}`
+        );
+        if (this.isRootLocalFolder(new_local_folder.path)) {
+          console.log(
+            `Creating remote root folder: ${new_local_folder.name} with parent ID 0`
+          );
+          // sleep for 200ms to avoid rate limiting
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          const newLeekwarsFolder = await this.apiService.createFolder(
+            new_local_folder.name,
+            0
+          );
+          console.log(
+            `Created remote root folder with ID: ${newLeekwarsFolder.id}`
+          );
+        } else {
+          // Handle subfolder creation - find parent folder in remote state
+          const parts = this.getPathParts(new_local_folder.path);
+          console.log("Local folder parts:", parts);
+
+          // The parent folder path is all parts except the last one
+          const parentPath = parts.slice(0, -1).join(path.sep);
+          console.log("Parent folder path:", parentPath);
+
+          // Find the parent folder in the remote state
+          if (!remoteFilesRoot) {
+            console.error("Remote files root is null, cannot create subfolder");
+            continue;
+          }
+
+          const parentRemoteFolder = this.findFolderByPath(
+            remoteFilesRoot,
+            parentPath
+          );
+
+          if (parentRemoteFolder && parentRemoteFolder.leekWarsFolderInfo) {
+            const parentFolderId = parentRemoteFolder.leekWarsFolderInfo.id;
+            console.log(
+              `Creating remote subfolder: ${new_local_folder.name} with parent ID ${parentFolderId}`
+            );
+            // sleep for 200ms to avoid rate limiting
+            await new Promise((resolve) => setTimeout(resolve, 200));
+            const newLeekwarsFolder = await this.apiService.createFolder(
+              new_local_folder.name,
+              parentFolderId
+            );
+            console.log(
+              `Created remote subfolder with ID: ${newLeekwarsFolder.id}`
+            );
+          } else {
+            console.error(
+              `Parent folder not found in remote state for path: ${parentPath}`
+            );
+            console.error(
+              `Skipping creation of folder: ${new_local_folder.name}`
+            );
+            continue;
+          }
+        }
+        // update remoteFilesRoot to reflect the new folder structure
+        // sleep for 200ms to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        remoteFilesRoot = await this.getFarmersAIFileState();
+      }
+
+      /* ---- STEP 4: CREATE .leek FILES THAT EXIST LOCALLY BUT NOT REMOTELY ---- */
     } catch (error: any) {
       vscode.window.showErrorMessage(
         `Failed to get AI diffs: ${error.message}`
       );
     }
+  }
+
+  /**
+   * Returns true if the folder is at the root level (i.e., has no parent folders)
+   */
+  private isRootLocalFolder(folderPath: string): boolean {
+    const parts = this.getPathParts(folderPath);
+    console.log("Local folder path parts:", parts);
+    return parts.length === 1;
+  }
+
+  /**
+   * Return parts of a path as an array
+   */
+  private getPathParts(folderPath: string): string[] {
+    return folderPath.split(path.sep).filter((part) => part.length > 0);
+  }
+
+  /**
+   * Find a folder by its path in the remote file tree
+   */
+  private findFolderByPath(
+    nodes: (FolderNode | FileNode)[],
+    targetPath: string
+  ): FolderNode | null {
+    for (const node of nodes) {
+      if (node.type === "folder") {
+        const folder = node as FolderNode;
+        // Check if this folder matches the target path
+
+        // normalize path syntax
+        const targetPathNormalized = targetPath.replace(/\\/g, "/");
+
+        if (folder.path === targetPathNormalized) {
+          return folder;
+        }
+        // Recursively search in children
+        const found = this.findFolderByPath(folder.children, targetPath);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
   }
 
   /**

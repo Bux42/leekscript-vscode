@@ -71,7 +71,7 @@ export class LocalFilesService {
     response.folders.forEach((folder) => {
       const folderNode: FolderNode = {
         name: folder.name,
-        path: `/${folder.name}`,
+        path: folder.folder == 0 ? folder.name : `/${folder.name}`,
         type: "folder",
         children: [],
         leekWarsFolderInfo: folder,
@@ -108,21 +108,18 @@ export class LocalFilesService {
       if (!folderNode) return;
 
       if (folder.folder === 0) {
-        // This folder is at root level
-        if (folderNode.children.length > 0) {
-          rootChildren.push(folderNode);
-        }
+        // This folder is at root level - include even if empty
+        rootChildren.push(folderNode);
       } else {
         // This folder is nested in another folder
         const parentFolder = folderNodesMap.get(folder.folder);
         if (parentFolder) {
-          if (folderNode.children.length > 0) {
-            parentFolder.children.push(folderNode);
-            // Update path to include parent folder
-            folderNode.path = `${parentFolder.path}/${folderNode.name}`;
-            // Update all children paths recursively
-            this.updateChildrenPaths(folderNode);
-          }
+          // Include folder even if empty
+          parentFolder.children.push(folderNode);
+          // Update path to include parent folder
+          folderNode.path = `${parentFolder.path}/${folderNode.name}`;
+          // Update all children paths recursively
+          this.updateChildrenPaths(folderNode);
         }
       }
     });
@@ -164,6 +161,16 @@ export class LocalFilesService {
       const entries = await vscode.workspace.fs.readDirectory(folderUri);
       const children: TreeNode[] = [];
 
+      // Get relative path from workspace
+      const workspaceFolders = vscode.workspace.workspaceFolders;
+
+      if (!workspaceFolders || workspaceFolders.length === 0) {
+        console.error("[buildTreeForFolder] No workspace folder found");
+        return null;
+      }
+
+      const workspaceRoot = workspaceFolders[0].uri.fsPath + "\\";
+
       for (const [name, type] of entries) {
         const entryUri = vscode.Uri.joinPath(folderUri, name);
 
@@ -177,7 +184,8 @@ export class LocalFilesService {
           // Add .leek files
           const fileNode: FileNode = {
             name,
-            path: entryUri.fsPath,
+            // Get relative path from workspace
+            path: entryUri.fsPath.replace(workspaceRoot, ""),
             type: "file",
           };
           children.push(fileNode);
@@ -191,7 +199,8 @@ export class LocalFilesService {
 
       const folderNode: FolderNode = {
         name: path.basename(folderUri.fsPath),
-        path: folderUri.fsPath,
+        // Get relative path from workspace
+        path: folderUri.fsPath.replace(workspaceRoot, ""),
         type: "folder",
         children,
       };
