@@ -1,9 +1,5 @@
 import * as vscode from "vscode";
-import {
-  UserClass,
-  UserFunction,
-  UserVariable,
-} from "../../services/analyzer/definitions.types";
+import { UserFunction } from "../../services/analyzer/definitions.types";
 import { DefinitionManager } from "./DefinitionManager";
 
 /**
@@ -26,14 +22,6 @@ export class UserCodeCompletionProvider
     vscode.CompletionItem[] | vscode.CompletionList<vscode.CompletionItem>
   > {
     const completionItems: vscode.CompletionItem[] = [];
-
-    const lineText = document.lineAt(position).text;
-    const charIndex = position.character - 1;
-
-    // check for class member access
-    if (charIndex >= 0 && lineText.charAt(charIndex) === ".") {
-      return this.getMemberCompletions(lineText, charIndex);
-    }
 
     completionItems.push(...this.getUserFunctionCompletions());
     completionItems.push(...this.getUserClassCompletions());
@@ -114,82 +102,6 @@ export class UserCodeCompletionProvider
         `User-defined variable **${userVariable.name}** of type **${userVariable.type}**`
       );
       completionItems.push(item);
-    }
-    return completionItems;
-  }
-
-  /**
-   * Get user member completions
-   * @returns  Array of completion items for user variables
-   */
-  private getMemberCompletions(
-    lineText: string,
-    charIndex: number
-  ): vscode.CompletionItem[] {
-    const completionItems: vscode.CompletionItem[] = [];
-    // get word before dot
-    const wordBeforeDot = lineText.substring(0, charIndex).split(/\W+/).pop();
-    console.log("Word before dot:", wordBeforeDot);
-
-    if (wordBeforeDot === "this") {
-      console.log("Member access on 'this' is not supported yet.");
-    }
-
-    const userVariable: UserVariable | null =
-      this.definitionProvider.findUserDefinedVariable(wordBeforeDot || "");
-
-    if (userVariable) {
-      console.log(
-        `Providing member completions for variable: ${userVariable.name}`
-      );
-      const userVariableType = userVariable.type;
-
-      const userClass: UserClass | null =
-        this.definitionProvider.findUserDefinedClass(userVariableType);
-
-      if (userClass) {
-        console.log(
-          `Found class ${userClass.name} for variable ${userVariable.name}, providing member completions for ${userClass.methods.length} methods.`
-        );
-        // Provide class member completions (methods and fields)
-        // Methods
-        for (const method of userClass.methods) {
-          const item = new vscode.CompletionItem(
-            method.name,
-            vscode.CompletionItemKind.Method
-          );
-
-          const params = method.arguments
-            .map((arg, index) => `${arg.name}: ${method.arguments[index].type}`)
-            .join(", ");
-          item.detail = `${method.name}(${params}): ${
-            method.returnType || "void"
-          }`;
-          item.documentation = new vscode.MarkdownString(
-            `Method of class **${userClass.name}**`
-          );
-          completionItems.push(item);
-        }
-
-        // Fields
-        for (const field of userClass.fields) {
-          // if (field.level !== "public") {
-          //   console.log(
-          //     `Skipping non-public field: ${field.name} (level: ${field.level})`
-          //   );
-          //   continue; // skip non-public fields
-          // }
-          const item = new vscode.CompletionItem(
-            field.name,
-            vscode.CompletionItemKind.Field
-          );
-          item.detail = `var ${field.name}: ${field.type}`;
-          item.documentation = new vscode.MarkdownString(
-            `Field of class **${userClass.name}**`
-          );
-          completionItems.push(item);
-        }
-      }
     }
     return completionItems;
   }
