@@ -147,4 +147,11 @@ export class LeekWarsApiService {
   ): Promise<{ success: boolean; error?: string }> {
     return this.request("POST", `ai-folder/delete/${folderId}`);
   }
+
+  /**
+   * Delete an AI by its ID
+   */
+  async deleteAI(aiId: number): Promise<{ success: boolean; error?: string }> {
+    return this.request("POST", `ai/delete/${aiId}`);
+  }
 }

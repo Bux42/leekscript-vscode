@@ -205,6 +205,56 @@ export class LeekWarsService {
   }
 
   /**
+   * Find files that exist in remote but not in local
+   */
+  private findMissingFiles(
+    remote: (FolderNode | FileNode)[],
+    local: (FolderNode | FileNode)[]
+  ): FileNode[] {
+    const missingFiles: FileNode[] = [];
+
+    // Create a map of local file names for quick lookup
+    const localFileMap = new Map<string, FileNode>();
+    const localFolderMap = new Map<string, FolderNode>();
+
+    for (const node of local) {
+      if (node.type === "file") {
+        localFileMap.set(node.name, node as FileNode);
+      } else if (node.type === "folder") {
+        localFolderMap.set(node.name, node as FolderNode);
+      }
+    }
+
+    // Check each remote node
+    for (const remoteNode of remote) {
+      if (remoteNode.type === "file") {
+        const remoteFile = remoteNode as FileNode;
+
+        if (!localFileMap.has(remoteFile.name)) {
+          // File doesn't exist locally
+          missingFiles.push(remoteFile);
+        }
+      } else if (remoteNode.type === "folder") {
+        const remoteFolder = remoteNode as FolderNode;
+        const localFolder = localFolderMap.get(remoteFolder.name);
+
+        if (localFolder) {
+          // Folder exists, recursively check children
+          const missingSubFiles = this.findMissingFiles(
+            remoteFolder.children,
+            localFolder.children
+          );
+          missingFiles.push(...missingSubFiles);
+        }
+        // If folder doesn't exist locally, all its files are implicitly missing
+        // but we already capture this through findMissingFolders
+      }
+    }
+
+    return missingFiles;
+  }
+
+  /**
    * Get diffs of local AIs against LeekWars versions
    */
   async getAIDiffs(): Promise<void> {
@@ -261,6 +311,26 @@ export class LeekWarsService {
       }
 
       /* ---- STEP 2: DELETE REMOTE FILES THAT DON'T EXIST LOCALLY ---- */
+
+      // Find files that exist in remote but not in local
+      const missingFiles = this.findMissingFiles(
+        remoteFilesRoot,
+        localFilesRoot
+      );
+
+      console.log("Missing files (in remote but not in local):", missingFiles);
+
+      // Delete missing files from LeekWars
+      for (const file of missingFiles) {
+        if (file.leekWarsAIInfo) {
+          console.log(
+            `Deleting remote AI: ${file.leekWarsAIInfo.name} (ID: ${file.leekWarsAIInfo.id})`
+          );
+          // await this.apiService.deleteAI(file.leekWarsAIInfo.id);
+        }
+      }
+
+      /* ---- STEP 3: CREATE FOLDERS THAT EXIST LOCALLY BUT NOT REMOTELY ---- */
     } catch (error: any) {
       vscode.window.showErrorMessage(
         `Failed to get AI diffs: ${error.message}`
