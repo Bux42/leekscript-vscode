@@ -739,6 +739,64 @@ export class LeekWarsService {
         "Files to update:",
         filesToUpdate.map((f) => f.localFile.path)
       );
+
+      /* ---- STEP 6: UPDATE REMOTE FILES WITH LOCAL CODE ---- */
+
+      if (filesToUpdate.length === 0) {
+        console.log("No files need to be updated");
+        vscode.window.showInformationMessage(
+          "All files are synchronized with LeekWars"
+        );
+        return;
+      }
+
+      console.log(`Updating ${filesToUpdate.length} file(s) on LeekWars`);
+
+      let successCount = 0;
+      let failureCount = 0;
+
+      for (const fileToUpdate of filesToUpdate) {
+        const { remoteFile, localCode } = fileToUpdate;
+
+        if (!remoteFile.leekWarsAIInfo) {
+          console.error(
+            `Remote file ${remoteFile.name} has no LeekWars AI info`
+          );
+          failureCount++;
+          continue;
+        }
+
+        const aiId = remoteFile.leekWarsAIInfo.id;
+        console.log(
+          `Updating remote AI ${remoteFile.name} (ID: ${aiId}) with local code`
+        );
+
+        // Sleep for 200ms to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        try {
+          await this.apiService.updateAICode(aiId, localCode);
+          console.log(`Successfully updated ${remoteFile.name}`);
+          successCount++;
+        } catch (error) {
+          console.error(`Error updating ${remoteFile.name}:`, error);
+          failureCount++;
+        }
+      }
+
+      console.log(
+        `Update complete: ${successCount} succeeded, ${failureCount} failed`
+      );
+
+      if (failureCount > 0) {
+        vscode.window.showWarningMessage(
+          `Updated ${successCount} file(s) on LeekWars, but ${failureCount} failed. Check console for details.`
+        );
+      } else {
+        vscode.window.showInformationMessage(
+          `Successfully updated ${successCount} file(s) on LeekWars`
+        );
+      }
     } catch (error: any) {
       vscode.window.showErrorMessage(
         `Failed to get AI diffs: ${error.message}`
