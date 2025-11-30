@@ -302,6 +302,56 @@ export class LeekWarsService {
   }
 
   /**
+   * Find files that exist in local but not in remote
+   */
+  private findNewFiles(
+    local: (FolderNode | FileNode)[],
+    remote: (FolderNode | FileNode)[]
+  ): FileNode[] {
+    const newFiles: FileNode[] = [];
+
+    // Create maps for remote files and folders
+    const remoteFileMap = new Map<string, FileNode>();
+    const remoteFolderMap = new Map<string, FolderNode>();
+
+    for (const node of remote) {
+      if (node.type === "file") {
+        remoteFileMap.set(node.name, node as FileNode);
+      } else if (node.type === "folder") {
+        remoteFolderMap.set(node.name, node as FolderNode);
+      }
+    }
+
+    // Check each local node
+    for (const localNode of local) {
+      if (localNode.type === "file") {
+        const localFile = localNode as FileNode;
+
+        if (!remoteFileMap.has(localFile.name)) {
+          // File doesn't exist remotely
+          newFiles.push(localFile);
+        }
+      } else if (localNode.type === "folder") {
+        const localFolder = localNode as FolderNode;
+        const remoteFolder = remoteFolderMap.get(localFolder.name);
+
+        if (remoteFolder) {
+          // Folder exists, recursively check children
+          const newSubFiles = this.findNewFiles(
+            localFolder.children,
+            remoteFolder.children
+          );
+          newFiles.push(...newSubFiles);
+        }
+        // If folder doesn't exist remotely, its files will be handled
+        // after the folder is created in step 3
+      }
+    }
+
+    return newFiles;
+  }
+
+  /**
    * Recursively collect all subfolders from a folder
    */
   private collectAllSubFolders(folder: FolderNode): FolderNode[] {
@@ -507,6 +557,78 @@ export class LeekWarsService {
       }
 
       /* ---- STEP 4: CREATE .leek FILES THAT EXIST LOCALLY BUT NOT REMOTELY ---- */
+
+      // Update remote state after folder creation
+      remoteFilesRoot = await this.getFarmersAIFileState();
+
+      if (!remoteFilesRoot) {
+        console.error(
+          "[LeekWars Service] Failed to get updated farmer's AI file state"
+        );
+        return;
+      }
+
+      // Find files that exist locally but not remotely
+      const newFiles = this.findNewFiles(localFilesRoot, remoteFilesRoot);
+
+      console.log("New files (in local but not in remote):", newFiles);
+
+      // Create new AI files on LeekWars
+      for (const new_local_file of newFiles) {
+        console.log(
+          `Creating remote AI: ${new_local_file.name} with path ${new_local_file.path}`
+        );
+
+        // Determine the folder ID for this file
+        let folderId = 0; // Default to root
+
+        if (!this.isRootLocalFolder(new_local_file.path)) {
+          // File is in a subfolder - find the parent folder
+          const parts = this.getPathParts(new_local_file.path);
+          const parentPath = parts.slice(0, -1).join(path.sep);
+          console.log("Parent folder path for file:", parentPath);
+
+          if (!remoteFilesRoot) {
+            console.error("Remote files root is null, cannot create file");
+            continue;
+          }
+
+          const parentRemoteFolder = this.findFolderByPath(
+            remoteFilesRoot,
+            parentPath
+          );
+
+          if (parentRemoteFolder && parentRemoteFolder.leekWarsFolderInfo) {
+            folderId = parentRemoteFolder.leekWarsFolderInfo.id;
+            console.log(`File will be created in folder ID: ${folderId}`);
+          } else {
+            console.error(
+              `Parent folder not found in remote state for path: ${parentPath}`
+            );
+            console.error(`Skipping creation of file: ${new_local_file.name}`);
+            continue;
+          }
+        }
+
+        // Create the AI file (without .leek extension for the API)
+
+        console.log(
+          `Creating remote AI: ${new_local_file.name} in folder ID ${folderId}`
+        );
+
+        // sleep for 200ms to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        try {
+          const newLeekwarsAI = await this.apiService.createAI({
+            folder_id: folderId,
+            name: new_local_file.name,
+          });
+          console.log(`Created remote AI with ID: ${newLeekwarsAI.id}`);
+        } catch (error) {
+          console.error(`Error creating AI ${new_local_file.name}:`, error);
+        }
+      }
     } catch (error: any) {
       vscode.window.showErrorMessage(
         `Failed to get AI diffs: ${error.message}`
