@@ -629,6 +629,116 @@ export class LeekWarsService {
           console.error(`Error creating AI ${new_local_file.name}:`, error);
         }
       }
+
+      /* ---- STEP 5: COMPARE CONTENT OF LOCAL AND REMOTE AIs ---- */
+
+      // Update remote state after file creation
+      // sleep for 200ms to avoid rate limiting
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      remoteFilesRoot = await this.getFarmersAIFileState();
+
+      if (!remoteFilesRoot) {
+        console.error(
+          "[LeekWars Service] Failed to get updated farmer's AI file state after file creation"
+        );
+        return;
+      }
+
+      // Collect all local files (recursively)
+      const allLocalFiles = this.collectAllFiles(localFilesRoot);
+      console.log(`Found ${allLocalFiles.length} local files to check`);
+
+      // Array to store files that need to be updated
+      const filesToUpdate: Array<{
+        localFile: FileNode;
+        remoteFile: FileNode;
+        localCode: string;
+        remoteCode: string;
+      }> = [];
+
+      // Get workspace root for reading local files
+      const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+      if (!workspaceFolder) {
+        console.error("[LeekWars Service] No workspace folder found");
+        return;
+      }
+      const workspaceRoot = workspaceFolder.uri.fsPath;
+
+      // Check each local file against its remote counterpart
+      for (const localFile of allLocalFiles) {
+        console.log(`Checking file: ${localFile.name}`);
+
+        // Find the corresponding remote file
+        const remoteFile = this.findFileByPath(remoteFilesRoot, localFile.path);
+
+        if (!remoteFile) {
+          console.warn(
+            `Remote file not found for local file: ${localFile.path}`
+          );
+          continue;
+        }
+
+        if (!remoteFile.leekWarsAIInfo) {
+          console.warn(
+            `Remote file ${remoteFile.name} has no LeekWars AI info`
+          );
+          continue;
+        }
+
+        // Read local file content
+        const localFilePath = path.join(workspaceRoot, localFile.path);
+        let localCode: string;
+        try {
+          localCode = fs.readFileSync(localFilePath, "utf8");
+        } catch (error) {
+          console.error(`Failed to read local file ${localFilePath}:`, error);
+          continue;
+        }
+
+        // Get remote AI code
+        console.log(
+          `Fetching remote AI code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
+        );
+
+        // Sleep for 200ms to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        let remoteAI;
+        try {
+          remoteAI = await this.apiService.getAI(remoteFile.leekWarsAIInfo.id);
+        } catch (error) {
+          console.error(
+            `Failed to fetch remote AI ${remoteFile.leekWarsAIInfo.id}:`,
+            error
+          );
+          continue;
+        }
+
+        if (!remoteAI.ai) {
+          console.warn(`Could not get remote AI ${remoteFile.name}`);
+          continue;
+        }
+
+        const remoteCode = remoteAI.ai.code;
+
+        // Compare local and remote code
+        if (localCode !== remoteCode) {
+          console.log(`Code differs for ${localFile.name} - needs update`);
+          filesToUpdate.push({
+            localFile,
+            remoteFile,
+            localCode,
+            remoteCode,
+          });
+        } else {
+          console.log(`Code matches for ${localFile.name} - no update needed`);
+        }
+      }
+
+      console.log(
+        "Files to update:",
+        filesToUpdate.map((f) => f.localFile.path)
+      );
     } catch (error: any) {
       vscode.window.showErrorMessage(
         `Failed to get AI diffs: ${error.message}`
@@ -678,6 +788,54 @@ export class LeekWarsService {
       }
     }
     return null;
+  }
+
+  /**
+   * Find a file by its path in the file tree
+   */
+  private findFileByPath(
+    nodes: (FolderNode | FileNode)[],
+    targetPath: string
+  ): FileNode | null {
+    for (const node of nodes) {
+      if (node.type === "file") {
+        const file = node as FileNode;
+        // Normalize path syntax for comparison
+        const targetPathNormalized = targetPath.replace(/\\/g, "/");
+        const filePathNormalized = file.path.replace(/\\/g, "/");
+
+        if (filePathNormalized === targetPathNormalized) {
+          return file;
+        }
+      } else if (node.type === "folder") {
+        const folder = node as FolderNode;
+        // Recursively search in children
+        const found = this.findFileByPath(folder.children, targetPath);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Recursively collect all files from the tree
+   */
+  private collectAllFiles(nodes: (FolderNode | FileNode)[]): FileNode[] {
+    const files: FileNode[] = [];
+
+    for (const node of nodes) {
+      if (node.type === "file") {
+        files.push(node as FileNode);
+      } else if (node.type === "folder") {
+        const folder = node as FolderNode;
+        const subFiles = this.collectAllFiles(folder.children);
+        files.push(...subFiles);
+      }
+    }
+
+    return files;
   }
 
   /**
