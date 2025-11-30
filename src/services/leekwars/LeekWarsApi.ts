@@ -261,4 +261,19 @@ export class LeekWarsApiService {
       version: 4, // default to version 4
     });
   }
+
+  /**
+   * Update AI code
+   * @param aiId ID of the AI to update
+   * @param code New code for the AI
+   */
+  async updateAICode(
+    aiId: number,
+    code: string
+  ): Promise<{ success: boolean; error?: string }> {
+    return this.requestWithBody("POST", "ai/save", {
+      ai_id: aiId,
+      code: code,
+    });
+  }
 }
