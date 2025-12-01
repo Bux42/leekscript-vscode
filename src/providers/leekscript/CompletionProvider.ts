@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { DataLoader, FunctionData, ConstantData } from "./DataLoader";
+import { getStringBeforeCursor } from "../../utils/UserCodeUtils";
 
 /**
  * Provides code completion for LeekScript language
@@ -22,14 +23,15 @@ export class LeekScriptCompletionProvider
   ): vscode.CompletionItem[] {
     const completionItems: vscode.CompletionItem[] = [];
 
-    // check if cursor is after a dot (.), aka member access, ignore completions
-    const lineText = document.lineAt(position).text;
-    const charIndex = position.character - 1;
+    const memberAccessStringAtCursor = getStringBeforeCursor(
+      document,
+      position
+    );
 
-    if (charIndex >= 0 && lineText.charAt(charIndex) === ".") {
-      // console.log(
-      //   "Definition request triggered after a dot in LeekScriptCompletionProvider, ignoring."
-      // );
+    const memberParts = memberAccessStringAtCursor.split(".");
+
+    // If it's a member access, don't provide leekscript completions
+    if (memberParts.length > 1) {
       return [];
     }
 
