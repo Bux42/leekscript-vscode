@@ -331,8 +331,6 @@ export class CodeAnalyzerService {
       const endTime = Date.now();
       const duration = endTime - startTime;
 
-      console.log(`Received definitions response: ${JSON.stringify(response)}`);
-
       const sizeOfResponse = JSON.stringify(response).length;
 
       console.log(

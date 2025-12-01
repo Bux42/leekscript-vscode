@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { DataLoader } from "../leekscript/DataLoader";
 import { DefinitionManager } from "./DefinitionManager";
 import {
   UserClass,
@@ -7,6 +6,7 @@ import {
   UserVariable,
 } from "../../services/analyzer/definitions.types";
 import { getDefinitionAbsolutePath } from "../../utils/DefinitionUtils";
+import { getMemberAccessStringAtCursor } from "../../utils/UserCodeUtils";
 
 /**
  * Provides definition location for LeekScript symbols
@@ -22,138 +22,124 @@ export class UserCodeDefinitionProvider implements vscode.DefinitionProvider {
     document: vscode.TextDocument,
     position: vscode.Position
   ): vscode.Definition | null {
-    // check if cursor is after a dot (.)
-    const lineText = document.lineAt(position).text;
-    const charIndex = position.character - 1;
-
-    console.log("lineText:", lineText, "charIndex:", charIndex);
-
     const range = document.getWordRangeAtPosition(position);
     const word = document.getText(range);
 
     console.log(`Looking for definition of: ${word}`);
 
-    // check if character before word is a dot (.)
-    if (range) {
-      const tokenBeforeWord = lineText.charAt(range!.start.character - 1);
-      console.log("tokenBeforeWord:", tokenBeforeWord);
+    const memberAccessStringAtCursor = getMemberAccessStringAtCursor(
+      document,
+      position
+    );
 
-      if (tokenBeforeWord === ".") {
-        // get word before the dot
-        const wordBeforeDotRange = document.getWordRangeAtPosition(
-          new vscode.Position(position.line, range!.start.character - 2)
-        );
-        const tokenBeforeDot = document.getText(wordBeforeDotRange);
+    const memberParts = memberAccessStringAtCursor.split(".");
 
-        console.log(
-          "Definition request triggered after a dot",
-          "tokenBeforeDot:",
-          tokenBeforeDot
-        );
-        return this.createMemberDefinition(
-          range,
-          document.getText(range),
-          lineText,
-          tokenBeforeDot
-        );
+    if (memberParts.length > 1) {
+      // member access detected
+      return this.createMemberDefinition(memberParts);
+    } else {
+      // single word, not a member access
+
+      // Check if it's a user function
+      const userFunc = this.definitionProvider.findUserDefinedFunction(word);
+      if (userFunc) {
+        return this.createUserFunctionDefinition(userFunc);
       }
-    }
 
-    // Check if it's a user function
-    const userFunc = this.definitionProvider.findUserDefinedFunction(word);
-    if (userFunc) {
-      return this.createUserFunctionDefinition(userFunc);
-    }
+      // Check if it's a user class
+      const userClass = this.definitionProvider.findUserDefinedClass(word);
+      if (userClass) {
+        return this.createUserClassDefinition(userClass);
+      }
 
-    // Check if it's a user class
-    const userClass = this.definitionProvider.findUserDefinedClass(word);
-    if (userClass) {
-      return this.createUserClassDefinition(userClass);
-    }
-
-    // Check if it's a user variable
-    const userVariable = this.definitionProvider.findUserDefinedVariable(word);
-    if (userVariable) {
-      return this.createUserVariableDefinition(userVariable);
+      // Check if it's a user variable
+      const userVariable =
+        this.definitionProvider.findUserDefinedVariable(word);
+      if (userVariable) {
+        return this.createUserVariableDefinition(userVariable);
+      }
     }
     return null;
   }
 
-  createMemberDefinition(
-    range: vscode.Range,
-    word: string,
-    lineText: string,
-    tokenBeforeWord: string
-  ): vscode.Definition | null {
-    // get token before the dot
+  createMemberDefinition(memberParts: string[]): vscode.Definition | null {
+    // example: user hit F12 on "member2" in "obj.member1.member2.member3"
+    // get first part
+    let word = memberParts.shift() || "";
 
-    console.log("searching for member definition of word:", tokenBeforeWord);
-    const userVariable: UserVariable | null =
-      this.definitionProvider.findUserDefinedVariable(tokenBeforeWord || "");
+    console.log("Resolving member definition for word:", word);
 
-    if (userVariable) {
+    // Check if it's a user variable
+    let userVariable = this.definitionProvider.findUserDefinedVariable(word);
+
+    if (!userVariable) {
       console.log(
-        `Providing member definition for variable: ${userVariable.name} of type: ${userVariable.type}`
+        `Cannot resolve member access for part '${word}', stopping traversal.`
       );
+      return null;
+    }
+
+    console.log("Traversing member parts of variable:", userVariable);
+
+    while (memberParts.length > 0) {
+      let word = memberParts.shift() || "";
+      console.log("LOOP: Resolving member definition for word:", word);
+
+      const variableType = userVariable.type;
 
       // Check if the variable's type is a user-defined class
-      const userClass = this.definitionProvider.findUserDefinedClass(
-        userVariable.type
+      const userClass =
+        this.definitionProvider.findUserDefinedClass(variableType);
+
+      if (!userClass) {
+        console.log(
+          `Type '${variableType}' of variable '${userVariable.name}' is not a user-defined class, cannot resolve member '${word}'.`
+        );
+        return null;
+      }
+
+      console.log(
+        `Looking for member '${word}' in class '${userClass.name}' members.`
       );
 
-      if (userClass) {
+      // Check if the member is a field
+      const classField = userClass.fields.find((field) => field.name === word);
+      if (classField) {
         console.log(
-          `Search member definition for class: ${userClass.name} members`
+          `Found field '${classField.name}' of class '${userClass.name}', continuing traversal.`
         );
-        // Check if the member is a field
-        const classField = userClass.fields.find(
-          (field) => field.name === word
-        );
-        if (classField) {
-          console.log(
-            `Found member definition for field: ${classField.name} of class: ${userClass.name}`
-          );
-          const position = new vscode.Position(
-            classField.line - 1,
-            classField.col
-          );
+        userVariable = classField;
 
-          return new vscode.Location(
-            vscode.Uri.file(
-              getDefinitionAbsolutePath(
-                classField.fileName,
-                classField.folderName
-              )!
-            ),
-            position
-          );
+        if (memberParts.length === 0) {
+          // Last part, return definition
+          return this.createUserVariableDefinition(classField);
         }
-
-        // Check if the member is a method
-        const classMethod = userClass.methods.find(
-          (method) => method.name === word
-        );
-        if (classMethod) {
-          console.log(
-            `Found member definition for method: ${classMethod.name} of class: ${userClass.name}`
-          );
-          const position = new vscode.Position(
-            classMethod.line - 1,
-            classMethod.col
-          );
-
-          return new vscode.Location(
-            vscode.Uri.file(
-              getDefinitionAbsolutePath(
-                classMethod.fileName,
-                classMethod.folderName
-              )!
-            ),
-            position
-          );
-        }
+        continue;
       }
+
+      // Check if the member is a method
+      const classMethod = userClass.methods.find(
+        (method) => method.name === word
+      );
+      if (classMethod) {
+        console.log(
+          `Found method '${classMethod.name}' of class '${userClass.name}', continuing traversal.`
+        );
+
+        if (memberParts.length === 0) {
+          // Last part, return definition
+          return this.createUserFunctionDefinition(classMethod);
+        }
+        // For methods, we cannot continue traversal, so we stop here
+        return null;
+      }
+
+      console.log(
+        `Member '${word}' not found in class '${userClass.name}', stopping traversal.`
+      );
+      return null;
     }
+
     return null;
   }
 
