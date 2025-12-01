@@ -5,6 +5,10 @@ import {
   UserVariable,
 } from "../../services/analyzer/definitions.types";
 import { getStringBeforeCursor } from "../../utils/UserCodeUtils";
+import {
+  generateUserClassFieldCompletion,
+  generateUserClassMethodCompletion,
+} from "./CompletionGenerator";
 
 /**
  * Provides code completion for dot member access in user code
@@ -124,36 +128,15 @@ export class UserDotCodeCompletionProvider
       console.log(
         `Providing member completions for final class '${finalUserClass.name}'.`
       );
+
       // Methods
       for (const method of finalUserClass.methods) {
-        const item = new vscode.CompletionItem(
-          method.name,
-          vscode.CompletionItemKind.Method
-        );
-
-        const params = method.arguments
-          .map((arg, index) => `${arg.name}: ${method.arguments[index].type}`)
-          .join(", ");
-        item.detail = `${method.name}(${params}): ${
-          method.returnType || "void"
-        }`;
-        item.documentation = new vscode.MarkdownString(
-          `Method of class **${finalUserClass.name}**`
-        );
-        completionItems.push(item);
+        completionItems.push(generateUserClassMethodCompletion(method));
       }
 
       // Fields
       for (const field of finalUserClass.fields) {
-        const item = new vscode.CompletionItem(
-          field.name,
-          vscode.CompletionItemKind.Field
-        );
-        item.detail = `var ${field.name}: ${field.type}`;
-        item.documentation = new vscode.MarkdownString(
-          `Field of class **${finalUserClass.name}**`
-        );
-        completionItems.push(item);
+        completionItems.push(generateUserClassFieldCompletion(field));
       }
     } else {
       console.log(

@@ -118,10 +118,19 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // hover
   context.subscriptions.push(userCodeHoverProvider);
+
+  // user code completions completions
   context.subscriptions.push(userCodeCompletionProviderRegistration);
+  context.subscriptions.push(userDotCodeCompletionProviderRegistration);
+
+  // user code definitions
   context.subscriptions.push(userCodeDefinitionProvider);
+
+  // type semantic tokens
   context.subscriptions.push(userCodeSemanticTokensProvider);
+
   diagnosticService = new DiagnosticService(
     diagnosticCollection,
     analyzerService,
