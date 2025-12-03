@@ -79,7 +79,12 @@ export function getMemberAccessStringAtCursor(
   position: vscode.Position
 ): string {
   const lineText = document.lineAt(position).text;
-  const cursorIndex = position.character;
+  let cursorIndex = position.character;
+
+  // edge case: if cursor is right after a dot, move cursor forward to include the dot
+  if (lineText.charAt(cursorIndex - 1) === ".") {
+    cursorIndex++;
+  }
 
   let startIndex = cursorIndex;
   let endIndex = cursorIndex;
@@ -137,6 +142,15 @@ export function getMemberAccessStringAtCursor(
       break;
     }
   }
+
+  console.log(
+    "Full member access chain at cursor:",
+    fullChain,
+    "substring:",
+    fullChain.substring(0, currentIndex)
+  );
+
+  return fullChain;
 
   return fullChain.substring(0, currentIndex);
 }
