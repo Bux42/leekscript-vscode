@@ -788,14 +788,120 @@ export class LeekWarsService {
         `Update complete: ${successCount} succeeded, ${failureCount} failed`
       );
 
-      if (failureCount > 0) {
-        vscode.window.showWarningMessage(
-          `Updated ${successCount} file(s) on LeekWars, but ${failureCount} failed. Check console for details.`
+      /* ---- STEP 7: TRIGGER RECOMPILATION OF MAIN AI FILES ---- */
+
+      // Find all main AI files that include the updated files
+      // This is necessary due to a LeekWars bug where included files don't trigger recompilation
+      const mainAIsToSave = new Set<number>();
+
+      for (const fileToUpdate of filesToUpdate) {
+        const { remoteFile } = fileToUpdate;
+
+        if (!remoteFile.leekWarsAIInfo) {
+          continue;
+        }
+
+        // Get the entrypoints (AIs that include this file)
+        const entrypoints = remoteFile.leekWarsAIInfo.entrypoints || [];
+
+        console.log(
+          `File ${remoteFile.name} is included by ${
+            entrypoints.length
+          } AI(s): ${entrypoints.join(", ")}`
         );
+
+        // Traverse upwards to find main AI files (those with empty entrypoints)
+        for (const entrypointId of entrypoints) {
+          const mainAIs = this.findMainAIsForEntrypoint(
+            entrypointId,
+            remoteFilesRoot
+          );
+          mainAIs.forEach((id: number) => mainAIsToSave.add(id));
+        }
+      }
+
+      if (mainAIsToSave.size > 0) {
+        console.log(
+          `Found ${
+            mainAIsToSave.size
+          } main AI(s) that need to be saved to trigger recompilation: ${Array.from(
+            mainAIsToSave
+          ).join(", ")}`
+        );
+
+        let recompileSuccessCount = 0;
+        let recompileFailureCount = 0;
+
+        for (const aiId of mainAIsToSave) {
+          // Find the file node for this AI
+          const aiFile = this.findFileByAIId(remoteFilesRoot, aiId);
+
+          if (!aiFile) {
+            console.warn(`Could not find remote file for AI ID ${aiId}`);
+            continue;
+          }
+
+          console.log(
+            `Triggering recompilation for main AI ${aiFile.name} (ID: ${aiId})`
+          );
+
+          // Sleep for 200ms to avoid rate limiting
+          await new Promise((resolve) => setTimeout(resolve, 200));
+
+          try {
+            // Get the current code
+            const aiResponse = await this.apiService.getAI(aiId);
+
+            if (!aiResponse.ai) {
+              console.error(
+                `Failed to get AI ${aiFile.name} for recompilation`
+              );
+              recompileFailureCount++;
+              continue;
+            }
+
+            // Save it back (this triggers recompilation)
+            await this.apiService.updateAICode(aiId, aiResponse.ai.code);
+            console.log(
+              `Successfully triggered recompilation for ${aiFile.name}`
+            );
+            recompileSuccessCount++;
+          } catch (error) {
+            console.error(
+              `Error triggering recompilation for ${aiFile.name}:`,
+              error
+            );
+            recompileFailureCount++;
+          }
+        }
+
+        console.log(
+          `Recompilation trigger complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`
+        );
+
+        if (recompileFailureCount > 0) {
+          vscode.window.showWarningMessage(
+            `Updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s), but ${
+              failureCount + recompileFailureCount
+            } operations failed.`
+          );
+        } else {
+          vscode.window.showInformationMessage(
+            `Successfully updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s) on LeekWars`
+          );
+        }
       } else {
-        vscode.window.showInformationMessage(
-          `Successfully updated ${successCount} file(s) on LeekWars`
-        );
+        console.log("No main AIs need recompilation");
+
+        if (failureCount > 0) {
+          vscode.window.showWarningMessage(
+            `Updated ${successCount} file(s) on LeekWars, but ${failureCount} failed. Check console for details.`
+          );
+        } else {
+          vscode.window.showInformationMessage(
+            `Successfully updated ${successCount} file(s) on LeekWars`
+          );
+        }
       }
     } catch (error: any) {
       vscode.window.showErrorMessage(
@@ -818,6 +924,67 @@ export class LeekWarsService {
    */
   private getPathParts(folderPath: string): string[] {
     return folderPath.split(path.sep).filter((part) => part.length > 0);
+  }
+
+  /**
+   * Find a file by its AI ID
+   */
+  private findFileByAIId(
+    nodes: (FolderNode | FileNode)[],
+    aiId: number
+  ): FileNode | null {
+    for (const node of nodes) {
+      if (node.type === "file") {
+        const file = node as FileNode;
+        if (file.leekWarsAIInfo && file.leekWarsAIInfo.id === aiId) {
+          return file;
+        }
+      } else if (node.type === "folder") {
+        const folder = node as FolderNode;
+        const found = this.findFileByAIId(folder.children, aiId);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Find main AI files for a given entrypoint ID
+   * A main AI is one that has an empty entrypoints array (not included by any other AI)
+   */
+  private findMainAIsForEntrypoint(
+    entrypointId: number,
+    nodes: (FolderNode | FileNode)[]
+  ): number[] {
+    const mainAIs: number[] = [];
+
+    // Find the file for this entrypoint ID
+    const entrypointFile = this.findFileByAIId(nodes, entrypointId);
+
+    if (!entrypointFile || !entrypointFile.leekWarsAIInfo) {
+      return mainAIs;
+    }
+
+    const entrypointInfo = entrypointFile.leekWarsAIInfo;
+
+    // Check if this is a main AI (not included by anyone)
+    if (
+      !entrypointInfo.entrypoints ||
+      entrypointInfo.entrypoints.length === 0
+    ) {
+      // This is a main AI
+      mainAIs.push(entrypointId);
+    } else {
+      // This AI is included by others, traverse upwards
+      for (const parentId of entrypointInfo.entrypoints) {
+        const parentMainAIs = this.findMainAIsForEntrypoint(parentId, nodes);
+        mainAIs.push(...parentMainAIs);
+      }
+    }
+
+    return mainAIs;
   }
 
   /**
