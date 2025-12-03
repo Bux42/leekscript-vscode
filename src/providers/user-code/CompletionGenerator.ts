@@ -16,7 +16,9 @@ export const generateUserClassFieldCompletion = (
     field.name,
     vscode.CompletionItemKind.Field
   );
-  item.detail = `field ${field.name}: ${field.type}`;
+  item.detail = `${field.isStatic ? "static " : ""}field ${field.name}: ${
+    field.type
+  }`;
   item.documentation = new vscode.MarkdownString(
     `Field **${field.name}** of type **${field.type}**`
   );
@@ -35,7 +37,7 @@ export const generateUserClassMethodCompletion = (
     method.name,
     vscode.CompletionItemKind.Method
   );
-  item.detail = `method ${method.name}()`;
+  item.detail = `${method.isStatic ? "static " : ""}method ${method.name}()`;
   item.documentation = new vscode.MarkdownString(`Method **${method.name}**`);
   return item;
 };
