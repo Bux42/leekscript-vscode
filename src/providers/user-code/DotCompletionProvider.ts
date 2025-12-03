@@ -71,6 +71,17 @@ export class UserDotCodeCompletionProvider
     const initialUserVariable: UserVariable | null =
       this.definitionProvider.findUserDefinedVariable(initialVariableName);
 
+    const initialUserClass: UserClass | null =
+      this.definitionProvider.findUserDefinedClass(initialVariableName);
+
+    // Autocomplete static field, example: MyEnumClass.VALUE1
+    if (initialUserClass) {
+      console.log(
+        `Initial name '${initialVariableName}' is a class. Providing its members directly.`
+      );
+      return this.getStaticClassMemberCompletions(initialUserClass);
+    }
+
     if (!initialUserVariable) {
       console.log(
         `No user-defined variable found for initial variable '${initialVariableName}', cannot provide member completions.`
@@ -142,6 +153,30 @@ export class UserDotCodeCompletionProvider
       console.log(
         `No user-defined class found for final type '${initialUserVariable.type}', cannot provide member completions.`
       );
+    }
+
+    return completionItems;
+  }
+
+  private getStaticClassMemberCompletions(
+    userClass: UserClass
+  ): vscode.CompletionItem[] {
+    const completionItems: vscode.CompletionItem[] = [];
+
+    // Methods
+    for (const method of userClass.methods) {
+      if (!method.isStatic) {
+        continue; // Skip non-static methods
+      }
+      completionItems.push(generateUserClassMethodCompletion(method));
+    }
+
+    // Fields
+    for (const field of userClass.fields) {
+      if (!field.isStatic) {
+        continue; // Skip non-static fields
+      }
+      completionItems.push(generateUserClassFieldCompletion(field));
     }
 
     return completionItems;
