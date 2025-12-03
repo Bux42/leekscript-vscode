@@ -13,6 +13,7 @@ export interface UserClassField {
   line: number;
   fileName: string;
   folderName: string;
+  isStatic: boolean;
 }
 
 export interface UserClass {
@@ -32,6 +33,7 @@ export interface UserMethod {
   col: number;
   fileName: string;
   folderName: string;
+  isStatic: boolean;
   line: number;
   name: string;
   returnType: string;
