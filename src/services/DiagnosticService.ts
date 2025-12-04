@@ -159,18 +159,24 @@ export class DiagnosticService {
         console.log("line" + activeEditor.selection.active.line);
         console.log("column" + activeEditor.selection.active.character);
 
-        const x = await this.analyzerService.getDefinitions(
+        const userCodeDefinitions = await this.analyzerService.getDefinitions(
           activeEditor.selection.active.line + 1,
           activeEditor.selection.active.character + 1,
           filePath,
           currentDocumentCode
         );
-        console.log(x);
+        console.log(userCodeDefinitions);
 
-        if (x) {
-          this.userCodeDefinitionManager.setUserDefinedClasses(x.classes);
-          this.userCodeDefinitionManager.setUserDefinedFunctions(x.functions);
-          this.userCodeDefinitionManager.setUserDefinedVariables(x.variables);
+        if (userCodeDefinitions) {
+          this.userCodeDefinitionManager.setUserDefinedClasses(
+            userCodeDefinitions.classes
+          );
+          this.userCodeDefinitionManager.setUserDefinedFunctions(
+            userCodeDefinitions.functions
+          );
+          this.userCodeDefinitionManager.setUserDefinedVariables(
+            userCodeDefinitions.variables
+          );
 
           // Refresh semantic tokens to update highlighting
           if (this.semanticTokensProvider) {
