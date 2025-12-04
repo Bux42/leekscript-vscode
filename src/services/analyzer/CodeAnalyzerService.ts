@@ -6,8 +6,6 @@ import {
   Folder,
   SaveAIResponse,
   AnalyzeFileResponse,
-  GetDefinitionsRequest,
-  GetDefinitionsResponse,
   NewAIResponse,
   OwnerIdResponse,
   ListAIsResponse,
@@ -15,7 +13,7 @@ import {
   ListFoldersResponse,
 } from "./types";
 import { Console } from "console";
-import { GetDefinitionsResponse2 } from "./definitions.types";
+import { GetDefinitionsResponse } from "./definitions.types";
 
 /**
  * Configuration for the LeekScript Code Analysis Server
@@ -314,11 +312,11 @@ export class CodeAnalyzerService {
     cursorColumn: number,
     filePath: string,
     fileCode: string
-  ): Promise<GetDefinitionsResponse2 | null> {
+  ): Promise<GetDefinitionsResponse | null> {
     try {
       // time the request
       const startTime = Date.now();
-      const response = await this.request<GetDefinitionsResponse2>(
+      const response = await this.request<GetDefinitionsResponse>(
         "POST",
         "/api/get-definitions",
         {

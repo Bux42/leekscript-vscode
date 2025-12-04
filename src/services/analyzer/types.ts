@@ -99,14 +99,6 @@ export interface DefinitionSuggestion {
 }
 
 /**
- * Response from get-definitions endpoint
- */
-export interface GetDefinitionsResponse {
-  /** Array of definition suggestions */
-  suggestions: DefinitionSuggestion[];
-}
-
-/**
  * Response from creating a new AI file
  */
 export interface NewAIResponse {

@@ -1,4 +1,4 @@
-export interface GetDefinitionsResponse2 {
+export interface GetDefinitionsResponse {
   classes: UserClass[];
   functions: UserFunction[];
   globals: UserVariable[];
