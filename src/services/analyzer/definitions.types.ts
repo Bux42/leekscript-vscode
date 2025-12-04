@@ -5,48 +5,40 @@ export interface GetDefinitionsResponse {
   variables: UserVariable[];
 }
 
-export interface UserClassField {
+export interface UserDefinitionLocation {
+  line: number;
+  col: number;
+  fileName: string;
+  folderName: string;
+}
+
+export interface UserClassField extends UserDefinitionLocation {
   name: string;
   type: string;
   level: string;
-  col: number;
-  line: number;
-  fileName: string;
-  folderName: string;
   isStatic: boolean;
 }
 
-export interface UserClass {
-  col: number;
+export interface UserClass extends UserDefinitionLocation {
   constructors: UserMethod[];
   fields: UserClassField[];
-  fileName: string;
-  folderName: string;
   isStatic: boolean;
   line: number;
   methods: UserMethod[];
   name: string;
 }
 
-export interface UserMethod {
+export interface UserMethod extends UserDefinitionLocation {
   arguments: UserArgument[];
-  col: number;
-  fileName: string;
-  folderName: string;
   isStatic: boolean;
-  line: number;
   name: string;
   returnType: string;
 }
 
 export interface DefinedClassesDict {}
 
-export interface UserFunction {
+export interface UserFunction extends UserDefinitionLocation {
   arguments: UserArgument[];
-  col: number;
-  fileName: string;
-  folderName: string;
-  line: number;
   name: string;
   returnType: string;
 }
@@ -57,11 +49,7 @@ export interface UserArgument {
   optional?: boolean;
 }
 
-export interface UserVariable {
-  col: number;
-  fileName: string;
-  folderName: string;
-  line: number;
+export interface UserVariable extends UserDefinitionLocation {
   name: string;
   type: string;
 }
