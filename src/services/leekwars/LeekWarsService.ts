@@ -700,8 +700,8 @@ export class LeekWarsService {
           `Fetching remote AI code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
         );
 
-        // Sleep for 200ms to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        // Sleep for 100ms to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         let remoteAI;
         try {
