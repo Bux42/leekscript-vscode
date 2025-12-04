@@ -7,6 +7,7 @@ import {
 } from "../../services/analyzer/definitions.types";
 import { getMarkdownGoToDefinitionCommand } from "../../utils/DefinitionUtils";
 import { getMemberAccessStringAtCursor } from "../../utils/UserCodeUtils";
+import { tryAppendDocumentationToMarkdown } from "./DocumentationGenerator";
 
 export class UserCodeHoverProvider implements vscode.HoverProvider {
   private definitionProvider: DefinitionManager;
@@ -152,6 +153,8 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
     const markdown = new vscode.MarkdownString();
     markdown.isTrusted = true;
 
+    tryAppendDocumentationToMarkdown(classMethod, markdown);
+
     console.log(`Creating hover for class method: ${classMethod.name}`);
     // Build method signature
     const params = classMethod.arguments
@@ -183,6 +186,8 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
     const markdown = new vscode.MarkdownString();
     markdown.isTrusted = true;
 
+    tryAppendDocumentationToMarkdown(classField, markdown);
+
     console.log(`Creating hover for class field: ${classField.name}`);
     const fieldDeclaration = `var ${classField.name}: ${classField.type}`;
 
@@ -206,6 +211,8 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
     const markdown = new vscode.MarkdownString();
     markdown.isTrusted = true;
 
+    tryAppendDocumentationToMarkdown(userVariable, markdown);
+
     console.log(`Creating hover for user variable: ${userVariable.name}`);
     const variableDeclaration = `var ${userVariable.name}: ${userVariable.type}`;
 
@@ -228,6 +235,8 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
     // Create markdown content
     const markdown = new vscode.MarkdownString();
     markdown.isTrusted = true;
+
+    tryAppendDocumentationToMarkdown(userClass, markdown);
 
     console.log(`Creating hover for user class: ${userClass.name}`);
     let classDeclaration = `class ${userClass.name}`;
@@ -266,6 +275,8 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
     // Create markdown content
     const markdown = new vscode.MarkdownString();
     markdown.isTrusted = true;
+
+    tryAppendDocumentationToMarkdown(userFunc, markdown);
 
     // Build function signature
     const params = userFunc.arguments

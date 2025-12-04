@@ -1,9 +1,8 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { CodeAnalyzerService, AnalysisError } from "../services/analyzer";
-import { DataLoader, FunctionData } from "../providers/leekscript/DataLoader";
+import { DataLoader } from "../providers/leekscript/DataLoader";
 import { CodeBaseStateManager } from "./codebase";
-import { UserCodeCompletionProvider } from "../providers/user-code/CompletionProvider";
 import { DefinitionManager } from "../providers/user-code/DefinitionManager";
 import { UserCodeSemanticTokensProvider } from "../providers/user-code/SemanticTokensProvider";
 
