@@ -242,6 +242,9 @@ export class DiagnosticService {
               document.fileName
             )}: ${errorCount} errors, ${warningCount} warnings`
           );
+        } else {
+          // clear previous diagnostics if no issues found (a file with errors might have been deleted, in that case we need to clear diagnostics)
+          this.diagnosticCollection.clear();
         }
       }
     } catch (error) {
