@@ -21,6 +21,13 @@ export function getStringBeforeCursor(
     if (/\s/.test(char)) {
       break;
     }
+    if (char === "(") {
+      console.log(
+        "[getStringBeforeCursor] Found opening parenthesis at index",
+        startIndex
+      );
+      break;
+    }
     startIndex--;
   }
 
