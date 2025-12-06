@@ -402,7 +402,7 @@ export class LeekWarsService {
   /**
    * Get diffs of local AIs against LeekWars versions
    */
-  async getAIDiffs(): Promise<void> {
+  async pushToLeekwars(): Promise<void> {
     if (!this.initializeApi() || !this.apiService) {
       console.error("[LeekWars Service] API service not initialized");
       return;

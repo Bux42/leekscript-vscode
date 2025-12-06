@@ -40,12 +40,12 @@ export class CommandRegistry {
       })
     );
 
-    // getAIDiffs command
+    // Force sync all command
     this.context.subscriptions.push(
-      vscode.commands.registerCommand("leekscript.getAIDiffs", async () => {
-        this.statusBarService.setBusy(true, "Getting AI diffs...");
+      vscode.commands.registerCommand("leekscript.forceSyncAll", async () => {
+        this.statusBarService.setBusy(true, "Force syncing all AIs...");
         try {
-          await this.leekWarsService.getAIDiffs();
+          await this.leekWarsService.pushToLeekwars();
         } finally {
           this.statusBarService.setBusy(false);
         }

@@ -57,8 +57,8 @@
         "category": "LeekScript"
       },
       {
-        "command": "leekscript.getAIDiffs",
-        "title": "LeekWars: Get AI Diffs",
+        "command": "leekscript.forceSyncAll",
+        "title": "LeekWars: Force Sync All",
         "category": "LeekScript"
       },
       {
