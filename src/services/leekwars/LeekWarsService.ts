@@ -400,7 +400,8 @@ export class LeekWarsService {
   }
 
   /**
-   * Get diffs of local AIs against LeekWars versions
+   * Push local changes to LeekWars (Force sync all)
+   * Synchronizes folder structure, files, and code content
    */
   async pushToLeekwars(): Promise<void> {
     if (!this.initializeApi() || !this.apiService) {
@@ -409,338 +410,29 @@ export class LeekWarsService {
     }
 
     try {
-      // pull all AIs to get the latest data in lastResponse
-      const farmerAIs = await this.apiService.getFarmerAIs();
-      // Store the response for later use and persist it
-      await this.storeFarmerAIsResponse(farmerAIs);
-
-      const localFilesService = LocalFilesService.getInstance();
-      const localFilesState = await localFilesService.getLocalFilesState();
-
-      console.log("Local Files State:", localFilesState.root[0].children);
-
-      let remoteFilesRoot = await this.getFarmersAIFileState();
+      // Fetch remote and local state
+      const { localFilesRoot, remoteFilesRoot, workspaceRoot } =
+        await this.fetchSyncStates();
 
       if (!remoteFilesRoot) {
-        console.error(
-          "[LeekWars Service] Failed to get farmer's AI file state"
-        );
         return;
       }
 
-      console.log("Farmer's AIs to Local File State:", remoteFilesRoot);
-
-      const localFilesRoot: (FolderNode | FileNode)[] =
-        localFilesState.root[0].children;
-
-      /* ---- STEP 1: DELETE REMOTE FOLDERS THAT DON'T EXIST LOCALLY ---- */
-
-      // Find folders that exist in remote but not in local, meaning we removed them / renamed them locally
-      const missingFolders = this.findMissingFolders(
+      // Step 1: Synchronize folder and file structure
+      await this.syncFolderStructure(
+        localFilesRoot,
         remoteFilesRoot,
-        localFilesRoot
+        workspaceRoot
       );
 
-      console.log(
-        "Missing folders (in remote but not in local):",
-        missingFolders
-      );
-
-      // Delete missing folders from LeekWars
-      for (const folder of missingFolders) {
-        if (folder.leekWarsFolderInfo) {
-          console.log(
-            `Deleting remote folder: ${folder.leekWarsFolderInfo.name} (ID: ${folder.leekWarsFolderInfo.id})`
-          );
-          // sleep for 200ms to avoid rate limiting
-          await new Promise((resolve) => setTimeout(resolve, 200));
-          await this.apiService.deleteFolder(folder.leekWarsFolderInfo.id);
-        }
-      }
-
-      /* ---- STEP 2: DELETE REMOTE FILES THAT DON'T EXIST LOCALLY ---- */
-
-      // Find files that exist in remote but not in local
-      const missingFiles = this.findMissingFiles(
+      // Step 2: Determine which files need content updates
+      // TODO: In the future, this will be optimized to only check files that changed locally
+      // by comparing with the last pushed state, instead of fetching all remote AI codes
+      const filesToUpdate = await this.findFilesNeedingUpdate(
+        localFilesRoot,
         remoteFilesRoot,
-        localFilesRoot
+        workspaceRoot
       );
-
-      console.log("Missing files (in remote but not in local):", missingFiles);
-
-      // Delete missing files from LeekWars
-      for (const file of missingFiles) {
-        if (file.leekWarsAIInfo) {
-          console.log(
-            `Deleting remote AI: ${file.leekWarsAIInfo.name} (ID: ${file.leekWarsAIInfo.id})`
-          );
-          // sleep for 200ms to avoid rate limiting
-          await new Promise((resolve) => setTimeout(resolve, 200));
-          await this.apiService.deleteAI(file.leekWarsAIInfo.id);
-        }
-      }
-
-      /* ---- STEP 3: CREATE FOLDERS THAT EXIST LOCALLY BUT NOT REMOTELY ---- */
-
-      // Find folders that exist locally but not remotely
-
-      const newFolders = this.findNewFolders(localFilesRoot, remoteFilesRoot);
-
-      console.log("New folders (in local but not in remote):", newFolders);
-
-      // Create new folders on LeekWars
-      for (const new_local_folder of newFolders) {
-        console.log(
-          `Creating remote folder: ${new_local_folder.name} with path ${new_local_folder.path}`
-        );
-        if (this.isRootLocalFolder(new_local_folder.path)) {
-          console.log(
-            `Creating remote root folder: ${new_local_folder.name} with parent ID 0`
-          );
-          // sleep for 200ms to avoid rate limiting
-          await new Promise((resolve) => setTimeout(resolve, 200));
-          const newLeekwarsFolder = await this.apiService.createFolder(
-            new_local_folder.name,
-            0
-          );
-          console.log(
-            `Created remote root folder with ID: ${newLeekwarsFolder.id}`
-          );
-        } else {
-          // Handle subfolder creation - find parent folder in remote state
-          const parts = this.getPathParts(new_local_folder.path);
-          console.log("Local folder parts:", parts);
-
-          // The parent folder path is all parts except the last one
-          const parentPath = parts.slice(0, -1).join(path.sep);
-          console.log("Parent folder path:", parentPath);
-
-          // Find the parent folder in the remote state
-          if (!remoteFilesRoot) {
-            console.error("Remote files root is null, cannot create subfolder");
-            continue;
-          }
-
-          const parentRemoteFolder = this.findFolderByPath(
-            remoteFilesRoot,
-            parentPath
-          );
-
-          if (parentRemoteFolder && parentRemoteFolder.leekWarsFolderInfo) {
-            const parentFolderId = parentRemoteFolder.leekWarsFolderInfo.id;
-            console.log(
-              `Creating remote subfolder: ${new_local_folder.name} with parent ID ${parentFolderId}`
-            );
-            // sleep for 200ms to avoid rate limiting
-            await new Promise((resolve) => setTimeout(resolve, 200));
-            const newLeekwarsFolder = await this.apiService.createFolder(
-              new_local_folder.name,
-              parentFolderId
-            );
-            console.log(
-              `Created remote subfolder with ID: ${newLeekwarsFolder.id}`
-            );
-          } else {
-            console.error(
-              `Parent folder not found in remote state for path: ${parentPath}`
-            );
-            console.error(
-              `Skipping creation of folder: ${new_local_folder.name}`
-            );
-            continue;
-          }
-        }
-        // update remoteFilesRoot to reflect the new folder structure
-        // sleep for 200ms to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 200));
-        remoteFilesRoot = await this.getFarmersAIFileState();
-      }
-
-      /* ---- STEP 4: CREATE .leek FILES THAT EXIST LOCALLY BUT NOT REMOTELY ---- */
-
-      // Update remote state after folder creation
-      remoteFilesRoot = await this.getFarmersAIFileState();
-
-      if (!remoteFilesRoot) {
-        console.error(
-          "[LeekWars Service] Failed to get updated farmer's AI file state"
-        );
-        return;
-      }
-
-      // Find files that exist locally but not remotely
-      const newFiles = this.findNewFiles(localFilesRoot, remoteFilesRoot);
-
-      console.log("New files (in local but not in remote):", newFiles);
-
-      // Create new AI files on LeekWars
-      for (const new_local_file of newFiles) {
-        console.log(
-          `Creating remote AI: ${new_local_file.name} with path ${new_local_file.path}`
-        );
-
-        // Determine the folder ID for this file
-        let folderId = 0; // Default to root
-
-        if (!this.isRootLocalFolder(new_local_file.path)) {
-          // File is in a subfolder - find the parent folder
-          const parts = this.getPathParts(new_local_file.path);
-          const parentPath = parts.slice(0, -1).join(path.sep);
-          console.log("Parent folder path for file:", parentPath);
-
-          if (!remoteFilesRoot) {
-            console.error("Remote files root is null, cannot create file");
-            continue;
-          }
-
-          const parentRemoteFolder = this.findFolderByPath(
-            remoteFilesRoot,
-            parentPath
-          );
-
-          if (parentRemoteFolder && parentRemoteFolder.leekWarsFolderInfo) {
-            folderId = parentRemoteFolder.leekWarsFolderInfo.id;
-            console.log(`File will be created in folder ID: ${folderId}`);
-          } else {
-            console.error(
-              `Parent folder not found in remote state for path: ${parentPath}`
-            );
-            console.error(`Skipping creation of file: ${new_local_file.name}`);
-            continue;
-          }
-        }
-
-        // Create the AI file (without .leek extension for the API)
-
-        console.log(
-          `Creating remote AI: ${new_local_file.name} in folder ID ${folderId}`
-        );
-
-        // sleep for 200ms to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 200));
-
-        try {
-          const newLeekwarsAI = await this.apiService.createAI({
-            folder_id: folderId,
-            name: new_local_file.name,
-          });
-          console.log(`Created remote AI with ID: ${newLeekwarsAI.id}`);
-        } catch (error) {
-          console.error(`Error creating AI ${new_local_file.name}:`, error);
-        }
-      }
-
-      /* ---- STEP 5: COMPARE CONTENT OF LOCAL AND REMOTE AIs ---- */
-
-      // Update remote state after file creation
-      // sleep for 200ms to avoid rate limiting
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      remoteFilesRoot = await this.getFarmersAIFileState();
-
-      if (!remoteFilesRoot) {
-        console.error(
-          "[LeekWars Service] Failed to get updated farmer's AI file state after file creation"
-        );
-        return;
-      }
-
-      // Collect all local files (recursively)
-      const allLocalFiles = this.collectAllFiles(localFilesRoot);
-      console.log(`Found ${allLocalFiles.length} local files to check`);
-
-      // Array to store files that need to be updated
-      const filesToUpdate: Array<{
-        localFile: FileNode;
-        remoteFile: FileNode;
-        localCode: string;
-        remoteCode: string;
-      }> = [];
-
-      // Get workspace root for reading local files
-      const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
-      if (!workspaceFolder) {
-        console.error("[LeekWars Service] No workspace folder found");
-        return;
-      }
-      const workspaceRoot = workspaceFolder.uri.fsPath;
-
-      // Check each local file against its remote counterpart
-      for (const localFile of allLocalFiles) {
-        console.log(`Checking file: ${localFile.name}`);
-
-        // Find the corresponding remote file
-        const remoteFile = this.findFileByPath(remoteFilesRoot, localFile.path);
-
-        if (!remoteFile) {
-          console.warn(
-            `Remote file not found for local file: ${localFile.path}`
-          );
-          continue;
-        }
-
-        if (!remoteFile.leekWarsAIInfo) {
-          console.warn(
-            `Remote file ${remoteFile.name} has no LeekWars AI info`
-          );
-          continue;
-        }
-
-        // Read local file content
-        const localFilePath = path.join(workspaceRoot, localFile.path);
-        let localCode: string;
-        try {
-          localCode = fs.readFileSync(localFilePath, "utf8");
-        } catch (error) {
-          console.error(`Failed to read local file ${localFilePath}:`, error);
-          continue;
-        }
-
-        // Get remote AI code
-        console.log(
-          `Fetching remote AI code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
-        );
-
-        // Sleep for 100ms to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        let remoteAI;
-        try {
-          remoteAI = await this.apiService.getAI(remoteFile.leekWarsAIInfo.id);
-        } catch (error) {
-          console.error(
-            `Failed to fetch remote AI ${remoteFile.leekWarsAIInfo.id}:`,
-            error
-          );
-          continue;
-        }
-
-        if (!remoteAI.ai) {
-          console.warn(`Could not get remote AI ${remoteFile.name}`);
-          continue;
-        }
-
-        const remoteCode = remoteAI.ai.code;
-
-        // Compare local and remote code
-        if (localCode !== remoteCode) {
-          console.log(`Code differs for ${localFile.name} - needs update`);
-          filesToUpdate.push({
-            localFile,
-            remoteFile,
-            localCode,
-            remoteCode,
-          });
-        } else {
-          console.log(`Code matches for ${localFile.name} - no update needed`);
-        }
-      }
-
-      console.log(
-        "Files to update:",
-        filesToUpdate.map((f) => f.localFile.path)
-      );
-
-      /* ---- STEP 6: UPDATE REMOTE FILES WITH LOCAL CODE ---- */
 
       if (filesToUpdate.length === 0) {
         console.log("No files need to be updated");
@@ -750,67 +442,507 @@ export class LeekWarsService {
         return;
       }
 
-      console.log(`Updating ${filesToUpdate.length} file(s) on LeekWars`);
-
-      let successCount = 0;
-      let failureCount = 0;
-
-      for (const fileToUpdate of filesToUpdate) {
-        const { remoteFile, localCode } = fileToUpdate;
-
-        if (!remoteFile.leekWarsAIInfo) {
-          console.error(
-            `Remote file ${remoteFile.name} has no LeekWars AI info`
-          );
-          failureCount++;
-          continue;
-        }
-
-        const aiId = remoteFile.leekWarsAIInfo.id;
-        console.log(
-          `Updating remote AI ${remoteFile.name} (ID: ${aiId}) with local code`
-        );
-
-        // Sleep for 200ms to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 200));
-
-        try {
-          await this.apiService.updateAICode(aiId, localCode);
-          console.log(`Successfully updated ${remoteFile.name}`);
-          successCount++;
-        } catch (error) {
-          console.error(`Error updating ${remoteFile.name}:`, error);
-          failureCount++;
-        }
-      }
-
-      console.log(
-        `Update complete: ${successCount} succeeded, ${failureCount} failed`
+      // Step 3: Update file contents
+      const { successCount, failureCount } = await this.updateFileContents(
+        filesToUpdate
       );
 
-      /* ---- STEP 7: TRIGGER RECOMPILATION OF MAIN AI FILES ---- */
+      // Step 4: Trigger recompilation of main AIs that include updated files
+      const { recompileSuccessCount, recompileFailureCount } =
+        await this.triggerMainAIRecompilation(filesToUpdate, remoteFilesRoot);
 
-      // Find all main AI files that include the updated files
-      // This is necessary due to a LeekWars bug where included files don't trigger recompilation
-      const mainAIsToSave = new Set<number>();
+      // Report results
+      this.reportSyncResults(
+        successCount,
+        failureCount,
+        recompileSuccessCount,
+        recompileFailureCount
+      );
+    } catch (error: any) {
+      vscode.window.showErrorMessage(
+        `Failed to push to LeekWars: ${error.message}`
+      );
+    }
+  }
 
-      for (const fileToUpdate of filesToUpdate) {
-        const { remoteFile } = fileToUpdate;
+  /**
+   * Fetch and prepare local and remote file states for synchronization
+   */
+  private async fetchSyncStates(): Promise<{
+    localFilesRoot: (FolderNode | FileNode)[];
+    remoteFilesRoot: (FolderNode | FileNode)[] | null;
+    workspaceRoot: string;
+  }> {
+    // Fetch remote state
+    const farmerAIs = await this.apiService!.getFarmerAIs();
+    await this.storeFarmerAIsResponse(farmerAIs);
 
-        if (!remoteFile.leekWarsAIInfo) {
+    // Fetch local state
+    const localFilesService = LocalFilesService.getInstance();
+    const localFilesState = await localFilesService.getLocalFilesState();
+    const localFilesRoot = localFilesState.root[0].children;
+
+    console.log("Local Files State:", localFilesRoot);
+
+    // Convert remote state to file tree structure
+    const remoteFilesRoot = await this.getFarmersAIFileState();
+
+    if (!remoteFilesRoot) {
+      console.error("[LeekWars Service] Failed to get farmer's AI file state");
+      vscode.window.showErrorMessage("Failed to fetch remote AI state");
+      return { localFilesRoot, remoteFilesRoot: null, workspaceRoot: "" };
+    }
+
+    console.log("Remote Files State:", remoteFilesRoot);
+
+    // Get workspace root
+    const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+    if (!workspaceFolder) {
+      console.error("[LeekWars Service] No workspace folder found");
+      throw new Error("No workspace folder found");
+    }
+
+    return {
+      localFilesRoot,
+      remoteFilesRoot,
+      workspaceRoot: workspaceFolder.uri.fsPath,
+    };
+  }
+
+  /**
+   * Synchronize folder and file structure (delete obsolete, create new)
+   */
+  private async syncFolderStructure(
+    localFilesRoot: (FolderNode | FileNode)[],
+    remoteFilesRoot: (FolderNode | FileNode)[],
+    workspaceRoot: string
+  ): Promise<void> {
+    // Delete remote folders that don't exist locally
+    await this.deleteObsoleteFolders(remoteFilesRoot, localFilesRoot);
+
+    // Delete remote files that don't exist locally
+    await this.deleteObsoleteFiles(remoteFilesRoot, localFilesRoot);
+
+    // Create folders that exist locally but not remotely
+    await this.createNewFolders(localFilesRoot, remoteFilesRoot);
+
+    // Create files that exist locally but not remotely
+    await this.createNewFiles(localFilesRoot, remoteFilesRoot);
+  }
+
+  /**
+   * Delete folders from remote that don't exist locally
+   */
+  private async deleteObsoleteFolders(
+    remoteFilesRoot: (FolderNode | FileNode)[],
+    localFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<void> {
+    const missingFolders = this.findMissingFolders(
+      remoteFilesRoot,
+      localFilesRoot
+    );
+
+    console.log(`Deleting ${missingFolders.length} obsolete remote folder(s)`);
+
+    for (const folder of missingFolders) {
+      if (folder.leekWarsFolderInfo) {
+        console.log(
+          `Deleting remote folder: ${folder.leekWarsFolderInfo.name} (ID: ${folder.leekWarsFolderInfo.id})`
+        );
+        await this.rateLimitedDelay();
+        await this.apiService!.deleteFolder(folder.leekWarsFolderInfo.id);
+      }
+    }
+  }
+
+  /**
+   * Delete files from remote that don't exist locally
+   */
+  private async deleteObsoleteFiles(
+    remoteFilesRoot: (FolderNode | FileNode)[],
+    localFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<void> {
+    const missingFiles = this.findMissingFiles(remoteFilesRoot, localFilesRoot);
+
+    console.log(`Deleting ${missingFiles.length} obsolete remote file(s)`);
+
+    for (const file of missingFiles) {
+      if (file.leekWarsAIInfo) {
+        console.log(
+          `Deleting remote AI: ${file.leekWarsAIInfo.name} (ID: ${file.leekWarsAIInfo.id})`
+        );
+        await this.rateLimitedDelay();
+        await this.apiService!.deleteAI(file.leekWarsAIInfo.id);
+      }
+    }
+  }
+
+  /**
+   * Create folders on remote that exist locally but not remotely
+   */
+  private async createNewFolders(
+    localFilesRoot: (FolderNode | FileNode)[],
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<void> {
+    const newFolders = this.findNewFolders(localFilesRoot, remoteFilesRoot);
+
+    console.log(`Creating ${newFolders.length} new remote folder(s)`);
+
+    for (const newFolder of newFolders) {
+      await this.createRemoteFolder(newFolder, remoteFilesRoot);
+      // Refresh remote state after each folder creation to get updated IDs
+      await this.rateLimitedDelay();
+      const updatedRemoteState = await this.getFarmersAIFileState();
+      if (updatedRemoteState) {
+        remoteFilesRoot.length = 0;
+        remoteFilesRoot.push(...updatedRemoteState);
+      }
+    }
+  }
+
+  /**
+   * Create a single folder on remote
+   */
+  private async createRemoteFolder(
+    folder: FolderNode,
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<void> {
+    console.log(
+      `Creating remote folder: ${folder.name} (path: ${folder.path})`
+    );
+
+    const isRoot = this.isRootLocalFolder(folder.path);
+    const parentFolderId = isRoot
+      ? 0
+      : await this.getRemoteParentFolderId(folder.path, remoteFilesRoot);
+
+    if (parentFolderId === null && !isRoot) {
+      console.error(
+        `Cannot create folder ${folder.name}: parent folder not found`
+      );
+      return;
+    }
+
+    await this.rateLimitedDelay();
+    const newRemoteFolder = await this.apiService!.createFolder(
+      folder.name,
+      parentFolderId ?? 0
+    );
+    console.log(`Created remote folder with ID: ${newRemoteFolder.id}`);
+  }
+
+  /**
+   * Get the remote parent folder ID for a given local path
+   */
+  private async getRemoteParentFolderId(
+    localPath: string,
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<number | null> {
+    const parts = this.getPathParts(localPath);
+    const parentPath = parts.slice(0, -1).join(path.sep);
+
+    const parentFolder = this.findFolderByPath(remoteFilesRoot, parentPath);
+
+    if (!parentFolder?.leekWarsFolderInfo) {
+      console.error(
+        `Parent folder not found in remote state for path: ${parentPath}`
+      );
+      return null;
+    }
+
+    return parentFolder.leekWarsFolderInfo.id;
+  }
+
+  /**
+   * Create files on remote that exist locally but not remotely
+   */
+  private async createNewFiles(
+    localFilesRoot: (FolderNode | FileNode)[],
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<void> {
+    // Refresh remote state to get updated folder IDs
+    const updatedRemoteState = await this.getFarmersAIFileState();
+    if (!updatedRemoteState) {
+      console.error("[LeekWars Service] Failed to refresh remote state");
+      return;
+    }
+
+    const newFiles = this.findNewFiles(localFilesRoot, updatedRemoteState);
+
+    console.log(`Creating ${newFiles.length} new remote file(s)`);
+
+    for (const newFile of newFiles) {
+      await this.createRemoteFile(newFile, updatedRemoteState);
+    }
+  }
+
+  /**
+   * Create a single file on remote
+   */
+  private async createRemoteFile(
+    file: FileNode,
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<void> {
+    console.log(`Creating remote AI: ${file.name} (path: ${file.path})`);
+
+    const isRoot = this.isRootLocalFolder(file.path);
+    const folderId = isRoot
+      ? 0
+      : await this.getRemoteParentFolderId(file.path, remoteFilesRoot);
+
+    if (folderId === null && !isRoot) {
+      console.error(`Cannot create file ${file.name}: parent folder not found`);
+      return;
+    }
+
+    await this.rateLimitedDelay();
+
+    try {
+      const newAI = await this.apiService!.createAI({
+        folder_id: folderId ?? 0,
+        name: file.name,
+      });
+      console.log(`Created remote AI with ID: ${newAI.id}`);
+    } catch (error) {
+      console.error(`Error creating AI ${file.name}:`, error);
+    }
+  }
+
+  /**
+   * Find files that need content updates by comparing local and remote code
+   * TODO: Optimize this by comparing with last pushed state instead of fetching all remote codes
+   */
+  private async findFilesNeedingUpdate(
+    localFilesRoot: (FolderNode | FileNode)[],
+    remoteFilesRoot: (FolderNode | FileNode)[],
+    workspaceRoot: string
+  ): Promise<
+    Array<{
+      localFile: FileNode;
+      remoteFile: FileNode;
+      localCode: string;
+    }>
+  > {
+    // Refresh remote state to ensure all files are present with correct IDs
+    await this.rateLimitedDelay();
+    const updatedRemoteState = await this.getFarmersAIFileState();
+    if (!updatedRemoteState) {
+      console.error("[LeekWars Service] Failed to refresh remote state");
+      return [];
+    }
+
+    const allLocalFiles = this.collectAllFiles(localFilesRoot);
+    console.log(`Comparing ${allLocalFiles.length} local file(s) with remote`);
+
+    const filesToUpdate: Array<{
+      localFile: FileNode;
+      remoteFile: FileNode;
+      localCode: string;
+    }> = [];
+
+    for (const localFile of allLocalFiles) {
+      const remoteFile = this.findFileByPath(
+        updatedRemoteState,
+        localFile.path
+      );
+
+      if (!remoteFile?.leekWarsAIInfo) {
+        console.warn(`Remote file not found for: ${localFile.path}`);
+        continue;
+      }
+
+      // Read local code
+      const localFilePath = path.join(workspaceRoot, localFile.path);
+      let localCode: string;
+      try {
+        localCode = fs.readFileSync(localFilePath, "utf8");
+      } catch (error) {
+        console.error(`Failed to read local file ${localFilePath}:`, error);
+        continue;
+      }
+
+      // Fetch remote code
+      console.log(
+        `Fetching remote code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
+      );
+      await this.rateLimitedDelay(100); // Shorter delay for read operations
+
+      let remoteAI;
+      try {
+        remoteAI = await this.apiService!.getAI(remoteFile.leekWarsAIInfo.id);
+      } catch (error) {
+        console.error(
+          `Failed to fetch remote AI ${remoteFile.leekWarsAIInfo.id}:`,
+          error
+        );
+        continue;
+      }
+
+      if (!remoteAI.ai) {
+        console.warn(`Could not get remote AI ${remoteFile.name}`);
+        continue;
+      }
+
+      // Compare codes
+      if (localCode !== remoteAI.ai.code) {
+        console.log(`Code differs for ${localFile.name} - needs update`);
+        filesToUpdate.push({ localFile, remoteFile, localCode });
+      } else {
+        console.log(`Code matches for ${localFile.name} - no update needed`);
+      }
+    }
+
+    console.log(
+      `Found ${filesToUpdate.length} file(s) needing update:`,
+      filesToUpdate.map((f) => f.localFile.name)
+    );
+
+    return filesToUpdate;
+  }
+
+  /**
+   * Update file contents on remote
+   */
+  private async updateFileContents(
+    filesToUpdate: Array<{
+      localFile: FileNode;
+      remoteFile: FileNode;
+      localCode: string;
+    }>
+  ): Promise<{ successCount: number; failureCount: number }> {
+    console.log(`Updating ${filesToUpdate.length} file(s) on LeekWars`);
+
+    let successCount = 0;
+    let failureCount = 0;
+
+    for (const { remoteFile, localCode } of filesToUpdate) {
+      if (!remoteFile.leekWarsAIInfo) {
+        console.error(`Remote file ${remoteFile.name} has no AI info`);
+        failureCount++;
+        continue;
+      }
+
+      const aiId = remoteFile.leekWarsAIInfo.id;
+      console.log(`Updating ${remoteFile.name} (ID: ${aiId})`);
+
+      await this.rateLimitedDelay();
+
+      try {
+        await this.apiService!.updateAICode(aiId, localCode);
+        console.log(`Successfully updated ${remoteFile.name}`);
+        successCount++;
+      } catch (error) {
+        console.error(`Error updating ${remoteFile.name}:`, error);
+        failureCount++;
+      }
+    }
+
+    console.log(
+      `Update complete: ${successCount} succeeded, ${failureCount} failed`
+    );
+
+    return { successCount, failureCount };
+  }
+
+  /**
+   * Trigger recompilation of main AIs that include updated files
+   * This works around a LeekWars bug where included files don't trigger automatic recompilation
+   */
+  private async triggerMainAIRecompilation(
+    filesToUpdate: Array<{
+      localFile: FileNode;
+      remoteFile: FileNode;
+      localCode: string;
+    }>,
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Promise<{ recompileSuccessCount: number; recompileFailureCount: number }> {
+    const mainAIsToSave = this.collectMainAIsForUpdatedFiles(
+      filesToUpdate,
+      remoteFilesRoot
+    );
+
+    if (mainAIsToSave.size === 0) {
+      console.log("No main AIs need recompilation");
+      return { recompileSuccessCount: 0, recompileFailureCount: 0 };
+    }
+
+    console.log(
+      `Triggering recompilation for ${
+        mainAIsToSave.size
+      } main AI(s): ${Array.from(mainAIsToSave).join(", ")}`
+    );
+
+    let recompileSuccessCount = 0;
+    let recompileFailureCount = 0;
+
+    for (const aiId of mainAIsToSave) {
+      const aiFile = this.findFileByAIId(remoteFilesRoot, aiId);
+
+      if (!aiFile) {
+        console.warn(`Could not find file for AI ID ${aiId}`);
+        continue;
+      }
+
+      console.log(`Triggering recompilation for ${aiFile.name} (ID: ${aiId})`);
+
+      await this.rateLimitedDelay();
+
+      try {
+        const aiResponse = await this.apiService!.getAI(aiId);
+
+        if (!aiResponse.ai) {
+          console.error(`Failed to get AI ${aiFile.name} for recompilation`);
+          recompileFailureCount++;
           continue;
         }
 
-        // Get the entrypoints (AIs that include this file)
-        const entrypoints = remoteFile.leekWarsAIInfo.entrypoints || [];
+        // Re-save the AI to trigger recompilation
+        await this.apiService!.updateAICode(aiId, aiResponse.ai.code);
+        console.log(`Successfully triggered recompilation for ${aiFile.name}`);
+        recompileSuccessCount++;
+      } catch (error) {
+        console.error(
+          `Error triggering recompilation for ${aiFile.name}:`,
+          error
+        );
+        recompileFailureCount++;
+      }
+    }
 
+    console.log(
+      `Recompilation complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`
+    );
+
+    return { recompileSuccessCount, recompileFailureCount };
+  }
+
+  /**
+   * Collect all main AIs (not included by others) that need recompilation
+   */
+  private collectMainAIsForUpdatedFiles(
+    filesToUpdate: Array<{
+      localFile: FileNode;
+      remoteFile: FileNode;
+      localCode: string;
+    }>,
+    remoteFilesRoot: (FolderNode | FileNode)[]
+  ): Set<number> {
+    const mainAIsToSave = new Set<number>();
+
+    for (const { remoteFile } of filesToUpdate) {
+      if (!remoteFile.leekWarsAIInfo) {
+        continue;
+      }
+
+      const entrypoints = remoteFile.leekWarsAIInfo.entrypoints || [];
+
+      if (entrypoints.length > 0) {
         console.log(
           `File ${remoteFile.name} is included by ${
             entrypoints.length
           } AI(s): ${entrypoints.join(", ")}`
         );
 
-        // Traverse upwards to find main AI files (those with empty entrypoints)
         for (const entrypointId of entrypoints) {
           const mainAIs = this.findMainAIsForEntrypoint(
             entrypointId,
@@ -819,95 +951,50 @@ export class LeekWarsService {
           mainAIs.forEach((id: number) => mainAIsToSave.add(id));
         }
       }
-
-      if (mainAIsToSave.size > 0) {
-        console.log(
-          `Found ${
-            mainAIsToSave.size
-          } main AI(s) that need to be saved to trigger recompilation: ${Array.from(
-            mainAIsToSave
-          ).join(", ")}`
-        );
-
-        let recompileSuccessCount = 0;
-        let recompileFailureCount = 0;
-
-        for (const aiId of mainAIsToSave) {
-          // Find the file node for this AI
-          const aiFile = this.findFileByAIId(remoteFilesRoot, aiId);
-
-          if (!aiFile) {
-            console.warn(`Could not find remote file for AI ID ${aiId}`);
-            continue;
-          }
-
-          console.log(
-            `Triggering recompilation for main AI ${aiFile.name} (ID: ${aiId})`
-          );
-
-          // Sleep for 200ms to avoid rate limiting
-          await new Promise((resolve) => setTimeout(resolve, 200));
-
-          try {
-            // Get the current code
-            const aiResponse = await this.apiService.getAI(aiId);
-
-            if (!aiResponse.ai) {
-              console.error(
-                `Failed to get AI ${aiFile.name} for recompilation`
-              );
-              recompileFailureCount++;
-              continue;
-            }
-
-            // Save it back (this triggers recompilation)
-            await this.apiService.updateAICode(aiId, aiResponse.ai.code);
-            console.log(
-              `Successfully triggered recompilation for ${aiFile.name}`
-            );
-            recompileSuccessCount++;
-          } catch (error) {
-            console.error(
-              `Error triggering recompilation for ${aiFile.name}:`,
-              error
-            );
-            recompileFailureCount++;
-          }
-        }
-
-        console.log(
-          `Recompilation trigger complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`
-        );
-
-        if (recompileFailureCount > 0) {
-          vscode.window.showWarningMessage(
-            `Updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s), but ${
-              failureCount + recompileFailureCount
-            } operations failed.`
-          );
-        } else {
-          vscode.window.showInformationMessage(
-            `Successfully updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s) on LeekWars`
-          );
-        }
-      } else {
-        console.log("No main AIs need recompilation");
-
-        if (failureCount > 0) {
-          vscode.window.showWarningMessage(
-            `Updated ${successCount} file(s) on LeekWars, but ${failureCount} failed. Check console for details.`
-          );
-        } else {
-          vscode.window.showInformationMessage(
-            `Successfully updated ${successCount} file(s) on LeekWars`
-          );
-        }
-      }
-    } catch (error: any) {
-      vscode.window.showErrorMessage(
-        `Failed to get AI diffs: ${error.message}`
-      );
     }
+
+    return mainAIsToSave;
+  }
+
+  /**
+   * Report synchronization results to the user
+   */
+  private reportSyncResults(
+    successCount: number,
+    failureCount: number,
+    recompileSuccessCount: number,
+    recompileFailureCount: number
+  ): void {
+    const totalFailures = failureCount + recompileFailureCount;
+
+    if (recompileSuccessCount > 0) {
+      if (totalFailures > 0) {
+        vscode.window.showWarningMessage(
+          `Updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s), but ${totalFailures} operation(s) failed.`
+        );
+      } else {
+        vscode.window.showInformationMessage(
+          `Successfully updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s)`
+        );
+      }
+    } else {
+      if (failureCount > 0) {
+        vscode.window.showWarningMessage(
+          `Updated ${successCount} file(s), but ${failureCount} failed. Check console for details.`
+        );
+      } else {
+        vscode.window.showInformationMessage(
+          `Successfully updated ${successCount} file(s) on LeekWars`
+        );
+      }
+    }
+  }
+
+  /**
+   * Rate-limited delay to avoid API throttling
+   */
+  private async rateLimitedDelay(ms: number = 200): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
