@@ -66,6 +66,16 @@ export class UserCodeCompletionProvider
 
     console.log("Resolving member completions for word:", word);
 
+    let isArray = false;
+    // Check if it's an array access
+    // Todo: properly handle multi-dimensional arrays
+    /**
+     * If it's a member access, this also needs to be handled in member access code
+     * So we need to handle all cases
+     * castables[0] => user variable
+     * fightManager.enemies[0] => user class field
+     */
+
     // Check if it's a user variable
     let userVariable = this.definitionProvider.findUserDefinedVariable(word);
 
