@@ -221,6 +221,7 @@ export class LeekScriptCompletionProvider
       "as",
       "final",
       "Array",
+      "Map",
     ];
 
     return keywords.map((keyword) => {
