@@ -5,6 +5,7 @@ export interface FileNode {
   path: string;
   type: "file";
   leekWarsAIInfo?: LeekWarsAIInfo;
+  code?: string;
 }
 
 export interface FolderNode {

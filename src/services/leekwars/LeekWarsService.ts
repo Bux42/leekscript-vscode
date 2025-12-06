@@ -22,6 +22,7 @@ export class LeekWarsService {
   private lastResponse: GetFarmerAIsResponse | null = null;
   private static readonly STORAGE_KEY = "leekwars.farmerAIsResponse";
   private codebaseStateManager: CodeBaseStateManager | null = null;
+  private lastPushedLocalState: (FolderNode | FileNode)[] | null = null;
 
   constructor(private context: vscode.ExtensionContext) {
     // Load cached response on initialization
@@ -426,13 +427,18 @@ export class LeekWarsService {
       );
 
       // Step 2: Determine which files need content updates
-      // TODO: In the future, this will be optimized to only check files that changed locally
-      // by comparing with the last pushed state, instead of fetching all remote AI codes
-      const filesToUpdate = await this.findFilesNeedingUpdate(
-        localFilesRoot,
-        remoteFilesRoot,
-        workspaceRoot
-      );
+      const filesToUpdate = this.lastPushedLocalState
+        ? await this.findFilesNeedingUpdateIncremental(
+            localFilesRoot,
+            this.lastPushedLocalState,
+            remoteFilesRoot,
+            workspaceRoot
+          )
+        : await this.findFilesNeedingUpdate(
+            localFilesRoot,
+            remoteFilesRoot,
+            workspaceRoot
+          );
 
       if (filesToUpdate.length === 0) {
         console.log("No files need to be updated");
@@ -457,6 +463,15 @@ export class LeekWarsService {
         failureCount,
         recompileSuccessCount,
         recompileFailureCount
+      );
+
+      // Store the current local state with code content for future incremental pushes
+      this.lastPushedLocalState = await this.storeLocalStateWithCode(
+        localFilesRoot,
+        workspaceRoot
+      );
+      console.log(
+        "[LeekWars Service] Stored local state for incremental pushes"
       );
     } catch (error: any) {
       vscode.window.showErrorMessage(
@@ -709,8 +724,8 @@ export class LeekWarsService {
   }
 
   /**
-   * Find files that need content updates by comparing local and remote code
-   * TODO: Optimize this by comparing with last pushed state instead of fetching all remote codes
+   * Find files that need content updates by comparing local and remote code (full sync)
+   * This is used on the first push or when no previous state is available
    */
   private async findFilesNeedingUpdate(
     localFilesRoot: (FolderNode | FileNode)[],
@@ -814,6 +829,149 @@ export class LeekWarsService {
 
         console.log(
           `Found ${filesToUpdate.length} file(s) needing update:`,
+          filesToUpdate.map((f) => f.localFile.name)
+        );
+
+        return filesToUpdate;
+      }
+    );
+  }
+
+  /**
+   * Find files that need content updates by comparing current local state with last pushed state (incremental sync)
+   * This is more efficient as it doesn't require fetching remote AI codes
+   */
+  private async findFilesNeedingUpdateIncremental(
+    currentLocalFilesRoot: (FolderNode | FileNode)[],
+    lastPushedLocalFilesRoot: (FolderNode | FileNode)[],
+    remoteFilesRoot: (FolderNode | FileNode)[],
+    workspaceRoot: string
+  ): Promise<
+    Array<{
+      localFile: FileNode;
+      remoteFile: FileNode;
+      localCode: string;
+    }>
+  > {
+    console.log(
+      "[LeekWars Service] Using incremental push (comparing with last pushed state)"
+    );
+
+    // Refresh remote state to ensure we have correct file IDs
+    await this.rateLimitedDelay();
+    const updatedRemoteState = await this.getFarmersAIFileState();
+    if (!updatedRemoteState) {
+      console.error("[LeekWars Service] Failed to refresh remote state");
+      return [];
+    }
+
+    const currentLocalFiles = this.collectAllFiles(currentLocalFilesRoot);
+    const lastPushedLocalFiles = this.collectAllFiles(lastPushedLocalFilesRoot);
+
+    console.log(
+      `Comparing ${currentLocalFiles.length} current local file(s) with ${lastPushedLocalFiles.length} previously pushed file(s)`
+    );
+
+    return await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: "Detecting changed AI files",
+        cancellable: false,
+      },
+      async (progress) => {
+        const filesToUpdate: Array<{
+          localFile: FileNode;
+          remoteFile: FileNode;
+          localCode: string;
+        }> = [];
+
+        // Create a map of last pushed files for quick lookup
+        const lastPushedFileMap = new Map<string, FileNode>();
+        for (const file of lastPushedLocalFiles) {
+          lastPushedFileMap.set(file.path, file);
+        }
+
+        const totalFiles = currentLocalFiles.length;
+
+        for (let i = 0; i < totalFiles; i++) {
+          const currentLocalFile = currentLocalFiles[i];
+
+          progress.report({
+            message: `Checking ${currentLocalFile.name} (${
+              i + 1
+            }/${totalFiles})...`,
+            increment: 100 / totalFiles,
+          });
+
+          // Find the corresponding remote file
+          const remoteFile = this.findFileByPath(
+            updatedRemoteState,
+            currentLocalFile.path
+          );
+
+          if (!remoteFile?.leekWarsAIInfo) {
+            console.warn(`Remote file not found for: ${currentLocalFile.path}`);
+            continue;
+          }
+
+          // Read current local code
+          const localFilePath = path.join(workspaceRoot, currentLocalFile.path);
+          let currentLocalCode: string;
+          try {
+            currentLocalCode = fs.readFileSync(localFilePath, "utf8");
+          } catch (error) {
+            console.error(`Failed to read local file ${localFilePath}:`, error);
+            continue;
+          }
+
+          // Check if file existed in last push
+          const lastPushedFile = lastPushedFileMap.get(currentLocalFile.path);
+
+          if (!lastPushedFile) {
+            // File is new (didn't exist in last push)
+            console.log(`File ${currentLocalFile.name} is new - needs push`);
+            filesToUpdate.push({
+              localFile: currentLocalFile,
+              remoteFile,
+              localCode: currentLocalCode,
+            });
+          } else {
+            // File existed, compare with stored code from last push
+            const lastPushedCode = lastPushedFile.code;
+
+            if (!lastPushedCode) {
+              // No stored code, treat as changed
+              console.warn(
+                `No stored code for ${currentLocalFile.name}, treating as changed`
+              );
+              filesToUpdate.push({
+                localFile: currentLocalFile,
+                remoteFile,
+                localCode: currentLocalCode,
+              });
+              continue;
+            }
+
+            // Compare current code with last pushed code
+            if (currentLocalCode !== lastPushedCode) {
+              console.log(
+                `Code changed for ${currentLocalFile.name} - needs push`
+              );
+              filesToUpdate.push({
+                localFile: currentLocalFile,
+                remoteFile,
+                localCode: currentLocalCode,
+              });
+            } else {
+              console.log(
+                `Code unchanged for ${currentLocalFile.name} - skipping`
+              );
+            }
+          }
+        }
+
+        console.log(
+          `Found ${filesToUpdate.length} file(s) needing update (incremental):`,
           filesToUpdate.map((f) => f.localFile.name)
         );
 
@@ -1029,6 +1187,39 @@ export class LeekWarsService {
         );
       }
     }
+  }
+
+  /**
+   * Store local state with code content for incremental comparison
+   */
+  private async storeLocalStateWithCode(
+    nodes: (FolderNode | FileNode)[],
+    workspaceRoot: string
+  ): Promise<(FolderNode | FileNode)[]> {
+    const result: (FolderNode | FileNode)[] = [];
+
+    for (const node of nodes) {
+      if (node.type === "file") {
+        const localFilePath = path.join(workspaceRoot, node.path);
+        let code: string;
+        try {
+          code = fs.readFileSync(localFilePath, "utf8");
+        } catch (error) {
+          console.error(`Failed to read file ${localFilePath}:`, error);
+          code = "";
+        }
+        result.push({ ...node, code });
+      } else if (node.type === "folder") {
+        const folder = node as FolderNode;
+        const children = await this.storeLocalStateWithCode(
+          folder.children,
+          workspaceRoot
+        );
+        result.push({ ...folder, children });
+      }
+    }
+
+    return result;
   }
 
   /**
