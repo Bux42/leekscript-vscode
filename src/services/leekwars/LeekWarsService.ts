@@ -734,70 +734,92 @@ export class LeekWarsService {
     const allLocalFiles = this.collectAllFiles(localFilesRoot);
     console.log(`Comparing ${allLocalFiles.length} local file(s) with remote`);
 
-    const filesToUpdate: Array<{
-      localFile: FileNode;
-      remoteFile: FileNode;
-      localCode: string;
-    }> = [];
+    return await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: "Comparing local and remote AI files",
+        cancellable: false,
+      },
+      async (progress) => {
+        const filesToUpdate: Array<{
+          localFile: FileNode;
+          remoteFile: FileNode;
+          localCode: string;
+        }> = [];
 
-    for (const localFile of allLocalFiles) {
-      const remoteFile = this.findFileByPath(
-        updatedRemoteState,
-        localFile.path
-      );
+        const totalFiles = allLocalFiles.length;
 
-      if (!remoteFile?.leekWarsAIInfo) {
-        console.warn(`Remote file not found for: ${localFile.path}`);
-        continue;
-      }
+        for (let i = 0; i < totalFiles; i++) {
+          const localFile = allLocalFiles[i];
 
-      // Read local code
-      const localFilePath = path.join(workspaceRoot, localFile.path);
-      let localCode: string;
-      try {
-        localCode = fs.readFileSync(localFilePath, "utf8");
-      } catch (error) {
-        console.error(`Failed to read local file ${localFilePath}:`, error);
-        continue;
-      }
+          progress.report({
+            message: `Comparing ${localFile.name} (${i + 1}/${totalFiles})...`,
+            increment: 100 / totalFiles,
+          });
 
-      // Fetch remote code
-      console.log(
-        `Fetching remote code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
-      );
-      await this.rateLimitedDelay(100); // Shorter delay for read operations
+          const remoteFile = this.findFileByPath(
+            updatedRemoteState,
+            localFile.path
+          );
 
-      let remoteAI;
-      try {
-        remoteAI = await this.apiService!.getAI(remoteFile.leekWarsAIInfo.id);
-      } catch (error) {
-        console.error(
-          `Failed to fetch remote AI ${remoteFile.leekWarsAIInfo.id}:`,
-          error
+          if (!remoteFile?.leekWarsAIInfo) {
+            console.warn(`Remote file not found for: ${localFile.path}`);
+            continue;
+          }
+
+          // Read local code
+          const localFilePath = path.join(workspaceRoot, localFile.path);
+          let localCode: string;
+          try {
+            localCode = fs.readFileSync(localFilePath, "utf8");
+          } catch (error) {
+            console.error(`Failed to read local file ${localFilePath}:`, error);
+            continue;
+          }
+
+          // Fetch remote code
+          console.log(
+            `Fetching remote code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
+          );
+          await this.rateLimitedDelay(100); // Shorter delay for read operations
+
+          let remoteAI;
+          try {
+            remoteAI = await this.apiService!.getAI(
+              remoteFile.leekWarsAIInfo.id
+            );
+          } catch (error) {
+            console.error(
+              `Failed to fetch remote AI ${remoteFile.leekWarsAIInfo.id}:`,
+              error
+            );
+            continue;
+          }
+
+          if (!remoteAI.ai) {
+            console.warn(`Could not get remote AI ${remoteFile.name}`);
+            continue;
+          }
+
+          // Compare codes
+          if (localCode !== remoteAI.ai.code) {
+            console.log(`Code differs for ${localFile.name} - needs update`);
+            filesToUpdate.push({ localFile, remoteFile, localCode });
+          } else {
+            console.log(
+              `Code matches for ${localFile.name} - no update needed`
+            );
+          }
+        }
+
+        console.log(
+          `Found ${filesToUpdate.length} file(s) needing update:`,
+          filesToUpdate.map((f) => f.localFile.name)
         );
-        continue;
-      }
 
-      if (!remoteAI.ai) {
-        console.warn(`Could not get remote AI ${remoteFile.name}`);
-        continue;
+        return filesToUpdate;
       }
-
-      // Compare codes
-      if (localCode !== remoteAI.ai.code) {
-        console.log(`Code differs for ${localFile.name} - needs update`);
-        filesToUpdate.push({ localFile, remoteFile, localCode });
-      } else {
-        console.log(`Code matches for ${localFile.name} - no update needed`);
-      }
-    }
-
-    console.log(
-      `Found ${filesToUpdate.length} file(s) needing update:`,
-      filesToUpdate.map((f) => f.localFile.name)
     );
-
-    return filesToUpdate;
   }
 
   /**
@@ -815,33 +837,52 @@ export class LeekWarsService {
     let successCount = 0;
     let failureCount = 0;
 
-    for (const { remoteFile, localCode } of filesToUpdate) {
-      if (!remoteFile.leekWarsAIInfo) {
-        console.error(`Remote file ${remoteFile.name} has no AI info`);
-        failureCount++;
-        continue;
+    return await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: "Updating AI files on LeekWars",
+        cancellable: false,
+      },
+      async (progress) => {
+        const totalFiles = filesToUpdate.length;
+
+        for (let i = 0; i < totalFiles; i++) {
+          const { remoteFile, localCode } = filesToUpdate[i];
+
+          if (!remoteFile.leekWarsAIInfo) {
+            console.error(`Remote file ${remoteFile.name} has no AI info`);
+            failureCount++;
+            continue;
+          }
+
+          const aiId = remoteFile.leekWarsAIInfo.id;
+
+          progress.report({
+            message: `Updating ${remoteFile.name} (${i + 1}/${totalFiles})...`,
+            increment: 100 / totalFiles,
+          });
+
+          console.log(`Updating ${remoteFile.name} (ID: ${aiId})`);
+
+          await this.rateLimitedDelay();
+
+          try {
+            await this.apiService!.updateAICode(aiId, localCode);
+            console.log(`Successfully updated ${remoteFile.name}`);
+            successCount++;
+          } catch (error) {
+            console.error(`Error updating ${remoteFile.name}:`, error);
+            failureCount++;
+          }
+        }
+
+        console.log(
+          `Update complete: ${successCount} succeeded, ${failureCount} failed`
+        );
+
+        return { successCount, failureCount };
       }
-
-      const aiId = remoteFile.leekWarsAIInfo.id;
-      console.log(`Updating ${remoteFile.name} (ID: ${aiId})`);
-
-      await this.rateLimitedDelay();
-
-      try {
-        await this.apiService!.updateAICode(aiId, localCode);
-        console.log(`Successfully updated ${remoteFile.name}`);
-        successCount++;
-      } catch (error) {
-        console.error(`Error updating ${remoteFile.name}:`, error);
-        failureCount++;
-      }
-    }
-
-    console.log(
-      `Update complete: ${successCount} succeeded, ${failureCount} failed`
     );
-
-    return { successCount, failureCount };
   }
 
   /**
