@@ -58,6 +58,34 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
       return this.createUserVariableHover(userVariable);
     }
 
+    // Check if "this" is present in the user defined variables
+    // If nothing was found yet, we can check if the user is hovering over a member of a class from inside that class
+    const thisVariable =
+      this.definitionProvider.findUserDefinedVariable("this");
+
+    if (thisVariable) {
+      // Check if the type of "this" is a user-defined class
+      const thisClass = this.definitionProvider.findUserDefinedClass(
+        thisVariable.type
+      );
+
+      if (thisClass) {
+        // check if the word is a member of this class
+        const classField = thisClass.fields.find(
+          (field) => field.name === word
+        );
+        if (classField) {
+          return this.createUserClassFieldHover(classField);
+        }
+        const classMethod = thisClass.methods.find(
+          (method) => method.name === word
+        );
+        if (classMethod) {
+          return this.createUserClassMethodHover(classMethod);
+        }
+      }
+    }
+
     // TODO: handle include hover?
 
     return null;
