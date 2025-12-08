@@ -1,6 +1,20 @@
 import * as vscode from "vscode";
 import { js_beautify } from "js-beautify";
 
+function fixSets(text: string): string {
+  // find all occurrences of Set<...> remove spaces
+  const regex = /Set\s*<\s*(?:Set\s*<\s*[^>]+?\s*>\s*|[^>]+?)\s*>/g;
+  return text.replace(regex, (match) => {
+    return (
+      match
+        // remove all spaces around < and >
+        .replace(/\s+/g, "")
+        // put back spaces around |
+        .replace(/\|/g, " | ")
+    );
+  });
+}
+
 function fixArrays(text: string): string {
   // find all occurrences of Array<...> remove spaces
   const regex = /Array\s*<\s*(?:Array\s*<\s*[^>]+?\s*>\s*|[^>]+?)\s*>/g;
@@ -70,6 +84,7 @@ export class LeekScriptFormattingProvider
 
     formattedText = fixArrays(formattedText);
     formattedText = fixMaps(formattedText);
+    formattedText = fixSets(formattedText);
 
     // Create a single edit that replaces the entire document
     const fullRange = new vscode.Range(
@@ -122,6 +137,7 @@ export class LeekScriptRangeFormattingProvider
 
     formattedText = fixArrays(formattedText);
     formattedText = fixMaps(formattedText);
+    formattedText = fixSets(formattedText);
 
     edits.push(vscode.TextEdit.replace(range, formattedText));
 
