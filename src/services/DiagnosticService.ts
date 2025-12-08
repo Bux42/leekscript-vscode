@@ -5,6 +5,7 @@ import { DataLoader } from "../providers/leekscript/DataLoader";
 import { CodeBaseStateManager } from "./codebase";
 import { DefinitionManager } from "../providers/user-code/DefinitionManager";
 import { UserCodeSemanticTokensProvider } from "../providers/user-code/SemanticTokensProvider";
+import { JavaStringHash } from "../utils/JavaStringHash";
 
 /**
  * Debounce delay in milliseconds
@@ -124,6 +125,50 @@ export class DiagnosticService {
   }
 
   /**
+   * Find all .leek files in the workspace and compute their hash codes
+   * @returns A dictionary mapping hash ID to file URI
+   */
+  async getAllLeekFilesWithHashes(): Promise<Record<number, vscode.Uri>> {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      console.error("[LeekScript] No workspace folder found");
+      return {};
+    }
+
+    const workspaceRoot = workspaceFolders[0].uri.fsPath;
+    const hashToUri: Record<number, vscode.Uri> = {};
+
+    // Find all .leek files in the workspace
+    const leekFiles = await vscode.workspace.findFiles("**/*.leek");
+
+    for (const fileUri of leekFiles) {
+      try {
+        // Get relative path from workspace
+        let relativePath = path.relative(workspaceRoot, fileUri.fsPath);
+
+        // Create the hash path with backslashes (to match the format used in analyzeDocument)
+        const hashCodePath = `user-code\\${relativePath}`;
+
+        // Compute hash
+        const hash = new JavaStringHash(hashCodePath).hashCode();
+
+        // Store in dictionary
+        hashToUri[hash] = fileUri;
+
+        console.log(`[LeekScript] Hashed file: ${relativePath} -> ${hash}`);
+      } catch (error) {
+        console.error(
+          `[LeekScript] Failed to process file ${fileUri.fsPath}:`,
+          error
+        );
+      }
+    }
+
+    return hashToUri;
+  }
+
+  /**
    * Get definitions for user code and update definition manager
    */
   async getUserCodeDefinitions() {
@@ -221,36 +266,69 @@ export class DiagnosticService {
     let relativePath = path.relative(workspaceRoot, document.fileName);
 
     // Normalize path separators to forward slashes
-    relativePath = relativePath.replace(/\\/g, "/");
+    const normalizedRelativePath = relativePath.replace(/\\/g, "/");
 
     // Prepend "user-code/"
-    const filePath = `user-code/${relativePath}`;
+    const filePath = `user-code/${normalizedRelativePath}`;
 
     // Analyze file with new endpoint (file must be saved on disk)
     try {
       const result = await this.analyzerService.analyzeFile(filePath);
 
       if (result) {
-        const diagnostics = this.convertAnalysisErrorsToDiagnostics(
-          result.errors
-        );
+        // Get all leek files with their hashes for mapping errors to files
+        const hashToUri = await this.getAllLeekFilesWithHashes();
 
-        // Update diagnostics for this document
-        this.diagnosticCollection.set(document.uri, diagnostics);
+        // Group errors by AI ID (hash)
+        const errorsByAiId = new Map<number, AnalysisError[]>();
 
-        const errorCount = result.errors.filter((e) => e[0] === 0).length;
-        const warningCount = result.errors.filter((e) => e[0] === 1).length;
+        for (const error of result.errors) {
+          const aiId = error[1]; // Second element is the AI file ID (hash)
 
-        if (errorCount > 0 || warningCount > 0) {
-          console.log(
-            `[LeekScript] Analysis complete for ${path.basename(
-              document.fileName
-            )}: ${errorCount} errors, ${warningCount} warnings`
-          );
-        } else {
-          // clear previous diagnostics if no issues found (a file with errors might have been deleted, in that case we need to clear diagnostics)
-          this.diagnosticCollection.clear();
+          if (!errorsByAiId.has(aiId)) {
+            errorsByAiId.set(aiId, []);
+          }
+          errorsByAiId.get(aiId)!.push(error);
         }
+
+        // Clear all previous diagnostics before setting new ones
+        this.diagnosticCollection.clear();
+
+        // Convert and set diagnostics for each file
+        let totalErrors = 0;
+        let totalWarnings = 0;
+
+        for (const [aiId, errors] of errorsByAiId) {
+          const fileUri = hashToUri[aiId];
+
+          if (!fileUri) {
+            console.warn(
+              `[LeekScript] No file found for AI ID (hash): ${aiId}`
+            );
+            continue;
+          }
+
+          const diagnostics = this.convertAnalysisErrorsToDiagnostics(errors);
+          this.diagnosticCollection.set(fileUri, diagnostics);
+
+          const errorCount = errors.filter((e) => e[0] === 0).length;
+          const warningCount = errors.filter((e) => e[0] === 1).length;
+
+          totalErrors += errorCount;
+          totalWarnings += warningCount;
+
+          if (errorCount > 0 || warningCount > 0) {
+            console.log(
+              `[LeekScript] ${path.basename(
+                fileUri.fsPath
+              )}: ${errorCount} errors, ${warningCount} warnings`
+            );
+          }
+        }
+
+        console.log(
+          `[LeekScript] Analysis complete: ${totalErrors} errors, ${totalWarnings} warnings across ${errorsByAiId.size} files`
+        );
       }
     } catch (error) {
       console.error(
