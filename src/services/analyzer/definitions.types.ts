@@ -26,6 +26,7 @@ export interface UserClass extends UserDefinitionLocation {
   line: number;
   methods: UserMethod[];
   name: string;
+  parentName?: string;
 }
 
 export interface UserMethod extends UserDefinitionLocation {
