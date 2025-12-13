@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
-import { DataLoader, FunctionData, ConstantData } from "./DataLoader";
+import { DataLoader } from "./DataLoader";
 import { getStringBeforeCursor } from "../../utils/UserCodeUtils";
+import { FunctionData, ConstantData } from "./types/Constants.types";
 
 /**
  * Provides code completion for LeekScript language

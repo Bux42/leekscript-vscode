@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
-import { DataLoader, FunctionData, ConstantData } from "./DataLoader";
+import { DataLoader } from "./DataLoader";
 import {
   UserArgument,
   UserFunction,
 } from "../../services/analyzer/definitions.types";
+import { FunctionData, ConstantData } from "./types/Constants.types";
 
 /**
  * Provides hover information for LeekScript symbols

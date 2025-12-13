@@ -1,47 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
-
-/**
- * Function data structure from functions.json
- */
-export interface FunctionData {
-  name: string;
-  arguments_names: string[];
-  arguments_types: number[];
-  optional?: boolean[];
-  return_type: number;
-  return_name?: string;
-  operations?: number;
-}
-
-/**
- * Constant data structure from constants.json
- */
-export interface ConstantData {
-  name: string;
-  value: number | string;
-}
-
-/**
- * Type mappings for LeekScript built-in types
- */
-export const TYPE_MAP: { [key: string]: string } = {
-  "-1": "any",
-  "1": "number",
-  "2": "string",
-  "3": "boolean",
-  "4": "array",
-  "41": "array<number>",
-  "42": "array<string>",
-  "43": "array<boolean>",
-  "44": "array<array>",
-  "46": "array<integer>",
-  "47": "array<real>",
-  "5": "function",
-  "6": "integer",
-  "7": "real",
-  "8": "map",
-};
+import { ConstantData, FunctionData, TYPE_MAP } from "./types/Constants.types";
 
 /**
  * Service for loading and providing access to LeekScript language data
