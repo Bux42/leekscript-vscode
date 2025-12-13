@@ -7,6 +7,7 @@ import {
 } from "../../services/analyzer/definitions.types";
 import { getDefinitionAbsolutePath } from "../../utils/DefinitionUtils";
 import { getMemberAccessStringAtCursor } from "../../utils/UserCodeUtils";
+import { ResolvedMember, resolveMembers } from "../../utils/ClassMemberUtils";
 
 /**
  * Provides definition location for LeekScript symbols
@@ -36,7 +37,18 @@ export class UserCodeDefinitionProvider implements vscode.DefinitionProvider {
 
     if (memberParts.length > 1) {
       // member access detected
-      return this.createMemberDefinition(memberParts);
+      const resolvedMember: ResolvedMember | null = resolveMembers(
+        memberParts,
+        this.definitionProvider
+      );
+      if (resolvedMember) {
+        if (resolvedMember.field) {
+          return this.createUserVariableDefinition(resolvedMember.field);
+        }
+        if (resolvedMember.method) {
+          return this.createUserFunctionDefinition(resolvedMember.method);
+        }
+      }
     } else {
       // single word, not a member access
 
@@ -59,87 +71,6 @@ export class UserCodeDefinitionProvider implements vscode.DefinitionProvider {
         return this.createUserVariableDefinition(userVariable);
       }
     }
-    return null;
-  }
-
-  createMemberDefinition(memberParts: string[]): vscode.Definition | null {
-    // example: user hit F12 on "member2" in "obj.member1.member2.member3"
-    // get first part
-    let word = memberParts.shift() || "";
-
-    console.log("Resolving member definition for word:", word);
-
-    // Check if it's a user variable
-    let userVariable = this.definitionProvider.findUserDefinedVariable(word);
-
-    if (!userVariable) {
-      console.log(
-        `Cannot resolve member access for part '${word}', stopping traversal.`
-      );
-      return null;
-    }
-
-    console.log("Traversing member parts of variable:", userVariable);
-
-    while (memberParts.length > 0) {
-      let word = memberParts.shift() || "";
-      console.log("LOOP: Resolving member definition for word:", word);
-
-      const variableType = userVariable.type;
-
-      // Check if the variable's type is a user-defined class
-      const userClass =
-        this.definitionProvider.findUserDefinedClass(variableType);
-
-      if (!userClass) {
-        console.log(
-          `Type '${variableType}' of variable '${userVariable.name}' is not a user-defined class, cannot resolve member '${word}'.`
-        );
-        return null;
-      }
-
-      console.log(
-        `Looking for member '${word}' in class '${userClass.name}' members.`
-      );
-
-      // Check if the member is a field
-      const classField = userClass.fields.find((field) => field.name === word);
-      if (classField) {
-        console.log(
-          `Found field '${classField.name}' of class '${userClass.name}', continuing traversal.`
-        );
-        userVariable = classField;
-
-        if (memberParts.length === 0) {
-          // Last part, return definition
-          return this.createUserVariableDefinition(classField);
-        }
-        continue;
-      }
-
-      // Check if the member is a method
-      const classMethod = userClass.methods.find(
-        (method) => method.name === word
-      );
-      if (classMethod) {
-        console.log(
-          `Found method '${classMethod.name}' of class '${userClass.name}', continuing traversal.`
-        );
-
-        if (memberParts.length === 0) {
-          // Last part, return definition
-          return this.createUserFunctionDefinition(classMethod);
-        }
-        // For methods, we cannot continue traversal, so we stop here
-        return null;
-      }
-
-      console.log(
-        `Member '${word}' not found in class '${userClass.name}', stopping traversal.`
-      );
-      return null;
-    }
-
     return null;
   }
 

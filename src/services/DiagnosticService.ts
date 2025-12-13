@@ -156,7 +156,7 @@ export class DiagnosticService {
         // Store in dictionary
         hashToUri[hash] = fileUri;
 
-        console.log(`[LeekScript] Hashed file: ${relativePath} -> ${hash}`);
+        // console.log(`[LeekScript] Hashed file: ${relativePath} -> ${hash}`);
       } catch (error) {
         console.error(
           `[LeekScript] Failed to process file ${fileUri.fsPath}:`,

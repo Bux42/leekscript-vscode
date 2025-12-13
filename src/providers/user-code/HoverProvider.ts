@@ -8,6 +8,7 @@ import {
 import { getMarkdownGoToDefinitionCommand } from "../../utils/DefinitionUtils";
 import { getMemberAccessStringAtCursor } from "../../utils/UserCodeUtils";
 import { tryAppendDocumentationToMarkdown } from "./DocumentationGenerator";
+import { ResolvedMember, resolveMembers } from "../../utils/ClassMemberUtils";
 
 export class UserCodeHoverProvider implements vscode.HoverProvider {
   private definitionProvider: DefinitionManager;
@@ -37,7 +38,19 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
 
     if (memberParts.length > 1) {
       // member access detected
-      return this.createMemberHover(memberParts);
+      const resolvedMember: ResolvedMember | null = resolveMembers(
+        memberParts,
+        this.definitionProvider
+      );
+
+      if (resolvedMember) {
+        if (resolvedMember.field) {
+          return this.createUserVariableHover(resolvedMember.field);
+        }
+        if (resolvedMember.method) {
+          return this.createUserFunctionHover(resolvedMember.method);
+        }
+      }
     }
 
     // Check if it's a user function
@@ -87,89 +100,6 @@ export class UserCodeHoverProvider implements vscode.HoverProvider {
     }
 
     // TODO: handle include hover?
-
-    return null;
-  }
-
-  createMemberHover(
-    memberParts: string[]
-  ): vscode.ProviderResult<vscode.Hover> {
-    // example: user hovers "member2" in "obj.member1.member2.member3"
-    // get first part
-    let word = memberParts.shift() || "";
-
-    console.log("Resolving member hover for word:", word);
-
-    // Check if it's a user variable
-    let userVariable = this.definitionProvider.findUserDefinedVariable(word);
-
-    if (!userVariable) {
-      console.log(
-        `Cannot resolve member access for part '${word}', stopping traversal.`
-      );
-      return null;
-    }
-
-    // console.log("Traversing member parts of variable:", userVariable);
-
-    while (memberParts.length > 0) {
-      let word = memberParts.shift() || "";
-      // console.log("LOOP: Resolving member definition for word:", word);
-
-      const variableType = userVariable.type;
-
-      // Check if the variable's type is a user-defined class
-      const userClass =
-        this.definitionProvider.findUserDefinedClass(variableType);
-
-      if (!userClass) {
-        console.log(
-          `Type '${variableType}' of variable '${userVariable.name}' is not a user-defined class, cannot resolve member '${word}'.`
-        );
-        return null;
-      }
-
-      // console.log(
-      //   `Looking for member '${word}' in class '${userClass.name}' members.`
-      // );
-
-      // Check if the member is a field
-      const classField = userClass.fields.find((field) => field.name === word);
-      if (classField) {
-        // console.log(
-        //   `Found field '${classField.name}' of class '${userClass.name}', continuing traversal.`
-        // );
-        userVariable = classField;
-
-        if (memberParts.length === 0) {
-          // Last part, return definition
-          return this.createUserClassFieldHover(classField);
-        }
-        continue;
-      }
-
-      // Check if the member is a method
-      const classMethod = userClass.methods.find(
-        (method) => method.name === word
-      );
-      if (classMethod) {
-        // console.log(
-        //   `Found method '${classMethod.name}' of class '${userClass.name}', continuing traversal.`
-        // );
-
-        if (memberParts.length === 0) {
-          // Last part, return definition
-          return this.createUserClassMethodHover(classMethod);
-        }
-        // For methods, we cannot continue traversal, so we stop here
-        return null;
-      }
-
-      console.log(
-        `Member '${word}' not found in class '${userClass.name}', stopping traversal.`
-      );
-      return null;
-    }
 
     return null;
   }

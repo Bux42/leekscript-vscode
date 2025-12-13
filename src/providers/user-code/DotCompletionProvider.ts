@@ -1,14 +1,11 @@
 import * as vscode from "vscode";
 import { DefinitionManager } from "./DefinitionManager";
-import {
-  UserClass,
-  UserVariable,
-} from "../../services/analyzer/definitions.types";
 import { getStringBeforeCursor } from "../../utils/UserCodeUtils";
 import {
   generateUserClassFieldCompletion,
   generateUserClassMethodCompletion,
 } from "./CompletionGenerator";
+import { resolveMemberClass } from "../../utils/ClassMemberUtils";
 
 /**
  * Provides code completion for dot member access in user code
@@ -44,139 +41,34 @@ export class UserDotCodeCompletionProvider
       return undefined; // Don't provide completions
     }
 
-    const wordBeforeDot = match[1];
-    console.log("User typed dot after:", wordBeforeDot);
-
-    const stringBeforeCursor = getStringBeforeCursor(document, position);
-    console.log("String before cursor:", stringBeforeCursor);
-
-    // const memberCompletions = this.getMemberCompletions(wordBeforeDot);
-    const memberCompletions = this.getMemberCompletions(stringBeforeCursor);
-    completionItems.push(...memberCompletions);
-
-    return completionItems;
-  }
-
-  private getMemberCompletions(
-    stringBeforeCursor: string
-  ): vscode.CompletionItem[] {
-    const completionItems: vscode.CompletionItem[] = [];
-
-    const dotSplit = stringBeforeCursor.split(".");
-    console.log("Dot split:", dotSplit);
-
-    const initialVariableName = dotSplit.shift() || "";
-    console.log("Initial variable name:", initialVariableName);
-
-    const initialUserVariable: UserVariable | null =
-      this.definitionProvider.findUserDefinedVariable(initialVariableName);
-
-    const initialUserClass: UserClass | null =
-      this.definitionProvider.findUserDefinedClass(initialVariableName);
-
-    // Autocomplete static field, example: MyEnumClass.VALUE1
-    if (initialUserClass) {
-      console.log(
-        `Initial name '${initialVariableName}' is a class. Providing its members directly.`
-      );
-      return this.getStaticClassMemberCompletions(initialUserClass);
-    }
-
-    if (!initialUserVariable) {
-      console.log(
-        `No user-defined variable found for initial variable '${initialVariableName}', cannot provide member completions.`
-      );
-      return completionItems;
-    }
-
-    console.log(
-      `Starting traversal from variable '${initialUserVariable.name}' of type '${initialUserVariable.type}'.`
+    const memberAccessStringAtCursor = getStringBeforeCursor(
+      document,
+      position
     );
 
-    while (dotSplit.length > 0) {
-      const currentMemberName = dotSplit.shift() || "";
-      console.log("Current member name to resolve:", currentMemberName);
+    const memberParts = memberAccessStringAtCursor
+      .split(".")
+      .filter((part) => part.length > 0);
 
-      if (!currentMemberName) {
-        console.log("No more members to resolve.");
-        break;
-      }
+    //  Member access, e.g., objectA.member1.member2
+    const allParentClasses = resolveMemberClass(
+      memberParts,
+      this.definitionProvider
+    );
 
-      const currentUserClass: UserClass | null =
-        this.definitionProvider.findUserDefinedClass(initialUserVariable.type);
+    console.log("Member classes:", allParentClasses);
 
-      if (!currentUserClass) {
-        console.log(
-          `No user-defined class found for type '${initialUserVariable.type}', cannot continue traversal.`
-        );
-        return completionItems;
-      }
+    // console.log(
+    //   `Looking for members of class '${userClass.name}' for completions.`
+    // );
 
-      const nextUserVariable = currentUserClass.fields.find(
-        (field) => field.name === currentMemberName
-      );
-
-      if (!nextUserVariable) {
-        console.log(
-          `No member variable named '${currentMemberName}' found in class '${currentUserClass.name}', cannot continue traversal.`
-        );
-        return completionItems;
-      }
-
-      console.log(
-        `Resolved member '${currentMemberName}' to variable of type '${nextUserVariable.type}'.`
-      );
-
-      // Update for next iteration
-      initialUserVariable.type = nextUserVariable.type;
-    }
-
-    // Now provide completions for the final resolved type
-    const finalUserClass: UserClass | null =
-      this.definitionProvider.findUserDefinedClass(initialUserVariable.type);
-
-    if (finalUserClass) {
-      console.log(
-        `Providing member completions for final class '${finalUserClass.name}'.`
-      );
-
-      // Methods
-      for (const method of finalUserClass.methods) {
-        completionItems.push(generateUserClassMethodCompletion(method));
-      }
-
-      // Fields
-      for (const field of finalUserClass.fields) {
+    for (const userClass of allParentClasses) {
+      for (const field of userClass.fields) {
         completionItems.push(generateUserClassFieldCompletion(field));
       }
-    } else {
-      console.log(
-        `No user-defined class found for final type '${initialUserVariable.type}', cannot provide member completions.`
-      );
-    }
-
-    return completionItems;
-  }
-
-  private getStaticClassMemberCompletions(
-    userClass: UserClass
-  ): vscode.CompletionItem[] {
-    const completionItems: vscode.CompletionItem[] = [];
-
-    // Methods
-    for (const method of userClass.methods) {
-      if (!method.isStatic) {
-        continue; // Skip non-static methods
+      for (const method of userClass.methods) {
+        completionItems.push(generateUserClassMethodCompletion(method));
       }
-      completionItems.push(generateUserClassMethodCompletion(method));
-    }
-
-    // Fields
-    for (const field of userClass.fields) {
-      if (!field.isStatic) {
-        continue; // Skip non-static fields
-      }
-      completionItems.push(generateUserClassFieldCompletion(field));
     }
 
     return completionItems;
