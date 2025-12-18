@@ -9,9 +9,21 @@ export class HttpClient {
   private port: number;
   private timeout: number;
 
-  constructor(hostname: string, port: number, timeout: number = 5000) {
-    this.hostname = hostname;
-    this.port = port;
+  constructor(hostnameOrUrl: string, port?: number, timeout: number = 5000) {
+    // If port is provided, treat first arg as hostname
+    if (port !== undefined) {
+      this.hostname = hostnameOrUrl;
+      this.port = port;
+    } else {
+      // Parse URL (remove trailing slash and extract hostname/port)
+      const url = hostnameOrUrl.replace(/\/$/, "");
+      const urlMatch = url.match(/^https?:\/\/([^:\/]+)(?::(\d+))?/);
+      if (!urlMatch) {
+        throw new Error(`Invalid URL: ${hostnameOrUrl}`);
+      }
+      this.hostname = urlMatch[1];
+      this.port = urlMatch[2] ? parseInt(urlMatch[2], 10) : 80;
+    }
     this.timeout = timeout;
   }
 

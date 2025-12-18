@@ -16,12 +16,6 @@ import { Console } from "console";
 import { GetDefinitionsResponse } from "./definitions.types";
 
 /**
- * Configuration for the LeekScript Code Analysis Server
- */
-const SERVER_HOST = "localhost";
-const SERVER_PORT = 8080;
-
-/**
  * Service for interacting with the LeekScript Code Analysis Server
  */
 export class CodeAnalyzerService {
@@ -29,7 +23,11 @@ export class CodeAnalyzerService {
   private httpClient: HttpClient;
 
   constructor(private context: vscode.ExtensionContext) {
-    this.httpClient = new HttpClient(SERVER_HOST, SERVER_PORT);
+    const config = vscode.workspace.getConfiguration("leekscript");
+    const apiUrl = config.get<string>("javaApiUrl", "http://localhost:8080");
+    // Remove trailing slash if present
+    const cleanUrl = apiUrl.replace(/\/$/, "");
+    this.httpClient = new HttpClient(cleanUrl);
   }
 
   /**
