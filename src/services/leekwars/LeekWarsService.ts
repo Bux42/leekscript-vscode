@@ -170,6 +170,24 @@ export class LeekWarsService {
   }
 
   /**
+   * Update the API token and reinitialize the API service
+   */
+  updateApiToken(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      this.apiService = null;
+      console.log("[LeekWarsService] API token cleared");
+      return false;
+    }
+
+    this.apiService = new LeekWarsApiService(token);
+    console.log(
+      "[LeekWarsService] API token updated and service reinitialized"
+    );
+    return true;
+  }
+
+  /**
    * Find folders that exist in remote but not in local
    */
   private findMissingFolders(

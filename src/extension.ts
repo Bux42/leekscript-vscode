@@ -32,6 +32,55 @@ let codebaseStateManager: CodeBaseStateManager | null = null;
 export async function activate(context: vscode.ExtensionContext) {
   console.log("LeekScript extension is now active!");
 
+  // Listen for configuration changes
+  vscode.workspace.onDidChangeConfiguration((e) => {
+    if (e.affectsConfiguration("leekscript.leekwarsApiToken")) {
+      console.log("The leekwarsApiToken setting specifically changed!");
+
+      // Update LeekWarsService with new token
+      const isTokenConfigured = leekWarsService.updateApiToken();
+      statusBarService.setTokenStatus(isTokenConfigured);
+
+      if (isTokenConfigured) {
+        vscode.window.showInformationMessage(
+          "LeekScript: LeekWars API token updated successfully"
+        );
+      } else {
+        vscode.window.showWarningMessage(
+          "LeekScript: LeekWars API token is not configured"
+        );
+      }
+    }
+
+    if (e.affectsConfiguration("leekscript.javaApiUrl")) {
+      console.log("The javaApiUrl setting specifically changed!");
+
+      // Get the new javaApiUrl value
+      const config = vscode.workspace.getConfiguration("leekscript");
+      const newApiUrl = config.get<string>(
+        "javaApiUrl",
+        "http://localhost:8080"
+      );
+
+      // Update CodeAnalyzerService with new URL
+      analyzerService.updateApiUrl(newApiUrl);
+
+      // Check if the analyzer server is running with new URL
+      analyzerService.checkServerStatus().then((isRunning) => {
+        statusBarService.setAnalyzerServerStatus(isRunning);
+        if (isRunning) {
+          vscode.window.showInformationMessage(
+            `LeekScript: Connected to analysis server at ${newApiUrl}`
+          );
+        } else {
+          vscode.window.showWarningMessage(
+            `LeekScript: Cannot connect to analysis server at ${newApiUrl}`
+          );
+        }
+      });
+    }
+  });
+
   // Print globalstate for debugging
   const farmerAIsResponse = context.globalState.get(
     "leekwars.farmerAIsResponse"

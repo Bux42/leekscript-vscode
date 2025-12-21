@@ -31,6 +31,16 @@ export class CodeAnalyzerService {
   }
 
   /**
+   * Update the API URL and reinitialize the HTTP client
+   */
+  updateApiUrl(newUrl: string): void {
+    const cleanUrl = newUrl.replace(/\/$/, "");
+    this.httpClient = new HttpClient(cleanUrl);
+    this.isServerRunning = false; // Reset server status, will be checked on next request
+    console.log(`[CodeAnalyzerService] API URL updated to: ${cleanUrl}`);
+  }
+
+  /**
    * Make an HTTP request to the Code Analysis Server
    */
   private async request<T>(
