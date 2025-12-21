@@ -44,13 +44,14 @@
           "type": "string",
           "default": "",
           "description": "LeekWars API token for authentication",
-          "scope": "application",
+          "scope": "resource",
           "markdownDescription": "Your LeekWars API token for authenticating with LeekWars services. This value is stored securely.",
           "format": "password"
         },
         "leekscript.javaApiUrl": {
           "type": "string",
           "default": "http://localhost:8080",
+          "scope": "resource",
           "description": "URL for the local Java API server (LeekScript Code Analysis Server)"
         }
       }
