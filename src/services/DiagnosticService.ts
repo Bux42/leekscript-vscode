@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { CodeAnalyzerService, AnalysisError } from "../services/analyzer";
 import { DataLoader } from "../providers/leekscript/DataLoader";
-import { CodeBaseStateManager } from "./codebase";
 import { DefinitionManager } from "../providers/user-code/DefinitionManager";
 import { UserCodeSemanticTokensProvider } from "../providers/user-code/SemanticTokensProvider";
 import { JavaStringHash } from "../utils/JavaStringHash";
@@ -20,7 +19,6 @@ export class DiagnosticService {
   private analyzerService: CodeAnalyzerService;
   private dataLoader: DataLoader;
   private debounceTimers = new Map<string, NodeJS.Timeout>();
-  private globalState: CodeBaseStateManager;
   private userCodeDefinitionManager: DefinitionManager;
   private semanticTokensProvider: UserCodeSemanticTokensProvider | null = null;
 
@@ -28,13 +26,11 @@ export class DiagnosticService {
     diagnosticCollection: vscode.DiagnosticCollection,
     analyzerService: CodeAnalyzerService,
     dataLoader: DataLoader,
-    codebaseStateManager: CodeBaseStateManager,
     userCodeDefinitionManager: DefinitionManager
   ) {
     this.diagnosticCollection = diagnosticCollection;
     this.analyzerService = analyzerService;
     this.dataLoader = dataLoader;
-    this.globalState = codebaseStateManager;
     this.userCodeDefinitionManager = userCodeDefinitionManager;
   }
 

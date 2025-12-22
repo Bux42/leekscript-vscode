@@ -1,18 +1,9 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
-import {
-  LeekWarsApiService,
-  LeekWarsAIInfo,
-  GetFarmerAIsResponse,
-} from "./LeekWarsApi";
-import { CodeBaseStateManager } from "../codebase";
+import { LeekWarsApiService, GetFarmerAIsResponse } from "./LeekWarsApi";
 import { LocalFilesService } from "../local-files/LocalFilesService";
-import {
-  FileNode,
-  FolderNode,
-  LocalFilesState,
-} from "../local-files/LocalFilesService.types";
+import { FileNode, FolderNode } from "../local-files/LocalFilesService.types";
 
 /**
  * Service for managing LeekWars AI synchronization
@@ -21,19 +12,11 @@ export class LeekWarsService {
   private apiService: LeekWarsApiService | null = null;
   private lastResponse: GetFarmerAIsResponse | null = null;
   private static readonly STORAGE_KEY = "leekwars.farmerAIsResponse";
-  private codebaseStateManager: CodeBaseStateManager | null = null;
   private lastPushedLocalState: (FolderNode | FileNode)[] | null = null;
 
   constructor(private context: vscode.ExtensionContext) {
     // Load cached response on initialization
     this.loadFarmerAIsResponse();
-  }
-
-  /**
-   * Set the codebase state manager
-   */
-  setCodeBaseStateManager(manager: CodeBaseStateManager): void {
-    this.codebaseStateManager = manager;
   }
 
   /**
@@ -1497,20 +1480,6 @@ export class LeekWarsService {
 
             fs.writeFileSync(aiFilePath, ai.code, "utf8");
             console.log(`[LeekWars Service] Created AI file: ${aiFilePath}`);
-          }
-
-          // Sync with CodeBaseStateManager if available
-          if (this.codebaseStateManager) {
-            progress.report({ message: "Resetting codebase state..." });
-            await this.codebaseStateManager.clearState();
-
-            progress.report({ message: "Updating codebase state..." });
-            await this.codebaseStateManager.syncFromLeekWars(
-              response.ais,
-              response.folders,
-              workspaceRoot,
-              leekwarsDir
-            );
           }
 
           vscode.window.showInformationMessage(

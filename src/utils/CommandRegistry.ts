@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import { LeekWarsService } from "../services/leekwars";
 import { CodeAnalyzerService } from "../services/analyzer";
 import { StatusBarService } from "../services/StatusBarService";
-import { CodeBaseStateManager } from "../services/codebase";
 
 /**
  * Manages registration of all extension commands
