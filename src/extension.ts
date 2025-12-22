@@ -247,6 +247,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Analyze all currently open documents
   await documentEventHandler.analyzeOpenDocuments();
+
+  // Get definitions for current cursor position
+  diagnosticService.getUserCodeDefinitions();
 }
 
 export function deactivate() {
