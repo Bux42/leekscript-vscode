@@ -196,9 +196,6 @@ export class DiagnosticService {
 
       const activeEditor = vscode.window.activeTextEditor;
       if (activeEditor) {
-        console.log("line" + activeEditor.selection.active.line);
-        console.log("column" + activeEditor.selection.active.character);
-
         const userCodeDefinitions = await this.analyzerService.getDefinitions(
           activeEditor.selection.active.line + 1,
           activeEditor.selection.active.character + 1,
