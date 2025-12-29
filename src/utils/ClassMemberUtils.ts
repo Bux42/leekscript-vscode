@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { DefinitionManager } from "../providers/user-code/DefinitionManager";
 import {
   UserClass,
+  UserClassField,
   UserFunction,
   UserVariable,
 } from "../services/analyzer/definitions.types";
@@ -12,123 +13,144 @@ export interface ResolvedMember {
 }
 
 /**
- * Given a member access chain, resolve the class of the last member, or an array of all parent classes in the hierarchy
- * @param memberParts
- * @param definitionProvider
- * @returns The class of the last member, or an array of parent classes, starting from the immediate parent up to the topmost ancestor
+ * Given a member access chain, resolve the class of the last member, along with its parent classes in the hierarchy
+ * @param memberParts Array of member names in the access chain (e.g., ["myVar", "field1", "field2"])
+ * @param definitionProvider The definition provider to lookup classes, variables, etc.
+ * @returns Array containing the final resolved class and all its parent classes (if any)
  */
 export const resolveMemberClass = (
   memberParts: string[],
   definitionProvider: DefinitionManager
 ): UserClass[] => {
-  const parentClasses: UserClass[] = [];
-
-  let word = memberParts.shift() || "";
-  console.log(
-    "Resolving members for parts:",
-    memberParts,
-    " starting with word:",
-    word
-  );
-
-  // Check if it's a user variable
-  let userVariable = definitionProvider.findUserDefinedVariable(word);
-
-  let userClass: UserClass | null = null;
-
   if (memberParts.length === 0) {
-    //check user class
-    userClass = definitionProvider.findUserDefinedClass(word);
-    if (userClass) {
-      console.log(
-        `Found class class '${userClass.name}' for variable '${word}', collecting parent classes.`
-      );
-      parentClasses.push(userClass);
-      while (userClass.parentName) {
-        const parentClass = definitionProvider.findUserDefinedClass(
-          userClass.parentName
+    return [];
+  }
+
+  console.log("Resolving member access chain:", memberParts);
+
+  let currentClass: UserClass | null = null;
+  let word = memberParts.shift() || "";
+
+  // Step 1: Resolve the first member part (either a variable or a class name)
+  const userVariable = definitionProvider.findUserDefinedVariable(word);
+
+  if (userVariable) {
+    // It's a variable - get its type
+    console.log(`Found variable '${word}' with type '${userVariable.type}'`);
+    currentClass = definitionProvider.findUserDefinedClass(userVariable.type);
+
+    if (!currentClass) {
+      console.log(`Type '${userVariable.type}' is not a user-defined class`);
+      return [];
+    }
+  } else {
+    // Check if it's a class name (for static member access)
+    currentClass = definitionProvider.findUserDefinedClass(word);
+
+    if (!currentClass) {
+      console.log(`Cannot resolve '${word}' as variable or class`);
+      return [];
+    }
+    console.log(`Found class '${word}'`);
+  }
+
+  // Step 2: Traverse through the remaining member parts
+  while (memberParts.length > 0) {
+    word = memberParts.shift() || "";
+    console.log(`Traversing member '${word}' in class '${currentClass.name}'`);
+
+    // Try to find the member in the current class or its parent classes
+    let foundMember: UserClassField | undefined;
+    let searchClass: UserClass | null = currentClass;
+
+    // Search in current class and parent hierarchy
+    while (searchClass && !foundMember) {
+      foundMember = searchClass.fields.find((field) => field.name === word);
+
+      if (foundMember) {
+        console.log(
+          `Found field '${word}' with type '${foundMember.type}' in class '${searchClass.name}'`
         );
-        if (parentClass) {
-          console.log(
-            `Found parent class '${parentClass.name}' of '${userClass.name}'.`
-          );
-          parentClasses.push(parentClass);
-          userClass = parentClass;
-        } else {
-          break;
-        }
+        break;
       }
-      return parentClasses;
+
+      // Check parent class
+      if (searchClass.parentName) {
+        searchClass = definitionProvider.findUserDefinedClass(
+          searchClass.parentName
+        );
+        if (searchClass) {
+          console.log(`Checking parent class '${searchClass.name}'`);
+        }
+      } else {
+        searchClass = null;
+      }
+    }
+
+    if (!foundMember) {
+      // If this is the last member part (incomplete typing), return the current class
+      if (memberParts.length === 0) {
+        console.log(
+          `Member '${word}' not found but it's the last part - returning current class '${currentClass.name}' for completion`
+        );
+        // Return the current class and its parents for completion suggestions
+        const resultClasses: UserClass[] = [currentClass];
+        let parentClass = currentClass;
+        while (parentClass.parentName) {
+          const parent = definitionProvider.findUserDefinedClass(
+            parentClass.parentName
+          );
+          if (parent) {
+            resultClasses.push(parent);
+            parentClass = parent;
+          } else {
+            break;
+          }
+        }
+        return resultClasses;
+      }
+      console.log(`Member '${word}' not found in class hierarchy`);
+      return [];
+    }
+
+    // Resolve the field's type to a class for the next iteration
+    currentClass = definitionProvider.findUserDefinedClass(foundMember.type);
+
+    if (!currentClass) {
+      console.log(
+        `Type '${foundMember.type}' of field '${foundMember.name}' is not a user-defined class`
+      );
+      return [];
     }
   }
 
-  if (!userVariable) {
-    console.log(
-      `Cannot resolve member access for part '${word}', stopping traversal.`
-    );
-    return parentClasses;
+  // Step 3: Collect the final class and all its parent classes
+  const resultClasses: UserClass[] = [];
+
+  if (!currentClass) {
+    return [];
   }
 
-  const userVariableType = userVariable.type;
-  userClass = definitionProvider.findUserDefinedClass(userVariableType);
+  resultClasses.push(currentClass);
+  console.log(`Final resolved class: '${currentClass.name}'`);
 
-  if (!userClass) {
-    console.log(
-      `Type '${userVariableType}' of variable '${userVariable.name}' is not a user-defined class, stopping traversal.`
+  // Collect all parent classes
+  let parentClass = currentClass;
+  while (parentClass.parentName) {
+    const parent = definitionProvider.findUserDefinedClass(
+      parentClass.parentName
     );
-    return parentClasses;
-  }
-
-  parentClasses.push(userClass);
-
-  while (userClass.parentName) {
-    const parentClass = definitionProvider.findUserDefinedClass(
-      userClass.parentName
-    );
-    if (parentClass) {
-      console.log(
-        `Found parent class '${parentClass.name}' of '${userClass.name}'.`
-      );
-      parentClasses.push(parentClass);
-      userClass = parentClass;
+    if (parent) {
+      console.log(`Adding parent class '${parent.name}' to result`);
+      resultClasses.push(parent);
+      parentClass = parent;
     } else {
       break;
     }
   }
 
-  if (parentClasses.length === 1) {
-    console.log(
-      "Current class does not extend any other class, classic resolve only."
-    );
-    while (memberParts.length > 0) {
-      word = memberParts.shift() || "";
-
-      console.log("LOOP: Resolving member definition for word:", word);
-
-      // check class members (fields & methods)
-      const classField = userClass.fields.find((field) => field.name === word);
-
-      if (!classField) {
-        console.log(
-          `Member '${word}' not found in class '${userClass.name}', stopping traversal.`
-        );
-        return parentClasses;
-      } else {
-        // Found field, get its type
-        const fieldType = classField.type;
-        userClass = definitionProvider.findUserDefinedClass(fieldType);
-        if (!userClass) {
-          console.log(
-            `Type '${fieldType}' of field '${classField.name}' is not a user-defined class, stopping traversal.`
-          );
-          return parentClasses;
-        }
-        return [userClass];
-      }
-    }
-  }
-
-  return parentClasses;
+  console.log(`Resolved ${resultClasses.length} class(es) in hierarchy`);
+  return resultClasses;
 };
 
 /**

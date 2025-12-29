@@ -6,6 +6,7 @@ import {
   generateUserClassMethodCompletion,
 } from "./CompletionGenerator";
 import { resolveMemberClass } from "../../utils/ClassMemberUtils";
+import { UserClass } from "../../services/analyzer/definitions.types";
 
 /**
  * Provides code completion for dot member access in user code
@@ -50,19 +51,14 @@ export class UserDotCodeCompletionProvider
       .split(".")
       .filter((part) => part.length > 0);
 
-    //  Member access, e.g., objectA.member1.member2
-    const allParentClasses = resolveMemberClass(
+    // Resolve the member access chain to get all related classes (including parent classes)
+    const resolvedClasses: UserClass[] = resolveMemberClass(
       memberParts,
       this.definitionProvider
     );
 
-    console.log("Member classes:", allParentClasses);
-
-    // console.log(
-    //   `Looking for members of class '${userClass.name}' for completions.`
-    // );
-
-    for (const userClass of allParentClasses) {
+    // Provide completions for all resolved classes (the target class and its parents)
+    for (const userClass of resolvedClasses) {
       for (const field of userClass.fields) {
         completionItems.push(generateUserClassFieldCompletion(field));
       }
