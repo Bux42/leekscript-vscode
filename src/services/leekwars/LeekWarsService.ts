@@ -1072,48 +1072,72 @@ export class LeekWarsService {
       } main AI(s): ${Array.from(mainAIsToSave).join(", ")}`
     );
 
-    let recompileSuccessCount = 0;
-    let recompileFailureCount = 0;
+    return await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: "Triggering main AI recompilation",
+        cancellable: false,
+      },
+      async (progress) => {
+        let recompileSuccessCount = 0;
+        let recompileFailureCount = 0;
 
-    for (const aiId of mainAIsToSave) {
-      const aiFile = this.findFileByAIId(remoteFilesRoot, aiId);
+        const totalAIs = mainAIsToSave.size;
+        const mainAIsArray = Array.from(mainAIsToSave);
 
-      if (!aiFile) {
-        console.warn(`Could not find file for AI ID ${aiId}`);
-        continue;
-      }
+        for (let i = 0; i < mainAIsArray.length; i++) {
+          const aiId = mainAIsArray[i];
+          const aiFile = this.findFileByAIId(remoteFilesRoot, aiId);
 
-      console.log(`Triggering recompilation for ${aiFile.name} (ID: ${aiId})`);
+          if (!aiFile) {
+            console.warn(`Could not find file for AI ID ${aiId}`);
+            continue;
+          }
 
-      await this.rateLimitedDelay();
+          progress.report({
+            message: `Recompiling ${aiFile.name} (${i + 1}/${totalAIs})...`,
+            increment: 100 / totalAIs,
+          });
 
-      try {
-        const aiResponse = await this.apiService!.getAI(aiId);
+          console.log(
+            `Triggering recompilation for ${aiFile.name} (ID: ${aiId})`
+          );
 
-        if (!aiResponse.ai) {
-          console.error(`Failed to get AI ${aiFile.name} for recompilation`);
-          recompileFailureCount++;
-          continue;
+          await this.rateLimitedDelay();
+
+          try {
+            const aiResponse = await this.apiService!.getAI(aiId);
+
+            if (!aiResponse.ai) {
+              console.error(
+                `Failed to get AI ${aiFile.name} for recompilation`
+              );
+              recompileFailureCount++;
+              continue;
+            }
+
+            // Re-save the AI to trigger recompilation
+            await this.apiService!.updateAICode(aiId, aiResponse.ai.code);
+            console.log(
+              `Successfully triggered recompilation for ${aiFile.name}`
+            );
+            recompileSuccessCount++;
+          } catch (error) {
+            console.error(
+              `Error triggering recompilation for ${aiFile.name}:`,
+              error
+            );
+            recompileFailureCount++;
+          }
         }
 
-        // Re-save the AI to trigger recompilation
-        await this.apiService!.updateAICode(aiId, aiResponse.ai.code);
-        console.log(`Successfully triggered recompilation for ${aiFile.name}`);
-        recompileSuccessCount++;
-      } catch (error) {
-        console.error(
-          `Error triggering recompilation for ${aiFile.name}:`,
-          error
+        console.log(
+          `Recompilation complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`
         );
-        recompileFailureCount++;
+
+        return { recompileSuccessCount, recompileFailureCount };
       }
-    }
-
-    console.log(
-      `Recompilation complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`
     );
-
-    return { recompileSuccessCount, recompileFailureCount };
   }
 
   /**
