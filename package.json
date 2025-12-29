@@ -1,9 +1,10 @@
 {
-  "name": "leekscript",
-  "displayName": "LeekScript DEBUG",
-  "description": "Language support for LeekScript",
-  "version": "0.0.1",
-  "publisher": "leekscript",
+  "name": "leekscript-advanced",
+  "displayName": "LeekScript (Advanced)",
+  "description": "Language support for LeekScript, the programming language of LeekWars. Provides syntax highlighting, code completion, and integration with LeekWars services.",
+  "version": "0.0.2",
+  "icon": "images/leekscript-icon.png",
+  "publisher": "Bux42",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -88,7 +89,8 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/js-beautify": "^1.14.3",
@@ -101,5 +103,9 @@
   },
   "dependencies": {
     "js-beautify": "^1.15.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bux42/leekscript-vscode.git"
   }
 }

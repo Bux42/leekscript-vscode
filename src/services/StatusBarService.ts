@@ -288,7 +288,7 @@ export class StatusBarService {
       // Open extension settings
       await vscode.commands.executeCommand(
         "workbench.action.openSettings",
-        "@ext:your-publisher.leekscript"
+        "@ext:Bux42.leekscript"
       );
     }
   }
