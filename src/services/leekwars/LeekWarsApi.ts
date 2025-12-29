@@ -58,7 +58,7 @@ export class LeekWarsApiService {
   constructor(private token: string) {}
 
   /**
-   * Make an authenticated request to the LeekWars API
+   * Make an authenticated request to the LeekWars API with query parameters
    */
   private async request(
     method: string,
@@ -93,7 +93,7 @@ export class LeekWarsApiService {
 
         res.on("end", () => {
           console.log(`[LeekWars API] Response status: ${res.statusCode}`);
-          console.log(`[LeekWars API] Response body:`, data);
+          // console.log(`[LeekWars API] Response body:`, data);
 
           try {
             const response = JSON.parse(data);
@@ -126,6 +126,74 @@ export class LeekWarsApiService {
   }
 
   /**
+   * Make an authenticated request to the LeekWars API with JSON body payload
+   */
+  private async requestWithBody(
+    method: string,
+    endpoint: string,
+    body: Record<string, any> = {}
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const path = `/${LeekWarsApiService.API_VERSION}/${endpoint}`;
+      const bodyString = JSON.stringify(body);
+
+      const options = {
+        hostname: LeekWarsApiService.BASE_URL,
+        path: path,
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(bodyString),
+          Cookie: `token=${this.token}`,
+        },
+      };
+
+      console.log(`[LeekWars API] ${method} ${path}`);
+      console.log(`[LeekWars API] Request body:`, bodyString);
+
+      const req = https.request(options, (res) => {
+        let data = "";
+
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+
+        res.on("end", () => {
+          console.log(`[LeekWars API] Response status: ${res.statusCode}`);
+          // console.log(`[LeekWars API] Response body:`, data);
+
+          try {
+            const response = JSON.parse(data);
+
+            // Check if the response indicates an error
+            if (response.success === false || response.error) {
+              console.error(`[LeekWars API] API returned error:`, response);
+              reject(
+                new Error(`API error: ${response.error || "Unknown error"}`)
+              );
+              return;
+            }
+
+            resolve(response);
+          } catch (error) {
+            console.error(`[LeekWars API] Failed to parse response:`, error);
+            console.error(`[LeekWars API] Raw response:`, data);
+            reject(new Error(`Failed to parse API response: ${error}`));
+          }
+        });
+      });
+
+      req.on("error", (error) => {
+        console.error(`[LeekWars API] Request failed:`, error);
+        reject(new Error(`API request failed: ${error.message}`));
+      });
+
+      req.write(bodyString);
+      req.end();
+    });
+  }
+
+  /**
    * Get all AIs metadata for the current farmer
    */
   async getFarmerAIs(): Promise<GetFarmerAIsResponse> {
@@ -134,8 +202,78 @@ export class LeekWarsApiService {
 
   /**
    * Get a specific AI with its code
+   * @param aiId ID of the AI to retrieve
    */
   async getAI(aiId: number): Promise<GetAIResponse> {
     return this.request("GET", `ai/get/${aiId}`);
+  }
+
+  /**
+   * Create a new folder
+   * @param name Name of the new folder
+   * @param parentFolderId ID of the parent folder (default is 0 for root)
+   */
+  async createFolder(
+    name: string,
+    parentFolderId: number = 0
+  ): Promise<{ id: number }> {
+    return this.requestWithBody("POST", "ai-folder/new-name", {
+      name: name,
+      folder_id: parentFolderId,
+    });
+  }
+
+  /**
+   * Delete a folder by its ID
+   * @param folderId ID of the folder to delete
+   */
+  async deleteFolder(
+    folderId: number
+  ): Promise<{ success: boolean; error?: string }> {
+    return this.requestWithBody("DELETE", `ai-folder/delete`, {
+      folder_id: folderId,
+    });
+  }
+
+  /**
+   * Delete an AI by its ID
+   * @param aiId ID of the AI to delete
+   */
+  async deleteAI(aiId: number): Promise<{ success: boolean; error?: string }> {
+    return this.requestWithBody("DELETE", `ai/delete/`, { ai_id: aiId });
+  }
+
+  /**
+   * Create new AI
+   * @param folder_id ID of the folder to create the AI in
+   * @param name Name of the new AI
+   */
+  async createAI({
+    folder_id,
+    name,
+  }: {
+    folder_id: number;
+    name: string;
+  }): Promise<{ id: number }> {
+    return this.requestWithBody("POST", "ai/new-name", {
+      folder_id,
+      name,
+      version: 4, // default to version 4
+    });
+  }
+
+  /**
+   * Update AI code
+   * @param aiId ID of the AI to update
+   * @param code New code for the AI
+   */
+  async updateAICode(
+    aiId: number,
+    code: string
+  ): Promise<{ success: boolean; error?: string }> {
+    return this.requestWithBody("POST", "ai/save", {
+      ai_id: aiId,
+      code: code,
+    });
   }
 }

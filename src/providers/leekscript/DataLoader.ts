@@ -1,0 +1,153 @@
+import * as path from "path";
+import * as fs from "fs";
+import { ConstantData, FunctionData, TYPE_MAP } from "./types/Constants.types";
+
+/**
+ * Service for loading and providing access to LeekScript language data
+ */
+export class DataLoader {
+  private static instance: DataLoader | null = null;
+
+  // Builtin data
+  private builtinFunctionsData: FunctionData[] = [];
+  private builtinConstantsData: ConstantData[] = [];
+  private builtinDocData: { [key: string]: string } = {};
+  private leekscriptConstants: { [key: string]: string } = {};
+  private builtInFunctions: Set<string> = new Set();
+
+  private constructor(extensionPath: string) {
+    this.loadData(extensionPath);
+  }
+
+  /**
+   * Append a user-defined function to the data
+   */
+  public appendFunctionData(func: FunctionData): void {
+    if (DataLoader.instance) {
+      this.builtinFunctionsData.push(func);
+    } else {
+      throw new Error("DataLoader instance is not initialized.");
+    }
+  }
+
+  /**
+   * Prepend a user-defined function to the data
+   */
+  public prependFunctionData(func: FunctionData): void {
+    if (DataLoader.instance) {
+      console.log("Prepending function:", func);
+      this.builtinFunctionsData.unshift(func);
+    } else {
+      throw new Error("DataLoader instance is not initialized.");
+    }
+  }
+
+  /**
+   * Get the singleton instance
+   */
+  public static getInstance(extensionPath?: string): DataLoader {
+    if (!DataLoader.instance) {
+      if (!extensionPath) {
+        throw new Error(
+          "Extension path must be provided on first initialization"
+        );
+      }
+      DataLoader.instance = new DataLoader(extensionPath);
+    }
+    return DataLoader.instance;
+  }
+
+  /**
+   * Load all data from extracted JSON files
+   */
+  private loadData(extensionPath: string): void {
+    const extractedPath = path.join(extensionPath, "extracted");
+
+    this.builtinFunctionsData = JSON.parse(
+      fs.readFileSync(path.join(extractedPath, "functions.json"), "utf8")
+    );
+
+    this.builtinConstantsData = JSON.parse(
+      fs.readFileSync(path.join(extractedPath, "constants.json"), "utf8")
+    );
+
+    this.builtinDocData = JSON.parse(
+      fs.readFileSync(path.join(extractedPath, "doc.en.json"), "utf8")
+    );
+
+    this.leekscriptConstants = JSON.parse(
+      fs.readFileSync(
+        path.join(extractedPath, "leekscript_constants.json"),
+        "utf8"
+      )
+    );
+
+    // Build set of built-in function names
+    this.builtInFunctions = new Set(
+      this.builtinFunctionsData.map((f) => f.name)
+    );
+  }
+
+  /**
+   * Get all functions data
+   */
+  public getFunctions(): FunctionData[] {
+    return this.builtinFunctionsData;
+  }
+
+  /**
+   * Get all constants data
+   */
+  public getConstants(): ConstantData[] {
+    return this.builtinConstantsData;
+  }
+
+  /**
+   * Get documentation data
+   */
+  public getDocData(): { [key: string]: string } {
+    return this.builtinDocData;
+  }
+
+  /**
+   * Get LeekScript constants (error messages, etc.)
+   */
+  public getLeekScriptConstants(): { [key: string]: string } {
+    return this.leekscriptConstants;
+  }
+
+  /**
+   * Get built-in functions set
+   */
+  public getBuiltInFunctions(): Set<string> {
+    return this.builtInFunctions;
+  }
+
+  /**
+   * Get built-in functions array
+   */
+  public getBuiltInFunctionsArray(): FunctionData[] {
+    return this.builtinFunctionsData;
+  }
+
+  /**
+   * Find a function by name
+   */
+  public findBuiltinFunction(name: string): FunctionData | undefined {
+    return this.builtinFunctionsData.find((f) => f.name === name);
+  }
+
+  /**
+   * Find a constant by name
+   */
+  public findConstant(name: string): ConstantData | undefined {
+    return this.builtinConstantsData.find((c) => c.name === name);
+  }
+
+  /**
+   * Get type name from type ID
+   */
+  public static getTypeName(typeId: string | number): string {
+    return TYPE_MAP[typeId.toString()] || "any";
+  }
+}

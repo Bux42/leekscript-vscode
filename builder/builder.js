@@ -12,8 +12,10 @@ console.log("============================\n");
 const { extractFunctions } = require("./functions");
 const { extractLang } = require("./lang");
 const { extractConstants } = require("./constants");
+const { extractLeekScriptConstants } = require("./leekscript-constants");
 
 extractFunctions();
 extractLang();
 extractConstants();
+extractLeekScriptConstants();
 console.log("\nBuild completed successfully.");

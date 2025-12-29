@@ -1,17 +1,15 @@
 {
-  "name": "leekscript",
-  "displayName": "LeekScript DEBUG",
-  "description": "Language support for LeekScript",
-  "version": "0.0.1",
-  "publisher": "leekscript",
+  "name": "leekscript-advanced",
+  "displayName": "LeekScript (Advanced)",
+  "description": "Language support for LeekScript, the programming language of LeekWars. Provides syntax highlighting, code completion, and integration with LeekWars services.",
+  "version": "0.0.2",
+  "icon": "images/leekscript-icon.png",
+  "publisher": "Bux42",
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
     "Programming Languages"
-  ],
-  "activationEvents": [
-    "onLanguage:leekscript"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -47,9 +45,15 @@
           "type": "string",
           "default": "",
           "description": "LeekWars API token for authentication",
-          "scope": "application",
+          "scope": "resource",
           "markdownDescription": "Your LeekWars API token for authenticating with LeekWars services. This value is stored securely.",
           "format": "password"
+        },
+        "leekscript.javaApiUrl": {
+          "type": "string",
+          "default": "http://localhost:8080",
+          "scope": "resource",
+          "description": "URL for the local Java API server (LeekScript Code Analysis Server)"
         }
       }
     },
@@ -60,8 +64,23 @@
         "category": "LeekScript"
       },
       {
+        "command": "leekscript.forceSyncAll",
+        "title": "LeekWars: Force Sync All",
+        "category": "LeekScript"
+      },
+      {
         "command": "leekscript.pullAI",
         "title": "LeekWars: Pull AI",
+        "category": "LeekScript"
+      },
+      {
+        "command": "leekscript.showStatusMenu",
+        "title": "Show Status Menu",
+        "category": "LeekScript"
+      },
+      {
+        "command": "leekscript.refreshStatus",
+        "title": "Refresh Status",
         "category": "LeekScript"
       }
     ]
@@ -70,14 +89,23 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
   },
   "devDependencies": {
-    "@types/vscode": "^1.80.0",
+    "@types/js-beautify": "^1.14.3",
     "@types/node": "^18.0.0",
+    "@types/vscode": "^1.80.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.40.0",
     "typescript": "^5.1.0"
+  },
+  "dependencies": {
+    "js-beautify": "^1.15.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bux42/leekscript-vscode.git"
   }
 }
