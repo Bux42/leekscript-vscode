@@ -27,20 +27,20 @@ export class LeekWarsService {
       this.lastResponse = response;
       await this.context.globalState.update(
         LeekWarsService.STORAGE_KEY,
-        response
+        response,
       );
       console.log(
-        "[LeekWars Service] Stored farmer AIs response to persistent storage"
+        "[LeekWars Service] Stored farmer AIs response to persistent storage",
       );
     } catch (error) {
       console.error(
         "[LeekWars Service] Failed to store farmer AIs response:",
-        error
+        error,
       );
       vscode.window.showErrorMessage(
         `Failed to store AI data: ${
           error instanceof Error ? error.message : "Unknown error"
-        }`
+        }`,
       );
     }
   }
@@ -51,18 +51,18 @@ export class LeekWarsService {
   private loadFarmerAIsResponse(): void {
     try {
       const stored = this.context.globalState.get<GetFarmerAIsResponse>(
-        LeekWarsService.STORAGE_KEY
+        LeekWarsService.STORAGE_KEY,
       );
       if (stored) {
         this.lastResponse = stored;
         console.log(
-          "[LeekWars Service] Loaded farmer AIs response from persistent storage"
+          "[LeekWars Service] Loaded farmer AIs response from persistent storage",
         );
       }
     } catch (error) {
       console.error(
         "[LeekWars Service] Failed to load farmer AIs response:",
-        error
+        error,
       );
     }
   }
@@ -82,13 +82,13 @@ export class LeekWarsService {
       this.lastResponse = null;
       await this.context.globalState.update(
         LeekWarsService.STORAGE_KEY,
-        undefined
+        undefined,
       );
       console.log("[LeekWars Service] Cleared stored farmer AIs response");
     } catch (error) {
       console.error(
         "[LeekWars Service] Failed to clear farmer AIs response:",
-        error
+        error,
       );
     }
   }
@@ -112,14 +112,14 @@ export class LeekWarsService {
       const configureButton = "Configure Token";
       const result = await vscode.window.showWarningMessage(
         "LeekWars API token is not configured. Remote requests will not work.",
-        configureButton
+        configureButton,
       );
 
       if (result === configureButton) {
         // Open settings to the specific setting
         await vscode.commands.executeCommand(
           "workbench.action.openSettings",
-          "leekscript.leekwarsApiToken"
+          "leekscript.leekwarsApiToken",
         );
       }
     }
@@ -143,7 +143,7 @@ export class LeekWarsService {
     const token = this.getToken();
     if (!token) {
       vscode.window.showErrorMessage(
-        "LeekWars API token not configured. Please set it in settings."
+        "LeekWars API token not configured. Please set it in settings.",
       );
       return false;
     }
@@ -165,7 +165,7 @@ export class LeekWarsService {
 
     this.apiService = new LeekWarsApiService(token);
     console.log(
-      "[LeekWarsService] API token updated and service reinitialized"
+      "[LeekWarsService] API token updated and service reinitialized",
     );
     return true;
   }
@@ -175,7 +175,7 @@ export class LeekWarsService {
    */
   private findMissingFolders(
     remote: (FolderNode | FileNode)[],
-    local: (FolderNode | FileNode)[]
+    local: (FolderNode | FileNode)[],
   ): FolderNode[] {
     const missingFolders: FolderNode[] = [];
 
@@ -200,7 +200,7 @@ export class LeekWarsService {
           // Folder exists, recursively check children
           const missingSubFolders = this.findMissingFolders(
             remoteFolder.children,
-            localFolder.children
+            localFolder.children,
           );
           missingFolders.push(...missingSubFolders);
         }
@@ -215,7 +215,7 @@ export class LeekWarsService {
    */
   private findMissingFiles(
     remote: (FolderNode | FileNode)[],
-    local: (FolderNode | FileNode)[]
+    local: (FolderNode | FileNode)[],
   ): FileNode[] {
     const missingFiles: FileNode[] = [];
 
@@ -248,7 +248,7 @@ export class LeekWarsService {
           // Folder exists, recursively check children
           const missingSubFiles = this.findMissingFiles(
             remoteFolder.children,
-            localFolder.children
+            localFolder.children,
           );
           missingFiles.push(...missingSubFiles);
         }
@@ -265,7 +265,7 @@ export class LeekWarsService {
    */
   private findNewFolders(
     local: (FolderNode | FileNode)[],
-    remote: (FolderNode | FileNode)[]
+    remote: (FolderNode | FileNode)[],
   ): FolderNode[] {
     const newFolders: FolderNode[] = [];
 
@@ -293,7 +293,7 @@ export class LeekWarsService {
           // Folder exists, recursively check children
           const newSubFolders = this.findNewFolders(
             localFolder.children,
-            remoteFolder.children
+            remoteFolder.children,
           );
           newFolders.push(...newSubFolders);
         }
@@ -308,7 +308,7 @@ export class LeekWarsService {
    */
   private findNewFiles(
     local: (FolderNode | FileNode)[],
-    remote: (FolderNode | FileNode)[]
+    remote: (FolderNode | FileNode)[],
   ): FileNode[] {
     const newFiles: FileNode[] = [];
 
@@ -341,7 +341,7 @@ export class LeekWarsService {
           // Folder exists, recursively check children
           const newSubFiles = this.findNewFiles(
             localFolder.children,
-            remoteFolder.children
+            remoteFolder.children,
           );
           newFiles.push(...newSubFiles);
         }
@@ -395,7 +395,7 @@ export class LeekWarsService {
     } catch (error) {
       console.error(
         "[LeekWars Service] Error getting farmer AI file state:",
-        error
+        error,
       );
       return null;
     }
@@ -424,7 +424,7 @@ export class LeekWarsService {
       await this.syncFolderStructure(
         localFilesRoot,
         remoteFilesRoot,
-        workspaceRoot
+        workspaceRoot,
       );
 
       // Step 2: Determine which files need content updates
@@ -433,26 +433,25 @@ export class LeekWarsService {
             localFilesRoot,
             this.lastPushedLocalState,
             remoteFilesRoot,
-            workspaceRoot
+            workspaceRoot,
           )
         : await this.findFilesNeedingUpdate(
             localFilesRoot,
             remoteFilesRoot,
-            workspaceRoot
+            workspaceRoot,
           );
 
       if (filesToUpdate.length === 0) {
         console.log("No files need to be updated");
         vscode.window.showInformationMessage(
-          "All files are synchronized with LeekWars"
+          "All files are synchronized with LeekWars",
         );
         return;
       }
 
       // Step 3: Update file contents
-      const { successCount, failureCount } = await this.updateFileContents(
-        filesToUpdate
-      );
+      const { successCount, failureCount } =
+        await this.updateFileContents(filesToUpdate);
 
       // Step 4: Trigger recompilation of main AIs that include updated files
       const { recompileSuccessCount, recompileFailureCount } =
@@ -463,20 +462,20 @@ export class LeekWarsService {
         successCount,
         failureCount,
         recompileSuccessCount,
-        recompileFailureCount
+        recompileFailureCount,
       );
 
       // Store the current local state with code content for future incremental pushes
       this.lastPushedLocalState = await this.storeLocalStateWithCode(
         localFilesRoot,
-        workspaceRoot
+        workspaceRoot,
       );
       console.log(
-        "[LeekWars Service] Stored local state for incremental pushes"
+        "[LeekWars Service] Stored local state for incremental pushes",
       );
     } catch (error: any) {
       vscode.window.showErrorMessage(
-        `Failed to push to LeekWars: ${error.message}`
+        `Failed to push to LeekWars: ${error.message}`,
       );
     }
   }
@@ -531,7 +530,7 @@ export class LeekWarsService {
   private async syncFolderStructure(
     localFilesRoot: (FolderNode | FileNode)[],
     remoteFilesRoot: (FolderNode | FileNode)[],
-    workspaceRoot: string
+    workspaceRoot: string,
   ): Promise<void> {
     // Delete remote folders that don't exist locally
     await this.deleteObsoleteFolders(remoteFilesRoot, localFilesRoot);
@@ -551,11 +550,11 @@ export class LeekWarsService {
    */
   private async deleteObsoleteFolders(
     remoteFilesRoot: (FolderNode | FileNode)[],
-    localFilesRoot: (FolderNode | FileNode)[]
+    localFilesRoot: (FolderNode | FileNode)[],
   ): Promise<void> {
     const missingFolders = this.findMissingFolders(
       remoteFilesRoot,
-      localFilesRoot
+      localFilesRoot,
     );
 
     console.log(`Deleting ${missingFolders.length} obsolete remote folder(s)`);
@@ -563,7 +562,7 @@ export class LeekWarsService {
     for (const folder of missingFolders) {
       if (folder.leekWarsFolderInfo) {
         console.log(
-          `Deleting remote folder: ${folder.leekWarsFolderInfo.name} (ID: ${folder.leekWarsFolderInfo.id})`
+          `Deleting remote folder: ${folder.leekWarsFolderInfo.name} (ID: ${folder.leekWarsFolderInfo.id})`,
         );
         await this.rateLimitedDelay();
         await this.apiService!.deleteFolder(folder.leekWarsFolderInfo.id);
@@ -576,7 +575,7 @@ export class LeekWarsService {
    */
   private async deleteObsoleteFiles(
     remoteFilesRoot: (FolderNode | FileNode)[],
-    localFilesRoot: (FolderNode | FileNode)[]
+    localFilesRoot: (FolderNode | FileNode)[],
   ): Promise<void> {
     const missingFiles = this.findMissingFiles(remoteFilesRoot, localFilesRoot);
 
@@ -585,7 +584,7 @@ export class LeekWarsService {
     for (const file of missingFiles) {
       if (file.leekWarsAIInfo) {
         console.log(
-          `Deleting remote AI: ${file.leekWarsAIInfo.name} (ID: ${file.leekWarsAIInfo.id})`
+          `Deleting remote AI: ${file.leekWarsAIInfo.name} (ID: ${file.leekWarsAIInfo.id})`,
         );
         await this.rateLimitedDelay();
         await this.apiService!.deleteAI(file.leekWarsAIInfo.id);
@@ -598,7 +597,7 @@ export class LeekWarsService {
    */
   private async createNewFolders(
     localFilesRoot: (FolderNode | FileNode)[],
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Promise<void> {
     const newFolders = this.findNewFolders(localFilesRoot, remoteFilesRoot);
 
@@ -621,10 +620,10 @@ export class LeekWarsService {
    */
   private async createRemoteFolder(
     folder: FolderNode,
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Promise<void> {
     console.log(
-      `Creating remote folder: ${folder.name} (path: ${folder.path})`
+      `Creating remote folder: ${folder.name} (path: ${folder.path})`,
     );
 
     const isRoot = this.isRootLocalFolder(folder.path);
@@ -634,7 +633,7 @@ export class LeekWarsService {
 
     if (parentFolderId === null && !isRoot) {
       console.error(
-        `Cannot create folder ${folder.name}: parent folder not found`
+        `Cannot create folder ${folder.name}: parent folder not found`,
       );
       return;
     }
@@ -642,7 +641,7 @@ export class LeekWarsService {
     await this.rateLimitedDelay();
     const newRemoteFolder = await this.apiService!.createFolder(
       folder.name,
-      parentFolderId ?? 0
+      parentFolderId ?? 0,
     );
     console.log(`Created remote folder with ID: ${newRemoteFolder.id}`);
   }
@@ -652,7 +651,7 @@ export class LeekWarsService {
    */
   private async getRemoteParentFolderId(
     localPath: string,
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Promise<number | null> {
     const parts = this.getPathParts(localPath);
     const parentPath = parts.slice(0, -1).join(path.sep);
@@ -661,7 +660,7 @@ export class LeekWarsService {
 
     if (!parentFolder?.leekWarsFolderInfo) {
       console.error(
-        `Parent folder not found in remote state for path: ${parentPath}`
+        `Parent folder not found in remote state for path: ${parentPath}`,
       );
       return null;
     }
@@ -674,7 +673,7 @@ export class LeekWarsService {
    */
   private async createNewFiles(
     localFilesRoot: (FolderNode | FileNode)[],
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Promise<void> {
     // Refresh remote state to get updated folder IDs
     const updatedRemoteState = await this.getFarmersAIFileState();
@@ -697,7 +696,7 @@ export class LeekWarsService {
    */
   private async createRemoteFile(
     file: FileNode,
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Promise<void> {
     console.log(`Creating remote AI: ${file.name} (path: ${file.path})`);
 
@@ -731,7 +730,7 @@ export class LeekWarsService {
   private async findFilesNeedingUpdate(
     localFilesRoot: (FolderNode | FileNode)[],
     remoteFilesRoot: (FolderNode | FileNode)[],
-    workspaceRoot: string
+    workspaceRoot: string,
   ): Promise<
     Array<{
       localFile: FileNode;
@@ -775,7 +774,7 @@ export class LeekWarsService {
 
           const remoteFile = this.findFileByPath(
             updatedRemoteState,
-            localFile.path
+            localFile.path,
           );
 
           if (!remoteFile?.leekWarsAIInfo) {
@@ -795,19 +794,19 @@ export class LeekWarsService {
 
           // Fetch remote code
           console.log(
-            `Fetching remote code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`
+            `Fetching remote code for ${remoteFile.name} (ID: ${remoteFile.leekWarsAIInfo.id})`,
           );
-          await this.rateLimitedDelay(100); // Shorter delay for read operations
+          await this.rateLimitedDelay(); // Shorter delay for read operations
 
           let remoteAI;
           try {
             remoteAI = await this.apiService!.getAI(
-              remoteFile.leekWarsAIInfo.id
+              remoteFile.leekWarsAIInfo.id,
             );
           } catch (error) {
             console.error(
               `Failed to fetch remote AI ${remoteFile.leekWarsAIInfo.id}:`,
-              error
+              error,
             );
             continue;
           }
@@ -823,18 +822,18 @@ export class LeekWarsService {
             filesToUpdate.push({ localFile, remoteFile, localCode });
           } else {
             console.log(
-              `Code matches for ${localFile.name} - no update needed`
+              `Code matches for ${localFile.name} - no update needed`,
             );
           }
         }
 
         console.log(
           `Found ${filesToUpdate.length} file(s) needing update:`,
-          filesToUpdate.map((f) => f.localFile.name)
+          filesToUpdate.map((f) => f.localFile.name),
         );
 
         return filesToUpdate;
-      }
+      },
     );
   }
 
@@ -846,7 +845,7 @@ export class LeekWarsService {
     currentLocalFilesRoot: (FolderNode | FileNode)[],
     lastPushedLocalFilesRoot: (FolderNode | FileNode)[],
     remoteFilesRoot: (FolderNode | FileNode)[],
-    workspaceRoot: string
+    workspaceRoot: string,
   ): Promise<
     Array<{
       localFile: FileNode;
@@ -855,7 +854,7 @@ export class LeekWarsService {
     }>
   > {
     console.log(
-      "[LeekWars Service] Using incremental push (comparing with last pushed state)"
+      "[LeekWars Service] Using incremental push (comparing with last pushed state)",
     );
 
     // Refresh remote state to ensure we have correct file IDs
@@ -870,7 +869,7 @@ export class LeekWarsService {
     const lastPushedLocalFiles = this.collectAllFiles(lastPushedLocalFilesRoot);
 
     console.log(
-      `Comparing ${currentLocalFiles.length} current local file(s) with ${lastPushedLocalFiles.length} previously pushed file(s)`
+      `Comparing ${currentLocalFiles.length} current local file(s) with ${lastPushedLocalFiles.length} previously pushed file(s)`,
     );
 
     return await vscode.window.withProgress(
@@ -907,7 +906,7 @@ export class LeekWarsService {
           // Find the corresponding remote file
           const remoteFile = this.findFileByPath(
             updatedRemoteState,
-            currentLocalFile.path
+            currentLocalFile.path,
           );
 
           if (!remoteFile?.leekWarsAIInfo) {
@@ -943,7 +942,7 @@ export class LeekWarsService {
             if (!lastPushedCode) {
               // No stored code, treat as changed
               console.warn(
-                `No stored code for ${currentLocalFile.name}, treating as changed`
+                `No stored code for ${currentLocalFile.name}, treating as changed`,
               );
               filesToUpdate.push({
                 localFile: currentLocalFile,
@@ -956,7 +955,7 @@ export class LeekWarsService {
             // Compare current code with last pushed code
             if (currentLocalCode !== lastPushedCode) {
               console.log(
-                `Code changed for ${currentLocalFile.name} - needs push`
+                `Code changed for ${currentLocalFile.name} - needs push`,
               );
               filesToUpdate.push({
                 localFile: currentLocalFile,
@@ -965,7 +964,7 @@ export class LeekWarsService {
               });
             } else {
               console.log(
-                `Code unchanged for ${currentLocalFile.name} - skipping`
+                `Code unchanged for ${currentLocalFile.name} - skipping`,
               );
             }
           }
@@ -973,11 +972,11 @@ export class LeekWarsService {
 
         console.log(
           `Found ${filesToUpdate.length} file(s) needing update (incremental):`,
-          filesToUpdate.map((f) => f.localFile.name)
+          filesToUpdate.map((f) => f.localFile.name),
         );
 
         return filesToUpdate;
-      }
+      },
     );
   }
 
@@ -989,7 +988,7 @@ export class LeekWarsService {
       localFile: FileNode;
       remoteFile: FileNode;
       localCode: string;
-    }>
+    }>,
   ): Promise<{ successCount: number; failureCount: number }> {
     console.log(`Updating ${filesToUpdate.length} file(s) on LeekWars`);
 
@@ -1036,11 +1035,11 @@ export class LeekWarsService {
         }
 
         console.log(
-          `Update complete: ${successCount} succeeded, ${failureCount} failed`
+          `Update complete: ${successCount} succeeded, ${failureCount} failed`,
         );
 
         return { successCount, failureCount };
-      }
+      },
     );
   }
 
@@ -1054,11 +1053,11 @@ export class LeekWarsService {
       remoteFile: FileNode;
       localCode: string;
     }>,
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Promise<{ recompileSuccessCount: number; recompileFailureCount: number }> {
     const mainAIsToSave = this.collectMainAIsForUpdatedFiles(
       filesToUpdate,
-      remoteFilesRoot
+      remoteFilesRoot,
     );
 
     if (mainAIsToSave.size === 0) {
@@ -1069,7 +1068,7 @@ export class LeekWarsService {
     console.log(
       `Triggering recompilation for ${
         mainAIsToSave.size
-      } main AI(s): ${Array.from(mainAIsToSave).join(", ")}`
+      } main AI(s): ${Array.from(mainAIsToSave).join(", ")}`,
     );
 
     return await vscode.window.withProgress(
@@ -1100,7 +1099,7 @@ export class LeekWarsService {
           });
 
           console.log(
-            `Triggering recompilation for ${aiFile.name} (ID: ${aiId})`
+            `Triggering recompilation for ${aiFile.name} (ID: ${aiId})`,
           );
 
           await this.rateLimitedDelay();
@@ -1110,7 +1109,7 @@ export class LeekWarsService {
 
             if (!aiResponse.ai) {
               console.error(
-                `Failed to get AI ${aiFile.name} for recompilation`
+                `Failed to get AI ${aiFile.name} for recompilation`,
               );
               recompileFailureCount++;
               continue;
@@ -1119,24 +1118,24 @@ export class LeekWarsService {
             // Re-save the AI to trigger recompilation
             await this.apiService!.updateAICode(aiId, aiResponse.ai.code);
             console.log(
-              `Successfully triggered recompilation for ${aiFile.name}`
+              `Successfully triggered recompilation for ${aiFile.name}`,
             );
             recompileSuccessCount++;
           } catch (error) {
             console.error(
               `Error triggering recompilation for ${aiFile.name}:`,
-              error
+              error,
             );
             recompileFailureCount++;
           }
         }
 
         console.log(
-          `Recompilation complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`
+          `Recompilation complete: ${recompileSuccessCount} succeeded, ${recompileFailureCount} failed`,
         );
 
         return { recompileSuccessCount, recompileFailureCount };
-      }
+      },
     );
   }
 
@@ -1149,7 +1148,7 @@ export class LeekWarsService {
       remoteFile: FileNode;
       localCode: string;
     }>,
-    remoteFilesRoot: (FolderNode | FileNode)[]
+    remoteFilesRoot: (FolderNode | FileNode)[],
   ): Set<number> {
     const mainAIsToSave = new Set<number>();
 
@@ -1164,13 +1163,13 @@ export class LeekWarsService {
         console.log(
           `File ${remoteFile.name} is included by ${
             entrypoints.length
-          } AI(s): ${entrypoints.join(", ")}`
+          } AI(s): ${entrypoints.join(", ")}`,
         );
 
         for (const entrypointId of entrypoints) {
           const mainAIs = this.findMainAIsForEntrypoint(
             entrypointId,
-            remoteFilesRoot
+            remoteFilesRoot,
           );
           mainAIs.forEach((id: number) => mainAIsToSave.add(id));
         }
@@ -1187,28 +1186,28 @@ export class LeekWarsService {
     successCount: number,
     failureCount: number,
     recompileSuccessCount: number,
-    recompileFailureCount: number
+    recompileFailureCount: number,
   ): void {
     const totalFailures = failureCount + recompileFailureCount;
 
     if (recompileSuccessCount > 0) {
       if (totalFailures > 0) {
         vscode.window.showWarningMessage(
-          `Updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s), but ${totalFailures} operation(s) failed.`
+          `Updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s), but ${totalFailures} operation(s) failed.`,
         );
       } else {
         vscode.window.showInformationMessage(
-          `Successfully updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s)`
+          `Successfully updated ${successCount} file(s) and triggered recompilation for ${recompileSuccessCount} main AI(s)`,
         );
       }
     } else {
       if (failureCount > 0) {
         vscode.window.showWarningMessage(
-          `Updated ${successCount} file(s), but ${failureCount} failed. Check console for details.`
+          `Updated ${successCount} file(s), but ${failureCount} failed. Check console for details.`,
         );
       } else {
         vscode.window.showInformationMessage(
-          `Successfully updated ${successCount} file(s) on LeekWars`
+          `Successfully updated ${successCount} file(s) on LeekWars`,
         );
       }
     }
@@ -1219,7 +1218,7 @@ export class LeekWarsService {
    */
   private async storeLocalStateWithCode(
     nodes: (FolderNode | FileNode)[],
-    workspaceRoot: string
+    workspaceRoot: string,
   ): Promise<(FolderNode | FileNode)[]> {
     const result: (FolderNode | FileNode)[] = [];
 
@@ -1238,7 +1237,7 @@ export class LeekWarsService {
         const folder = node as FolderNode;
         const children = await this.storeLocalStateWithCode(
           folder.children,
-          workspaceRoot
+          workspaceRoot,
         );
         result.push({ ...folder, children });
       }
@@ -1250,7 +1249,7 @@ export class LeekWarsService {
   /**
    * Rate-limited delay to avoid API throttling
    */
-  private async rateLimitedDelay(ms: number = 200): Promise<void> {
+  private async rateLimitedDelay(ms: number = 300): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, ms));
   }
 
@@ -1275,7 +1274,7 @@ export class LeekWarsService {
    */
   private findFileByAIId(
     nodes: (FolderNode | FileNode)[],
-    aiId: number
+    aiId: number,
   ): FileNode | null {
     for (const node of nodes) {
       if (node.type === "file") {
@@ -1300,7 +1299,7 @@ export class LeekWarsService {
    */
   private findMainAIsForEntrypoint(
     entrypointId: number,
-    nodes: (FolderNode | FileNode)[]
+    nodes: (FolderNode | FileNode)[],
   ): number[] {
     const mainAIs: number[] = [];
 
@@ -1336,7 +1335,7 @@ export class LeekWarsService {
    */
   private findFolderByPath(
     nodes: (FolderNode | FileNode)[],
-    targetPath: string
+    targetPath: string,
   ): FolderNode | null {
     for (const node of nodes) {
       if (node.type === "folder") {
@@ -1364,7 +1363,7 @@ export class LeekWarsService {
    */
   private findFileByPath(
     nodes: (FolderNode | FileNode)[],
-    targetPath: string
+    targetPath: string,
   ): FileNode | null {
     for (const node of nodes) {
       if (node.type === "file") {
@@ -1434,10 +1433,10 @@ export class LeekWarsService {
             console.error("[LeekWars Service] Error:", errorMsg);
             console.error(
               "[LeekWars Service] Full response:",
-              JSON.stringify(response, null, 2)
+              JSON.stringify(response, null, 2),
             );
             throw new Error(
-              `Failed to fetch AI list: ${errorMsg}. Check Developer Tools Console for details.`
+              `Failed to fetch AI list: ${errorMsg}. Check Developer Tools Console for details.`,
             );
           }
 
@@ -1462,7 +1461,7 @@ export class LeekWarsService {
           progress.report({ message: "Creating folder structure..." });
           const folderPaths = this.createFolderStructure(
             leekwarsDir,
-            response.folders
+            response.folders,
           );
 
           // Create AI files
@@ -1487,7 +1486,7 @@ export class LeekWarsService {
             if (!aiResponse.ai) {
               console.warn(
                 `[LeekWars Service] Failed to pull AI: ${aiInfo.name}`,
-                aiResponse.error
+                aiResponse.error,
               );
               continue;
             }
@@ -1507,9 +1506,9 @@ export class LeekWarsService {
           }
 
           vscode.window.showInformationMessage(
-            `Successfully pulled ${aiInfos.length} AI(s) from LeekWars`
+            `Successfully pulled ${aiInfos.length} AI(s) from LeekWars`,
           );
-        }
+        },
       );
     } catch (error: any) {
       vscode.window.showErrorMessage(`Failed to pull AIs: ${error.message}`);
@@ -1522,7 +1521,7 @@ export class LeekWarsService {
    */
   private createFolderStructure(
     baseDir: string,
-    folders: Array<{ id: number; name: string; folder: number }>
+    folders: Array<{ id: number; name: string; folder: number }>,
   ): Map<number, string> {
     // Map folder IDs to their paths
     const folderPaths = new Map<number, string>();
@@ -1540,7 +1539,7 @@ export class LeekWarsService {
         const parentPath = folderPaths.get(folder.folder);
         if (!parentPath) {
           console.warn(
-            `[LeekWars Service] Parent folder ${folder.folder} not found for ${folder.name}`
+            `[LeekWars Service] Parent folder ${folder.folder} not found for ${folder.name}`,
           );
           continue;
         }
@@ -1560,7 +1559,7 @@ export class LeekWarsService {
 
         // Find children for next level
         const children = folders.filter(
-          (f) => f.folder === folder.id && !processedFolders.has(f.id)
+          (f) => f.folder === folder.id && !processedFolders.has(f.id),
         );
         nextLevelFolders.push(...children);
       }
@@ -1595,7 +1594,7 @@ export class LeekWarsService {
             const errorMsg = response.error || "Failed to fetch AI";
             console.error("[LeekWars Service] Error:", errorMsg);
             throw new Error(
-              `Failed to fetch AI: ${errorMsg}. Check Developer Tools Console for details.`
+              `Failed to fetch AI: ${errorMsg}. Check Developer Tools Console for details.`,
             );
           }
 
@@ -1621,13 +1620,13 @@ export class LeekWarsService {
           fs.writeFileSync(aiFilePath, content, "utf8");
 
           vscode.window.showInformationMessage(
-            `Successfully pulled AI: ${ai.name}`
+            `Successfully pulled AI: ${ai.name}`,
           );
 
           // Open the file
           const document = await vscode.workspace.openTextDocument(aiFilePath);
           await vscode.window.showTextDocument(document);
-        }
+        },
       );
     } catch (error: any) {
       vscode.window.showErrorMessage(`Failed to pull AI: ${error.message}`);
@@ -1651,7 +1650,7 @@ export class LeekWarsService {
         const errorMsg = response.error || "Failed to fetch AI list";
         console.error("[LeekWars Service] Error:", errorMsg);
         throw new Error(
-          `Failed to fetch AI list: ${errorMsg}. Check Developer Tools Console for details.`
+          `Failed to fetch AI list: ${errorMsg}. Check Developer Tools Console for details.`,
         );
       }
 
@@ -1659,7 +1658,7 @@ export class LeekWarsService {
 
       if (aiInfos.length === 0) {
         vscode.window.showInformationMessage(
-          "No AIs found on your LeekWars account"
+          "No AIs found on your LeekWars account",
         );
         return;
       }
@@ -1679,7 +1678,7 @@ export class LeekWarsService {
       }
     } catch (error: any) {
       vscode.window.showErrorMessage(
-        `Failed to fetch AI list: ${error.message}`
+        `Failed to fetch AI list: ${error.message}`,
       );
     }
   }
