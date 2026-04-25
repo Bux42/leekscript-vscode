@@ -1,1180 +1,55 @@
 [
   {
-    "id": 307,
-    "name": "AREA_ALLIES",
-    "value": "15",
-    "type": 6,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 109,
-    "name": "AREA_CIRCLE_1",
-    "value": "3",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 110,
-    "name": "AREA_CIRCLE_2",
-    "value": "4",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 111,
-    "name": "AREA_CIRCLE_3",
-    "value": "5",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 306,
-    "name": "AREA_ENEMIES",
-    "value": "14",
-    "type": 6,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 253,
-    "name": "AREA_FIRST_INLINE",
-    "value": "13",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 108,
-    "name": "AREA_LASER_LINE",
-    "value": "2",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 220,
-    "name": "AREA_PLUS_1",
-    "value": "3",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 221,
-    "name": "AREA_PLUS_2",
-    "value": "6",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 222,
-    "name": "AREA_PLUS_3",
-    "value": "7",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 107,
-    "name": "AREA_POINT",
-    "value": "1",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 251,
-    "name": "AREA_SQUARE_1",
-    "value": "11",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 252,
-    "name": "AREA_SQUARE_2",
-    "value": "12",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 223,
-    "name": "AREA_X_1",
-    "value": "8",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 224,
-    "name": "AREA_X_2",
-    "value": "9",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 225,
-    "name": "AREA_X_3",
-    "value": "10",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 315,
-    "name": "BOSS_EVIL_PUMPKIN",
-    "value": "3",
-    "type": 6,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 314,
-    "name": "BOSS_FENNEL_KING",
-    "value": "2",
-    "type": 6,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 313,
-    "name": "BOSS_NASU_SAMURAI",
-    "value": "1",
-    "type": 6,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 8,
-    "name": "CELL_EMPTY",
-    "value": "0",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 93,
-    "name": "CELL_ENTITY",
-    "value": "1",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 13,
-    "name": "CELL_OBSTACLE",
-    "value": "2",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 10,
-    "name": "CELL_PLAYER",
-    "value": "1",
-    "type": 1,
-    "category": 8,
-    "deprecated": true,
-    "replacement": 93
-  },
-  {
-    "id": 143,
-    "name": "CHIP_ACCELERATION",
-    "value": "91",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 53,
-    "name": "CHIP_ADRENALINE",
-    "value": "16",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 228,
-    "name": "CHIP_ALTERATION",
-    "value": "141",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 180,
-    "name": "CHIP_ANTIDOTE",
-    "value": "110",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 309,
-    "name": "CHIP_APOCALYPSE",
-    "value": "418",
-    "type": 6,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 39,
-    "name": "CHIP_ARMOR",
-    "value": "22",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 99,
-    "name": "CHIP_ARMORING",
-    "value": "67",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 247,
-    "name": "CHIP_ARSENIC",
-    "value": "171",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 311,
-    "name": "CHIP_AWEKENING",
-    "value": "415",
-    "type": 6,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 155,
-    "name": "CHIP_BALL_AND_CHAIN",
-    "value": "93",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 21,
-    "name": "CHIP_BANDAGE",
-    "value": "3",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 166,
-    "name": "CHIP_BARK",
-    "value": "104",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 241,
-    "name": "CHIP_BOXING_GLOVE",
-    "value": "163",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 246,
-    "name": "CHIP_BRAINWASHING",
-    "value": "170",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 248,
-    "name": "CHIP_BRAMBLE",
-    "value": "172",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 167,
-    "name": "CHIP_BURNING",
-    "value": "105",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 129,
-    "name": "CHIP_CARAPACE",
-    "value": "81",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 165,
-    "name": "CHIP_COLLAR",
-    "value": "103",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 203,
-    "name": "CHIP_COVETOUSNESS",
-    "value": "120",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 231,
-    "name": "CHIP_COVID",
-    "value": "152",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 245,
-    "name": "CHIP_CRUSHING",
-    "value": "169",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 22,
-    "name": "CHIP_CURE",
-    "value": "4",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 238,
-    "name": "CHIP_DESINTEGRATION",
-    "value": "160",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 132,
-    "name": "CHIP_DEVIL_STRIKE",
-    "value": "85",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 308,
-    "name": "CHIP_DIVINE_PROTECTION",
-    "value": "419",
-    "type": 6,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 249,
-    "name": "CHIP_DOME",
-    "value": "173",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 45,
-    "name": "CHIP_DOPING",
-    "value": "26",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 23,
-    "name": "CHIP_DRIP",
-    "value": "10",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 232,
-    "name": "CHIP_ELEVATION",
-    "value": "154",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 164,
-    "name": "CHIP_FEROCITY",
-    "value": "102",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 142,
-    "name": "CHIP_FERTILIZER",
-    "value": "90",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 113,
-    "name": "CHIP_FIRE_BULB",
-    "value": "74",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 29,
-    "name": "CHIP_FLAME",
-    "value": "5",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 56,
-    "name": "CHIP_FLASH",
-    "value": "6",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 42,
-    "name": "CHIP_FORTRESS",
-    "value": "29",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 168,
-    "name": "CHIP_FRACTURE",
-    "value": "106",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 240,
-    "name": "CHIP_GRAPPLE",
-    "value": "162",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 114,
-    "name": "CHIP_HEALER_BULB",
-    "value": "75",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 38,
-    "name": "CHIP_HELMET",
-    "value": "21",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 34,
-    "name": "CHIP_ICE",
-    "value": "2",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 36,
-    "name": "CHIP_ICEBERG",
-    "value": "31",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 126,
-    "name": "CHIP_ICED_BULB",
-    "value": "77",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 100,
-    "name": "CHIP_INVERSION",
-    "value": "68",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 226,
-    "name": "CHIP_JUMP",
-    "value": "144",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 310,
-    "name": "CHIP_KILL",
-    "value": "417",
-    "type": 6,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 233,
-    "name": "CHIP_KNOWLEDGE",
-    "value": "155",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 49,
-    "name": "CHIP_LEATHER_BOOTS",
-    "value": "14",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 55,
-    "name": "CHIP_LIBERATION",
-    "value": "34",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 27,
-    "name": "CHIP_LIGHTNING",
-    "value": "33",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 127,
-    "name": "CHIP_LIGHTNING_BULB",
-    "value": "78",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 141,
-    "name": "CHIP_LOAM",
-    "value": "89",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 250,
-    "name": "CHIP_MANUMISSION",
-    "value": "174",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 128,
-    "name": "CHIP_METALLIC_BULB",
-    "value": "79",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 30,
-    "name": "CHIP_METEORITE",
-    "value": "36",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 163,
-    "name": "CHIP_MIRROR",
-    "value": "101",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 52,
-    "name": "CHIP_MOTIVATION",
-    "value": "15",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 237,
-    "name": "CHIP_MUTATION",
-    "value": "159",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 31,
-    "name": "CHIP_PEBBLE",
-    "value": "19",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 161,
-    "name": "CHIP_PLAGUE",
-    "value": "99",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 227,
-    "name": "CHIP_PLASMA",
-    "value": "143",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 205,
-    "name": "CHIP_PRECIPITATION",
-    "value": "122",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 295,
-    "name": "CHIP_PRISM",
-    "value": "276",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 43,
-    "name": "CHIP_PROTEIN",
-    "value": "8",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 194,
-    "name": "CHIP_PUNISHMENT",
-    "value": "114",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 112,
-    "name": "CHIP_PUNY_BULB",
-    "value": "73",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 54,
-    "name": "CHIP_RAGE",
-    "value": "17",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 41,
-    "name": "CHIP_RAMPART",
-    "value": "24",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 48,
-    "name": "CHIP_REFLEXES",
-    "value": "27",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 24,
-    "name": "CHIP_REGENERATION",
-    "value": "35",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 130,
-    "name": "CHIP_REMISSION",
-    "value": "80",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 235,
-    "name": "CHIP_REPOTTING",
-    "value": "157",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 134,
-    "name": "CHIP_RESURRECTION",
-    "value": "84",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 32,
-    "name": "CHIP_ROCK",
-    "value": "7",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 33,
-    "name": "CHIP_ROCKFALL",
-    "value": "32",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 125,
-    "name": "CHIP_ROCKY_BULB",
-    "value": "76",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 243,
-    "name": "CHIP_SAVANT_BULB",
-    "value": "167",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 244,
-    "name": "CHIP_SERUM",
-    "value": "168",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 51,
-    "name": "CHIP_SEVEN_LEAGUE_BOOTS",
-    "value": "12",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 37,
-    "name": "CHIP_SHIELD",
-    "value": "20",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 26,
-    "name": "CHIP_SHOCK",
-    "value": "1",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 154,
-    "name": "CHIP_SLOW_DOWN",
-    "value": "92",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 158,
-    "name": "CHIP_SOLIDIFICATION",
-    "value": "96",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 157,
-    "name": "CHIP_SOPORIFIC",
-    "value": "95",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 28,
-    "name": "CHIP_SPARK",
-    "value": "18",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 35,
-    "name": "CHIP_STALACTITE",
-    "value": "30",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 44,
-    "name": "CHIP_STEROID",
-    "value": "25",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 46,
-    "name": "CHIP_STRETCHING",
-    "value": "9",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 242,
-    "name": "CHIP_TACTICIAN_BULB",
-    "value": "166",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 94,
-    "name": "CHIP_TELEPORTATION",
-    "value": "59",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 236,
-    "name": "CHIP_THERAPY",
-    "value": "158",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 162,
-    "name": "CHIP_THORN",
-    "value": "100",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 160,
-    "name": "CHIP_TOXIN",
-    "value": "98",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 156,
-    "name": "CHIP_TRANQUILIZER",
-    "value": "94",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 239,
-    "name": "CHIP_TRANSMUTATION",
-    "value": "161",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 25,
-    "name": "CHIP_VACCINE",
-    "value": "11",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 204,
-    "name": "CHIP_VAMPIRIZATION",
-    "value": "121",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 159,
-    "name": "CHIP_VENOM",
-    "value": "97",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 40,
-    "name": "CHIP_WALL",
-    "value": "23",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 47,
-    "name": "CHIP_WARM_UP",
-    "value": "28",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 140,
-    "name": "CHIP_WHIP",
-    "value": "88",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 50,
-    "name": "CHIP_WINGED_BOOTS",
-    "value": "13",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 229,
-    "name": "CHIP_WIZARD_BULB",
-    "value": "142",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 234,
-    "name": "CHIP_WIZARDRY",
-    "value": "156",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 96,
-    "name": "COLOR_BLUE",
-    "value": "255",
-    "type": 1,
-    "category": 12,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 97,
-    "name": "COLOR_GREEN",
-    "value": "65280",
-    "type": 1,
-    "category": 12,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 98,
-    "name": "COLOR_RED",
-    "value": "16711680",
-    "type": 1,
-    "category": 12,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 190,
-    "name": "CRITICAL_FACTOR",
-    "value": "1.3",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
     "id": 2,
     "name": "E",
     "value": "2.71828182846",
     "type": 1,
     "category": 1,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 290,
+    "name": "Infinity",
+    "value": "Infinity",
+    "type": 7,
+    "category": 1,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 291,
+    "name": "NaN",
+    "value": "NaN",
+    "type": 7,
+    "category": 1,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 1,
+    "name": "PI",
+    "value": "3.14159265359",
+    "type": 1,
+    "category": 1,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 4,
+    "name": "SORT_ASC",
+    "value": "0",
+    "type": 1,
+    "category": 3,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 5,
+    "name": "SORT_DESC",
+    "value": "1",
+    "type": 1,
+    "category": 3,
     "deprecated": false,
     "replacement": null
   },
@@ -1210,6 +85,15 @@
     "name": "EFFECT_AFTEREFFECT",
     "value": "25",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 333,
+    "name": "EFFECT_AGILITY",
+    "value": "4",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1251,10 +135,37 @@
     "replacement": null
   },
   {
+    "id": 334,
+    "name": "EFFECT_BUFF_ABSOLUTE_SHIELD",
+    "value": "6",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
     "id": 66,
     "name": "EFFECT_BUFF_AGILITY",
     "value": "4",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 335,
+    "name": "EFFECT_BUFF_DAMAGE",
+    "value": "1",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 336,
+    "name": "EFFECT_BUFF_DEBUFF",
+    "value": "9",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1269,10 +180,28 @@
     "replacement": 138
   },
   {
+    "id": 337,
+    "name": "EFFECT_BUFF_HEAL",
+    "value": "2",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
     "id": 69,
     "name": "EFFECT_BUFF_MP",
     "value": "7",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 338,
+    "name": "EFFECT_BUFF_RELATIVE_SHIELD",
+    "value": "5",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1291,6 +220,15 @@
     "name": "EFFECT_BUFF_STRENGTH",
     "value": "3",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 339,
+    "name": "EFFECT_BUFF_TELEPORTATION",
+    "value": "10",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1363,6 +301,15 @@
     "name": "EFFECT_DEBUFF",
     "value": "9",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 340,
+    "name": "EFFECT_FORCE",
+    "value": "3",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1453,6 +400,15 @@
     "name": "EFFECT_MODIFIER_STACKABLE",
     "value": "1",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 341,
+    "name": "EFFECT_MP",
+    "value": "7",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1827,10 +783,109 @@
     "replacement": null
   },
   {
+    "id": 342,
+    "name": "EFFECT_TP",
+    "value": "8",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
     "id": 187,
     "name": "EFFECT_VULNERABILITY",
     "value": "26",
     "type": 1,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 323,
+    "name": "BULB_FIRE",
+    "value": "2",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 324,
+    "name": "BULB_HEALER",
+    "value": "3",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 325,
+    "name": "BULB_ICED",
+    "value": "5",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 326,
+    "name": "BULB_LIGHTNING",
+    "value": "6",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 327,
+    "name": "BULB_METALLIC",
+    "value": "7",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 328,
+    "name": "BULB_PUNY",
+    "value": "1",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 329,
+    "name": "BULB_ROCKY",
+    "value": "4",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 330,
+    "name": "BULB_SAVANT",
+    "value": "12",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 331,
+    "name": "BULB_TACTICIAN",
+    "value": "11",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 332,
+    "name": "BULB_WIZARD",
+    "value": "8",
+    "type": 6,
     "category": 5,
     "deprecated": false,
     "replacement": null
@@ -1881,429 +936,6 @@
     "replacement": null
   },
   {
-    "id": 184,
-    "name": "FIGHT_CONTEXT_BATTLE_ROYALE",
-    "value": "5",
-    "type": 1,
-    "category": 9,
-    "deprecated": true,
-    "replacement": null
-  },
-  {
-    "id": 91,
-    "name": "FIGHT_CONTEXT_CHALLENGE",
-    "value": "1",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 90,
-    "name": "FIGHT_CONTEXT_GARDEN",
-    "value": "2",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 89,
-    "name": "FIGHT_CONTEXT_TEST",
-    "value": "0",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 92,
-    "name": "FIGHT_CONTEXT_TOURNAMENT",
-    "value": "3",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 185,
-    "name": "FIGHT_TYPE_BATTLE_ROYALE",
-    "value": "3",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 300,
-    "name": "FIGHT_TYPE_BOSS",
-    "value": "4",
-    "type": 6,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 87,
-    "name": "FIGHT_TYPE_FARMER",
-    "value": "1",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 86,
-    "name": "FIGHT_TYPE_SOLO",
-    "value": "0",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 88,
-    "name": "FIGHT_TYPE_TEAM",
-    "value": "2",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 290,
-    "name": "Infinity",
-    "value": "Infinity",
-    "type": 7,
-    "category": 1,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 85,
-    "name": "INSTRUCTIONS_LIMIT",
-    "value": "300000",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 284,
-    "name": "LAUNCH_TYPE_CIRCLE",
-    "value": "7",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 279,
-    "name": "LAUNCH_TYPE_DIAGONAL",
-    "value": "2",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 282,
-    "name": "LAUNCH_TYPE_DIAGONAL_INVERTED",
-    "value": "5",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 278,
-    "name": "LAUNCH_TYPE_LINE",
-    "value": "1",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 283,
-    "name": "LAUNCH_TYPE_LINE_INVERTED",
-    "value": "6",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 280,
-    "name": "LAUNCH_TYPE_STAR",
-    "value": "3",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 281,
-    "name": "LAUNCH_TYPE_STAR_INVERTED",
-    "value": "4",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 149,
-    "name": "MAP_BEACH",
-    "value": "6",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 304,
-    "name": "MAP_CASTLE",
-    "value": "9",
-    "type": 6,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 305,
-    "name": "MAP_CEMETERY",
-    "value": "10",
-    "type": 6,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 146,
-    "name": "MAP_DESERT",
-    "value": "3",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 145,
-    "name": "MAP_FACTORY",
-    "value": "2",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 147,
-    "name": "MAP_FOREST",
-    "value": "4",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 148,
-    "name": "MAP_GLACIER",
-    "value": "5",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 144,
-    "name": "MAP_NEXUS",
-    "value": "1",
-    "type": 1,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 303,
-    "name": "MAP_TEIEN",
-    "value": "8",
-    "type": 6,
-    "category": 8,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 3,
-    "name": "MAX_TURNS",
-    "value": "64",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 73,
-    "name": "MESSAGE_ATTACK",
-    "value": "2",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 79,
-    "name": "MESSAGE_BUFF_AGILITY",
-    "value": "8",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 78,
-    "name": "MESSAGE_BUFF_FORCE",
-    "value": "7",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 76,
-    "name": "MESSAGE_BUFF_MP",
-    "value": "5",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 77,
-    "name": "MESSAGE_BUFF_TP",
-    "value": "6",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 84,
-    "name": "MESSAGE_CUSTOM",
-    "value": "13",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 74,
-    "name": "MESSAGE_DEBUFF",
-    "value": "3\r\n\r\n",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 72,
-    "name": "MESSAGE_HEAL",
-    "value": "1",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 81,
-    "name": "MESSAGE_MOVE_AWAY",
-    "value": "10",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 83,
-    "name": "MESSAGE_MOVE_AWAY_CELL",
-    "value": "12",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 80,
-    "name": "MESSAGE_MOVE_TOWARD",
-    "value": "9",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 82,
-    "name": "MESSAGE_MOVE_TOWARD_CELL",
-    "value": "11",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 75,
-    "name": "MESSAGE_SHIELD",
-    "value": "4",
-    "type": 1,
-    "category": 11,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 291,
-    "name": "NaN",
-    "value": "NaN",
-    "type": 7,
-    "category": 1,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 133,
-    "name": "OPERATIONS_LIMIT",
-    "value": "20000000",
-    "type": 1,
-    "category": 10,
-    "deprecated": true,
-    "replacement": null
-  },
-  {
-    "id": 1,
-    "name": "PI",
-    "value": "3.14159265359",
-    "type": 1,
-    "category": 1,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 4,
-    "name": "SORT_ASC",
-    "value": "0",
-    "type": 1,
-    "category": 3,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 5,
-    "name": "SORT_DESC",
-    "value": "1",
-    "type": 1,
-    "category": 3,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
     "id": 312,
     "name": "STATE_INVINCIBLE",
     "value": "3",
@@ -2313,110 +945,11 @@
     "replacement": null
   },
   {
-    "id": 189,
-    "name": "SUMMON_LIMIT",
-    "value": "8",
-    "type": 1,
-    "category": 9,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 104,
-    "name": "TYPE_ARRAY",
-    "value": "4",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 102,
-    "name": "TYPE_BOOLEAN",
+    "id": 343,
+    "name": "STATE_UNHEALABLE",
     "value": "2",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 264,
-    "name": "TYPE_CLASS",
-    "value": "6",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 105,
-    "name": "TYPE_FUNCTION",
-    "value": "5",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 299,
-    "name": "TYPE_INTERVAL",
-    "value": "10",
     "type": 6,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 292,
-    "name": "TYPE_MAP",
-    "value": "8",
-    "type": 6,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 106,
-    "name": "TYPE_NULL",
-    "value": "0",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 101,
-    "name": "TYPE_NUMBER",
-    "value": "1",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 263,
-    "name": "TYPE_OBJECT",
-    "value": "7",
-    "type": 1,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 298,
-    "name": "TYPE_SET",
-    "value": "9",
-    "type": 6,
-    "category": 10,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
-    "id": 103,
-    "name": "TYPE_STRING",
-    "value": "3",
-    "type": 1,
-    "category": 10,
+    "category": 5,
     "deprecated": false,
     "replacement": null
   },
@@ -2484,15 +1017,6 @@
     "replacement": null
   },
   {
-    "id": 131,
-    "name": "USE_RESURRECT_INVALID_ENTITY",
-    "value": "-6",
-    "type": 1,
-    "category": 7,
-    "deprecated": false,
-    "replacement": null
-  },
-  {
     "id": 57,
     "name": "USE_SUCCESS",
     "value": "1",
@@ -2507,6 +1031,33 @@
     "value": "-5",
     "type": 1,
     "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 344,
+    "name": "USE_TOO_MUCH_SUMMONS",
+    "value": "-5",
+    "type": 6,
+    "category": 5,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 318,
+    "name": "EFFECT_STEAL_LIFE",
+    "value": "61",
+    "type": 1,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 319,
+    "name": "EFFECT_TOTAL_DEBUFF",
+    "value": "60",
+    "type": 1,
+    "category": 6,
     "deprecated": false,
     "replacement": null
   },
@@ -2736,6 +1287,24 @@
     "replacement": null
   },
   {
+    "id": 345,
+    "name": "WEAPON_PROTON_CANON",
+    "value": "181",
+    "type": 6,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 317,
+    "name": "WEAPON_QUANTUM_RIFLE",
+    "value": "428",
+    "type": 1,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
     "id": 209,
     "name": "WEAPON_REVOKED_M_LASER",
     "value": "119",
@@ -2781,6 +1350,15 @@
     "replacement": null
   },
   {
+    "id": 346,
+    "name": "WEAPON_TASER",
+    "value": "183",
+    "type": 6,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
     "id": 208,
     "name": "WEAPON_UNBRIDLED_GAZOR",
     "value": "118",
@@ -2795,6 +1373,2130 @@
     "value": "226",
     "type": 1,
     "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 320,
+    "name": "WEAPON_ODACHI",
+    "value": "408",
+    "type": 1,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 321,
+    "name": "WEAPON_EXCALIBUR",
+    "value": "409",
+    "type": 1,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 322,
+    "name": "WEAPON_SCYTHE",
+    "value": "410",
+    "type": 1,
+    "category": 6,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 143,
+    "name": "CHIP_ACCELERATION",
+    "value": "91",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 53,
+    "name": "CHIP_ADRENALINE",
+    "value": "16",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 228,
+    "name": "CHIP_ALTERATION",
+    "value": "141",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 180,
+    "name": "CHIP_ANTIDOTE",
+    "value": "110",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 309,
+    "name": "CHIP_APOCALYPSE",
+    "value": "418",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 39,
+    "name": "CHIP_ARMOR",
+    "value": "22",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 99,
+    "name": "CHIP_ARMORING",
+    "value": "67",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 247,
+    "name": "CHIP_ARSENIC",
+    "value": "171",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 311,
+    "name": "CHIP_AWEKENING",
+    "value": "415",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 155,
+    "name": "CHIP_BALL_AND_CHAIN",
+    "value": "93",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 21,
+    "name": "CHIP_BANDAGE",
+    "value": "3",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 166,
+    "name": "CHIP_BARK",
+    "value": "104",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 241,
+    "name": "CHIP_BOXING_GLOVE",
+    "value": "163",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 246,
+    "name": "CHIP_BRAINWASHING",
+    "value": "170",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 248,
+    "name": "CHIP_BRAMBLE",
+    "value": "172",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 167,
+    "name": "CHIP_BURNING",
+    "value": "105",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 129,
+    "name": "CHIP_CARAPACE",
+    "value": "81",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 165,
+    "name": "CHIP_COLLAR",
+    "value": "103",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 203,
+    "name": "CHIP_COVETOUSNESS",
+    "value": "120",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 231,
+    "name": "CHIP_COVID",
+    "value": "152",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 245,
+    "name": "CHIP_CRUSHING",
+    "value": "169",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 22,
+    "name": "CHIP_CURE",
+    "value": "4",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 238,
+    "name": "CHIP_DESINTEGRATION",
+    "value": "160",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 132,
+    "name": "CHIP_DEVIL_STRIKE",
+    "value": "85",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 308,
+    "name": "CHIP_DIVINE_PROTECTION",
+    "value": "419",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 249,
+    "name": "CHIP_DOME",
+    "value": "173",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 45,
+    "name": "CHIP_DOPING",
+    "value": "26",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 23,
+    "name": "CHIP_DRIP",
+    "value": "10",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 232,
+    "name": "CHIP_ELEVATION",
+    "value": "154",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 164,
+    "name": "CHIP_FEROCITY",
+    "value": "102",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 142,
+    "name": "CHIP_FERTILIZER",
+    "value": "90",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 349,
+    "name": "CHIP_FIRE_BALL",
+    "value": "413",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 113,
+    "name": "CHIP_FIRE_BULB",
+    "value": "74",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 29,
+    "name": "CHIP_FLAME",
+    "value": "5",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 56,
+    "name": "CHIP_FLASH",
+    "value": "6",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 42,
+    "name": "CHIP_FORTRESS",
+    "value": "29",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 168,
+    "name": "CHIP_FRACTURE",
+    "value": "106",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 240,
+    "name": "CHIP_GRAPPLE",
+    "value": "162",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 114,
+    "name": "CHIP_HEALER_BULB",
+    "value": "75",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 38,
+    "name": "CHIP_HELMET",
+    "value": "21",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 34,
+    "name": "CHIP_ICE",
+    "value": "2",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 36,
+    "name": "CHIP_ICEBERG",
+    "value": "31",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 126,
+    "name": "CHIP_ICED_BULB",
+    "value": "77",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 100,
+    "name": "CHIP_INVERSION",
+    "value": "68",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 226,
+    "name": "CHIP_JUMP",
+    "value": "144",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 350,
+    "name": "CHIP_KEMURIDAMA",
+    "value": "412",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 310,
+    "name": "CHIP_KILL",
+    "value": "417",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 233,
+    "name": "CHIP_KNOWLEDGE",
+    "value": "155",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 49,
+    "name": "CHIP_LEATHER_BOOTS",
+    "value": "14",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 55,
+    "name": "CHIP_LIBERATION",
+    "value": "34",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 27,
+    "name": "CHIP_LIGHTNING",
+    "value": "33",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 127,
+    "name": "CHIP_LIGHTNING_BULB",
+    "value": "78",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 141,
+    "name": "CHIP_LOAM",
+    "value": "89",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 250,
+    "name": "CHIP_MANUMISSION",
+    "value": "174",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 128,
+    "name": "CHIP_METALLIC_BULB",
+    "value": "79",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 30,
+    "name": "CHIP_METEORITE",
+    "value": "36",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 163,
+    "name": "CHIP_MIRROR",
+    "value": "101",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 52,
+    "name": "CHIP_MOTIVATION",
+    "value": "15",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 237,
+    "name": "CHIP_MUTATION",
+    "value": "159",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 31,
+    "name": "CHIP_PEBBLE",
+    "value": "19",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 161,
+    "name": "CHIP_PLAGUE",
+    "value": "99",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 227,
+    "name": "CHIP_PLASMA",
+    "value": "143",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 205,
+    "name": "CHIP_PRECIPITATION",
+    "value": "122",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 295,
+    "name": "CHIP_PRISM",
+    "value": "276",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 43,
+    "name": "CHIP_PROTEIN",
+    "value": "8",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 194,
+    "name": "CHIP_PUNISHMENT",
+    "value": "114",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 112,
+    "name": "CHIP_PUNY_BULB",
+    "value": "73",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 54,
+    "name": "CHIP_RAGE",
+    "value": "17",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 41,
+    "name": "CHIP_RAMPART",
+    "value": "24",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 48,
+    "name": "CHIP_REFLEXES",
+    "value": "27",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 24,
+    "name": "CHIP_REGENERATION",
+    "value": "35",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 130,
+    "name": "CHIP_REMISSION",
+    "value": "80",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 235,
+    "name": "CHIP_REPOTTING",
+    "value": "157",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 134,
+    "name": "CHIP_RESURRECTION",
+    "value": "84",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 32,
+    "name": "CHIP_ROCK",
+    "value": "7",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 33,
+    "name": "CHIP_ROCKFALL",
+    "value": "32",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 125,
+    "name": "CHIP_ROCKY_BULB",
+    "value": "76",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 243,
+    "name": "CHIP_SAVANT_BULB",
+    "value": "167",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 244,
+    "name": "CHIP_SERUM",
+    "value": "168",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 51,
+    "name": "CHIP_SEVEN_LEAGUE_BOOTS",
+    "value": "12",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 37,
+    "name": "CHIP_SHIELD",
+    "value": "20",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 26,
+    "name": "CHIP_SHOCK",
+    "value": "1",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 351,
+    "name": "CHIP_SHURIKEN",
+    "value": "411",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 154,
+    "name": "CHIP_SLOW_DOWN",
+    "value": "92",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 158,
+    "name": "CHIP_SOLIDIFICATION",
+    "value": "96",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 157,
+    "name": "CHIP_SOPORIFIC",
+    "value": "95",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 28,
+    "name": "CHIP_SPARK",
+    "value": "18",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 35,
+    "name": "CHIP_STALACTITE",
+    "value": "30",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 44,
+    "name": "CHIP_STEROID",
+    "value": "25",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 46,
+    "name": "CHIP_STRETCHING",
+    "value": "9",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 242,
+    "name": "CHIP_TACTICIAN_BULB",
+    "value": "166",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 94,
+    "name": "CHIP_TELEPORTATION",
+    "value": "59",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 236,
+    "name": "CHIP_THERAPY",
+    "value": "158",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 162,
+    "name": "CHIP_THORN",
+    "value": "100",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 352,
+    "name": "CHIP_THUNDER",
+    "value": "416",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 160,
+    "name": "CHIP_TOXIN",
+    "value": "98",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 156,
+    "name": "CHIP_TRANQUILIZER",
+    "value": "94",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 239,
+    "name": "CHIP_TRANSMUTATION",
+    "value": "161",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 353,
+    "name": "CHIP_TREBUCHET",
+    "value": "414",
+    "type": 6,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 25,
+    "name": "CHIP_VACCINE",
+    "value": "11",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 204,
+    "name": "CHIP_VAMPIRIZATION",
+    "value": "121",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 159,
+    "name": "CHIP_VENOM",
+    "value": "97",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 40,
+    "name": "CHIP_WALL",
+    "value": "23",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 47,
+    "name": "CHIP_WARM_UP",
+    "value": "28",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 140,
+    "name": "CHIP_WHIP",
+    "value": "88",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 50,
+    "name": "CHIP_WINGED_BOOTS",
+    "value": "13",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 229,
+    "name": "CHIP_WIZARD_BULB",
+    "value": "142",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 234,
+    "name": "CHIP_WIZARDRY",
+    "value": "156",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 131,
+    "name": "USE_RESURRECT_INVALID_ENTITY",
+    "value": "-6",
+    "type": 1,
+    "category": 7,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 8,
+    "name": "CELL_EMPTY",
+    "value": "0",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 93,
+    "name": "CELL_ENTITY",
+    "value": "1",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 13,
+    "name": "CELL_OBSTACLE",
+    "value": "2",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 10,
+    "name": "CELL_PLAYER",
+    "value": "1",
+    "type": 1,
+    "category": 8,
+    "deprecated": true,
+    "replacement": 93
+  },
+  {
+    "id": 190,
+    "name": "CRITICAL_FACTOR",
+    "value": "1.3",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 412,
+    "name": "EROSION_CRITICAL_BONUS",
+    "value": "0.1",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 413,
+    "name": "EROSION_DAMAGE",
+    "value": "0.05",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 414,
+    "name": "EROSION_POISON",
+    "value": "0.1",
+    "type": 1,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 144,
+    "name": "MAP_NEXUS",
+    "value": "1",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 145,
+    "name": "MAP_FACTORY",
+    "value": "2",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 146,
+    "name": "MAP_DESERT",
+    "value": "3",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 147,
+    "name": "MAP_FOREST",
+    "value": "4",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 148,
+    "name": "MAP_GLACIER",
+    "value": "5",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 149,
+    "name": "MAP_BEACH",
+    "value": "6",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 411,
+    "name": "MAP_TEMPLE",
+    "value": "7",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 304,
+    "name": "MAP_CASTLE",
+    "value": "9",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 305,
+    "name": "MAP_CEMETERY",
+    "value": "10",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 303,
+    "name": "MAP_TEIEN",
+    "value": "8",
+    "type": 6,
+    "category": 8,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 307,
+    "name": "AREA_ALLIES",
+    "value": "15",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 109,
+    "name": "AREA_CIRCLE_1",
+    "value": "3",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 110,
+    "name": "AREA_CIRCLE_2",
+    "value": "4",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 111,
+    "name": "AREA_CIRCLE_3",
+    "value": "5",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 306,
+    "name": "AREA_ENEMIES",
+    "value": "14",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 253,
+    "name": "AREA_FIRST_INLINE",
+    "value": "13",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 108,
+    "name": "AREA_LASER_LINE",
+    "value": "2",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 220,
+    "name": "AREA_PLUS_1",
+    "value": "3",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 221,
+    "name": "AREA_PLUS_2",
+    "value": "6",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 222,
+    "name": "AREA_PLUS_3",
+    "value": "7",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 107,
+    "name": "AREA_POINT",
+    "value": "1",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 251,
+    "name": "AREA_SQUARE_1",
+    "value": "11",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 252,
+    "name": "AREA_SQUARE_2",
+    "value": "12",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 223,
+    "name": "AREA_X_1",
+    "value": "8",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 224,
+    "name": "AREA_X_2",
+    "value": "9",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 225,
+    "name": "AREA_X_3",
+    "value": "10",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 315,
+    "name": "BOSS_EVIL_PUMPKIN",
+    "value": "3",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 314,
+    "name": "BOSS_FENNEL_KING",
+    "value": "2",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 354,
+    "name": "BOSS_NASU_SAMOURAI",
+    "value": "1",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 313,
+    "name": "BOSS_NASU_SAMURAI",
+    "value": "1",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 184,
+    "name": "FIGHT_CONTEXT_BATTLE_ROYALE",
+    "value": "5",
+    "type": 1,
+    "category": 9,
+    "deprecated": true,
+    "replacement": null
+  },
+  {
+    "id": 91,
+    "name": "FIGHT_CONTEXT_CHALLENGE",
+    "value": "1",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 90,
+    "name": "FIGHT_CONTEXT_GARDEN",
+    "value": "2",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 89,
+    "name": "FIGHT_CONTEXT_TEST",
+    "value": "0",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 92,
+    "name": "FIGHT_CONTEXT_TOURNAMENT",
+    "value": "3",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 185,
+    "name": "FIGHT_TYPE_BATTLE_ROYALE",
+    "value": "3",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 300,
+    "name": "FIGHT_TYPE_BOSS",
+    "value": "4",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 355,
+    "name": "FIGHT_TYPE_CHEST_HUNT",
+    "value": "6",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 356,
+    "name": "FIGHT_TYPE_COLOSSUS",
+    "value": "7",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 87,
+    "name": "FIGHT_TYPE_FARMER",
+    "value": "1",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 86,
+    "name": "FIGHT_TYPE_SOLO",
+    "value": "0",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 88,
+    "name": "FIGHT_TYPE_TEAM",
+    "value": "2",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 357,
+    "name": "FIGHT_TYPE_WAR",
+    "value": "5",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 284,
+    "name": "LAUNCH_TYPE_CIRCLE",
+    "value": "7",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 279,
+    "name": "LAUNCH_TYPE_DIAGONAL",
+    "value": "2",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 282,
+    "name": "LAUNCH_TYPE_DIAGONAL_INVERTED",
+    "value": "5",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 278,
+    "name": "LAUNCH_TYPE_LINE",
+    "value": "1",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 283,
+    "name": "LAUNCH_TYPE_LINE_INVERTED",
+    "value": "6",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 280,
+    "name": "LAUNCH_TYPE_STAR",
+    "value": "3",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 281,
+    "name": "LAUNCH_TYPE_STAR_INVERTED",
+    "value": "4",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 3,
+    "name": "MAX_TURNS",
+    "value": "64",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 358,
+    "name": "MOB_BLUE_CRYSTAL",
+    "value": "7",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 359,
+    "name": "MOB_EVIL_PUMPKIN",
+    "value": "3",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 360,
+    "name": "MOB_FENNEL_KING",
+    "value": "2",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 361,
+    "name": "MOB_FENNEL_KNIGHT",
+    "value": "16",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 362,
+    "name": "MOB_FENNEL_SCRIBE",
+    "value": "18",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 363,
+    "name": "MOB_FENNEL_SQUIRE",
+    "value": "17",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 364,
+    "name": "MOB_GRAAL",
+    "value": "4",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 365,
+    "name": "MOB_GREEN_CRYSTAL",
+    "value": "6",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 366,
+    "name": "MOB_HUBBARD",
+    "value": "11",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 367,
+    "name": "MOB_NASU_RONIN",
+    "value": "15",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 368,
+    "name": "MOB_NASU_SAMURAI",
+    "value": "1",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 369,
+    "name": "MOB_NASU_SEITO",
+    "value": "13",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 370,
+    "name": "MOB_NASU_WARRIOR",
+    "value": "14",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 371,
+    "name": "MOB_OFFSPRING",
+    "value": "12",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 372,
+    "name": "MOB_RED_CRYSTAL",
+    "value": "5",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 373,
+    "name": "MOB_TURBAN",
+    "value": "9",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 374,
+    "name": "MOB_WARTY",
+    "value": "10",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 375,
+    "name": "MOB_YELLOW_CRYSTAL",
+    "value": "8",
+    "type": 6,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 189,
+    "name": "SUMMON_LIMIT",
+    "value": "8",
+    "type": 1,
+    "category": 9,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 85,
+    "name": "INSTRUCTIONS_LIMIT",
+    "value": "300000",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 133,
+    "name": "OPERATIONS_LIMIT",
+    "value": "20000000",
+    "type": 1,
+    "category": 10,
+    "deprecated": true,
+    "replacement": null
+  },
+  {
+    "id": 104,
+    "name": "TYPE_ARRAY",
+    "value": "4",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 102,
+    "name": "TYPE_BOOLEAN",
+    "value": "2",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 264,
+    "name": "TYPE_CLASS",
+    "value": "6",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 105,
+    "name": "TYPE_FUNCTION",
+    "value": "5",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 299,
+    "name": "TYPE_INTERVAL",
+    "value": "10",
+    "type": 6,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 292,
+    "name": "TYPE_MAP",
+    "value": "8",
+    "type": 6,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 106,
+    "name": "TYPE_NULL",
+    "value": "0",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 101,
+    "name": "TYPE_NUMBER",
+    "value": "1",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 263,
+    "name": "TYPE_OBJECT",
+    "value": "7",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 298,
+    "name": "TYPE_SET",
+    "value": "9",
+    "type": 6,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 103,
+    "name": "TYPE_STRING",
+    "value": "3",
+    "type": 1,
+    "category": 10,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 73,
+    "name": "MESSAGE_ATTACK",
+    "value": "2",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 79,
+    "name": "MESSAGE_BUFF_AGILITY",
+    "value": "8",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 78,
+    "name": "MESSAGE_BUFF_FORCE",
+    "value": "7",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 76,
+    "name": "MESSAGE_BUFF_MP",
+    "value": "5",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 376,
+    "name": "MESSAGE_BUFF_STRENGTH",
+    "value": "7",
+    "type": 6,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 77,
+    "name": "MESSAGE_BUFF_TP",
+    "value": "6",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 84,
+    "name": "MESSAGE_CUSTOM",
+    "value": "13",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 74,
+    "name": "MESSAGE_DEBUFF",
+    "value": "3",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 72,
+    "name": "MESSAGE_HEAL",
+    "value": "1",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 81,
+    "name": "MESSAGE_MOVE_AWAY",
+    "value": "10",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 83,
+    "name": "MESSAGE_MOVE_AWAY_CELL",
+    "value": "12",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 80,
+    "name": "MESSAGE_MOVE_TOWARD",
+    "value": "9",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 82,
+    "name": "MESSAGE_MOVE_TOWARD_CELL",
+    "value": "11",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 75,
+    "name": "MESSAGE_SHIELD",
+    "value": "4",
+    "type": 1,
+    "category": 11,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 96,
+    "name": "COLOR_BLUE",
+    "value": "255",
+    "type": 1,
+    "category": 12,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 97,
+    "name": "COLOR_GREEN",
+    "value": "65280",
+    "type": 1,
+    "category": 12,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 98,
+    "name": "COLOR_RED",
+    "value": "16711680",
+    "type": 1,
+    "category": 12,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 377,
+    "name": "STAT_ABSOLUTE_SHIELD",
+    "value": "9",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 378,
+    "name": "STAT_AGILITY",
+    "value": "4",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 379,
+    "name": "STAT_CORES",
+    "value": "16",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 380,
+    "name": "STAT_DAMAGE_RETURN",
+    "value": "14",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 381,
+    "name": "STAT_FREQUENCY",
+    "value": "5",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 382,
+    "name": "STAT_LIFE",
+    "value": "0",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 383,
+    "name": "STAT_MAGIC",
+    "value": "13",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 384,
+    "name": "STAT_MP",
+    "value": "2",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 385,
+    "name": "STAT_POWER",
+    "value": "15",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 386,
+    "name": "STAT_RAM",
+    "value": "17",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 387,
+    "name": "STAT_RELATIVE_SHIELD",
+    "value": "10",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 388,
+    "name": "STAT_RESISTANCE",
+    "value": "11",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 389,
+    "name": "STAT_SCIENCE",
+    "value": "12",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 390,
+    "name": "STAT_STRENGTH",
+    "value": "3",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 391,
+    "name": "STAT_TP",
+    "value": "1",
+    "type": 6,
+    "category": 13,
+    "deprecated": false,
+    "replacement": null
+  },
+  {
+    "id": 392,
+    "name": "STAT_WISDOM",
+    "value": "6",
+    "type": 6,
+    "category": 13,
     "deprecated": false,
     "replacement": null
   }
