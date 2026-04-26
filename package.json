@@ -2,7 +2,7 @@
   "name": "leekscript-advanced",
   "displayName": "LeekScript (Advanced)",
   "description": "Language support for LeekScript, the programming language of LeekWars. Provides syntax highlighting, code completion, and integration with LeekWars services.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "icon": "images/leekscript-icon.png",
   "publisher": "Bux42",
   "engines": {

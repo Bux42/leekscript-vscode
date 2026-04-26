@@ -1,51 +1,35 @@
-import * as vscode from "vscode";
 import * as https from "https";
 
 /**
  * LeekWars API response types
  */
 
-// AI metadata from get-farmer-ais endpoint
-export interface LeekWarsAIInfo {
-  id: number;
-  name: string;
+// File metadata from farmer tree
+export interface FarmerTreeFile {
+  path: string;
+  mtime: number;
   valid: boolean;
-  folder: number;
   version: number;
   strict: boolean;
+  entrypoint: boolean;
   total_lines: number;
   total_chars: number;
-  entrypoint: boolean;
-  entrypoints: number[];
   scenario: number | null;
-  includes_ids: number[];
 }
 
-// AI with code from ai/get endpoint
-export interface LeekWarsAI extends LeekWarsAIInfo {
-  code: string;
+// Binary file metadata from farmer tree
+export interface FarmerTreeBinFile {
+  path: string;
+  valid: boolean;
+  version: number;
 }
 
-// Response from get-farmer-ais
-export interface GetFarmerAIsResponse {
-  success: boolean;
-  ais: LeekWarsAIInfo[];
-  folders: Array<{ id: number; name: string; folder: number }>;
-  leek_ais?: Record<string, number>;
-  error?: string;
-}
-
-// Response from ai/get
-export interface GetAIResponse {
-  ai?: {
-    id: number;
-    name: string;
-    level: number;
-    valid: boolean;
-    owner: number;
-    code: string;
-  };
-  error?: string;
+// Response from farmer tree endpoint
+export interface GetFarmerTreeResponse {
+  files: FarmerTreeFile[];
+  bin: FarmerTreeBinFile[];
+  folders: string[];
+  leek_ais: Record<string, string>;
 }
 
 /**
@@ -63,7 +47,7 @@ export class LeekWarsApiService {
   private async request(
     method: string,
     endpoint: string,
-    params: Record<string, any> = {}
+    params: Record<string, any> = {},
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const queryParams = new URLSearchParams(params);
@@ -102,7 +86,7 @@ export class LeekWarsApiService {
             if (response.success === false || response.error) {
               console.error(`[LeekWars API] API returned error:`, response);
               reject(
-                new Error(`API error: ${response.error || "Unknown error"}`)
+                new Error(`API error: ${response.error || "Unknown error"}`),
               );
               return;
             }
@@ -131,7 +115,7 @@ export class LeekWarsApiService {
   private async requestWithBody(
     method: string,
     endpoint: string,
-    body: Record<string, any> = {}
+    body: Record<string, any> = {},
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const path = `/${LeekWarsApiService.API_VERSION}/${endpoint}`;
@@ -169,7 +153,7 @@ export class LeekWarsApiService {
             if (response.success === false || response.error) {
               console.error(`[LeekWars API] API returned error:`, response);
               reject(
-                new Error(`API error: ${response.error || "Unknown error"}`)
+                new Error(`API error: ${response.error || "Unknown error"}`),
               );
               return;
             }
@@ -194,86 +178,87 @@ export class LeekWarsApiService {
   }
 
   /**
-   * Get all AIs metadata for the current farmer
+   * Get farmer AI folder structure and files for the current farmer
    */
-  async getFarmerAIs(): Promise<GetFarmerAIsResponse> {
-    return this.request("GET", "ai/get-farmer-ais");
+  async getFarmerTree(): Promise<GetFarmerTreeResponse> {
+    return this.request("GET", "ai/get-farmer-tree");
   }
 
   /**
-   * Get a specific AI with its code
-   * @param aiId ID of the AI to retrieve
+   * Create a folder by path
+   * @param folderPath Path of the folder to create (e.g. "Folder1/Subfolder2")
    */
-  async getAI(aiId: number): Promise<GetAIResponse> {
-    return this.request("GET", `ai/get/${aiId}`);
-  }
-
-  /**
-   * Create a new folder
-   * @param name Name of the new folder
-   * @param parentFolderId ID of the parent folder (default is 0 for root)
-   */
-  async createFolder(
-    name: string,
-    parentFolderId: number = 0
-  ): Promise<{ id: number }> {
-    return this.requestWithBody("POST", "ai-folder/new-name", {
-      name: name,
-      folder_id: parentFolderId,
+  async createFolderByPath(folderPath: string): Promise<{ id: number }[]> {
+    return this.requestWithBody("POST", "ai-folder/create", {
+      path: folderPath,
     });
   }
 
   /**
-   * Delete a folder by its ID
-   * @param folderId ID of the folder to delete
+   * Delete a folder by it's path
    */
-  async deleteFolder(
-    folderId: number
+  async deleteFolderByPath(
+    folderPath: string,
   ): Promise<{ success: boolean; error?: string }> {
     return this.requestWithBody("DELETE", `ai-folder/delete`, {
-      folder_id: folderId,
+      path: folderPath,
     });
   }
 
   /**
-   * Delete an AI by its ID
-   * @param aiId ID of the AI to delete
+   * Delete an AI by its path
+   * @param aiPath Path of the AI to delete
    */
-  async deleteAI(aiId: number): Promise<{ success: boolean; error?: string }> {
-    return this.requestWithBody("DELETE", `ai/delete/`, { ai_id: aiId });
+  async deleteAIByPath(
+    aiPath: string,
+  ): Promise<{ success: boolean; error?: string }> {
+    return this.requestWithBody("DELETE", `ai/delete`, { path: aiPath });
   }
 
   /**
-   * Create new AI
-   * @param folder_id ID of the folder to create the AI in
-   * @param name Name of the new AI
+   * Read AI code by its path
+   * @param aiPath Path of the AI to read
    */
-  async createAI({
-    folder_id,
-    name,
-  }: {
-    folder_id: number;
-    name: string;
-  }): Promise<{ id: number }> {
-    return this.requestWithBody("POST", "ai/new-name", {
-      folder_id,
-      name,
-      version: 4, // default to version 4
-    });
+  async readAICodeByPath(
+    aiPath: string,
+  ): Promise<{ code: string; error?: string }> {
+    return this.requestWithBody("POST", `ai/read/path`, { path: aiPath });
   }
 
   /**
-   * Update AI code
-   * @param aiId ID of the AI to update
+   * Write AI code by its path
+   * @param aiPath Path of the AI to write
    * @param code New code for the AI
    */
-  async updateAICode(
-    aiId: number,
-    code: string
+  async writeAICodeByPath(
+    aiPath: string,
+    code: string,
   ): Promise<{ success: boolean; error?: string }> {
-    return this.requestWithBody("POST", "ai/save", {
-      ai_id: aiId,
+    return this.requestWithBody("POST", `ai/write/path/code`, {
+      path: aiPath,
       code: code,
+    });
+  }
+
+  /**
+   * Create new AI v2
+   * @param folderPath Path of the folder (empty string for root)
+   * @param name Name of the new AI
+   * @param version Version of the AI (default is 4)
+   */
+  async createAIV2({
+    folderPath,
+    name,
+    version = 4,
+  }: {
+    folderPath: string;
+    name: string;
+    version?: number;
+  }): Promise<{ id: number }> {
+    return this.requestWithBody("POST", "ai/create", {
+      folder: folderPath,
+      name,
+      version,
     });
   }
 }

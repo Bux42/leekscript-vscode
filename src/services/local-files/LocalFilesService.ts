@@ -1,15 +1,10 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import {
-  FileNode,
-  FolderNode,
-  LocalFilesState,
-  TreeNode,
-} from "./LocalFilesService.types";
-import { GetFarmerAIsResponse } from "../leekwars/LeekWarsApi";
+import { FarmerTreeFile, GetFarmerTreeResponse } from "../leekwars/LeekWarsApi";
 
 export class LocalFilesService {
   private static instance: LocalFilesService;
+  private localFilesState: FarmerTreeFile[] = [];
 
   private constructor() {}
 
@@ -20,195 +15,214 @@ export class LocalFilesService {
     return LocalFilesService.instance;
   }
 
-  /**
-   * Recursively gets all .leek files in the current workspace and builds a tree structure
-   */
-  public async getLocalFilesState(): Promise<LocalFilesState> {
+  public async getLocalFilesState(): Promise<FarmerTreeFile[] | null> {
+    if (this.localFilesState.length > 0) {
+      return this.localFilesState;
+    }
+
     const workspaceFolders = vscode.workspace.workspaceFolders;
 
-    if (!workspaceFolders || workspaceFolders.length === 0) {
-      return { root: [] };
-    }
+    // console.log("[getLocalFilesState] Workspace folders:", workspaceFolders);
 
-    const root: FolderNode[] = [];
-
-    for (const workspaceFolder of workspaceFolders) {
-      const folderNode = await this.buildTreeForFolder(workspaceFolder.uri);
-      if (folderNode) {
-        root.push(folderNode);
-      }
-    }
-
-    return { root };
-  }
-
-  /**
-   * Converts a GetFarmerAIsResponse to LocalFilesState format
-   */
-  public farmersAIToLocalFileState(
-    response: GetFarmerAIsResponse
-  ): LocalFilesState {
-    if (!response.ais || !response.folders) {
-      return { root: [] };
-    }
-
-    // Create a map of folder ID to folder info
-    const folderMap = new Map<
-      number,
-      { id: number; name: string; folder: number }
-    >();
-    response.folders.forEach((folder) => {
-      folderMap.set(folder.id, folder);
-    });
-
-    // Create a map to hold folder nodes by their ID
-    const folderNodesMap = new Map<number, FolderNode>();
-
-    // Initialize root node (folder ID 0)
-    const rootChildren: TreeNode[] = [];
-
-    // Create all folder nodes first
-    response.folders.forEach((folder) => {
-      const folderNode: FolderNode = {
-        name: folder.name,
-        path: folder.folder == 0 ? folder.name : `/${folder.name}`,
-        type: "folder",
-        children: [],
-        leekWarsFolderInfo: folder,
-      };
-      folderNodesMap.set(folder.id, folderNode);
-    });
-
-    // Add AI files to their respective folders
-    response.ais.forEach((ai) => {
-      const fileNode: FileNode = {
-        name: ai.name,
-        path: ai.name,
-        type: "file",
-        leekWarsAIInfo: ai,
-      };
-
-      if (ai.folder === 0) {
-        // AI is in root
-        rootChildren.push(fileNode);
-      } else {
-        // AI is in a folder
-        const parentFolder = folderNodesMap.get(ai.folder);
-        if (parentFolder) {
-          parentFolder.children.push(fileNode);
-          // Update path to include parent folder
-          fileNode.path = `${parentFolder.path}/${ai.name}`;
-        }
-      }
-    });
-
-    // Build the folder hierarchy
-    response.folders.forEach((folder) => {
-      const folderNode = folderNodesMap.get(folder.id);
-      if (!folderNode) return;
-
-      if (folder.folder === 0) {
-        // This folder is at root level - include even if empty
-        rootChildren.push(folderNode);
-      } else {
-        // This folder is nested in another folder
-        const parentFolder = folderNodesMap.get(folder.folder);
-        if (parentFolder) {
-          // Include folder even if empty
-          parentFolder.children.push(folderNode);
-          // Update path to include parent folder
-          folderNode.path = `${parentFolder.path}/${folderNode.name}`;
-          // Update all children paths recursively
-          this.updateChildrenPaths(folderNode);
-        }
-      }
-    });
-
-    // If we have a single workspace-like root, wrap it
-    if (rootChildren.length > 0) {
-      const workspaceRoot: FolderNode = {
-        name: "LeekWars AIs",
-        path: "/",
-        type: "folder",
-        children: rootChildren,
-        leekWarsFolderInfo: { id: 0, name: "LeekWars AIs", folder: 0 },
-      };
-      return { root: [workspaceRoot] };
-    }
-
-    return { root: [] };
-  }
-
-  /**
-   * Helper method to recursively update paths for all children nodes
-   */
-  private updateChildrenPaths(folderNode: FolderNode): void {
-    folderNode.children.forEach((child) => {
-      child.path = `${folderNode.path}/${child.name}`;
-      if (child.type === "folder") {
-        this.updateChildrenPaths(child);
-      }
-    });
-  }
-
-  /**
-   * Builds a tree structure for a given folder URI
-   */
-  private async buildTreeForFolder(
-    folderUri: vscode.Uri
-  ): Promise<FolderNode | null> {
-    try {
-      const entries = await vscode.workspace.fs.readDirectory(folderUri);
-      const children: TreeNode[] = [];
-
-      // Get relative path from workspace
-      const workspaceFolders = vscode.workspace.workspaceFolders;
-
-      if (!workspaceFolders || workspaceFolders.length === 0) {
-        console.error("[buildTreeForFolder] No workspace folder found");
-        return null;
-      }
-
-      const workspaceRoot = workspaceFolders[0].uri.fsPath + "\\";
-
-      for (const [name, type] of entries) {
-        const entryUri = vscode.Uri.joinPath(folderUri, name);
-
-        if (type === vscode.FileType.Directory) {
-          // Recursively process subdirectories
-          const subFolder = await this.buildTreeForFolder(entryUri);
-          if (subFolder && subFolder.children.length > 0) {
-            children.push(subFolder);
-          }
-        } else if (type === vscode.FileType.File && name.endsWith(".leek")) {
-          // Add .leek files
-          const fileNode: FileNode = {
-            name,
-            // Get relative path from workspace
-            path: entryUri.fsPath.replace(workspaceRoot, ""),
-            type: "file",
-          };
-          children.push(fileNode);
-        }
-      }
-
-      // Only return the folder if it has children
-      if (children.length === 0) {
-        return null;
-      }
-
-      const folderNode: FolderNode = {
-        name: path.basename(folderUri.fsPath),
-        // Get relative path from workspace
-        path: folderUri.fsPath.replace(workspaceRoot, ""),
-        type: "folder",
-        children,
-      };
-
-      return folderNode;
-    } catch (error) {
-      console.error(`Error reading directory ${folderUri.fsPath}:`, error);
+    if (!workspaceFolders || workspaceFolders.length !== 1) {
+      console.error(
+        "[getLocalFilesState] Expected exactly one workspace folder, found:",
+        workspaceFolders,
+      );
       return null;
     }
+
+    const allLeekFiles = await this.getAllLeekFilesFromUri(
+      workspaceFolders[0].uri,
+    );
+
+    // console.log(".leek files found in workspace: ", allLeekFiles.length);
+
+    const allLeekFilesRelative = this.convertLeekFilesAsolutePathsToRelative(
+      allLeekFiles,
+      workspaceFolders[0].uri.fsPath,
+    );
+
+    // Normalize to forward slashes to have same format as LeekWars API paths
+    const allLeekFilesNormalized = allLeekFilesRelative.map((file) =>
+      file.replace(/\\/g, "/"),
+    );
+
+    // sort files to get top folder first
+    const allLeekFilesSorted = this.sortPathsByFolderDepth(
+      allLeekFilesNormalized,
+    );
+
+    // convert to FarmerTreeFile[]
+    const allLeekFilesAsFarmerTreeFiles: FarmerTreeFile[] = await Promise.all(
+      allLeekFilesSorted.map(async (file) => ({
+        path: file,
+        mtime: 0,
+        valid: true,
+        version: 4,
+        strict: false,
+        entrypoint: false,
+        total_lines: await this.getTotalLinesFromRelativePath(file),
+        total_chars: await this.getTotalCharsFromRelativePath(file),
+        scenario: null,
+      })),
+    );
+
+    // console.log(
+    //   "allLeekFilesSorted .leek files: ",
+    //   allLeekFilesAsFarmerTreeFiles,
+    // );
+    return allLeekFilesAsFarmerTreeFiles;
+  }
+
+  /**
+   * Sorts an array of file paths so that files in root folders come first, and files in nested folders come after
+   * @param paths
+   * @returns The input paths array, sorted so that root files are first and nested files are last
+   */
+  public sortPathsByFolderDepth(paths: string[]): string[] {
+    return paths.sort((a, b) => {
+      const depthA = a.split("/").length;
+      const depthB = b.split("/").length;
+      return depthA - depthB;
+    });
+  }
+
+  public async getTotalLinesFromRelativePath(
+    relativePath: string,
+  ): Promise<number> {
+    const fullPath = path.join(
+      vscode.workspace.workspaceFolders![0].uri.fsPath,
+      relativePath,
+    );
+
+    try {
+      const fileContent = vscode.workspace.fs.readFile(
+        vscode.Uri.file(fullPath),
+      );
+
+      const content = await fileContent;
+      const text = new TextDecoder("utf-8").decode(content);
+      return text.split("\n").length;
+    } catch (error) {
+      console.error(`Error reading file ${fullPath}:`, error);
+      return 0;
+    }
+  }
+
+  public async getTotalCharsFromRelativePath(
+    relativePath: string,
+  ): Promise<number> {
+    const fullPath = path.join(
+      vscode.workspace.workspaceFolders![0].uri.fsPath,
+      relativePath,
+    );
+
+    try {
+      const fileContent = vscode.workspace.fs.readFile(
+        vscode.Uri.file(fullPath),
+      );
+
+      const content = await fileContent;
+      return content.length;
+    } catch (error) {
+      console.error(`Error reading file ${fullPath}:`, error);
+      return 0;
+    }
+  }
+
+  public convertLeekFilesAsolutePathsToRelative(
+    files: string[],
+    workspaceRoot: string,
+  ): string[] {
+    return files.map((file) => path.relative(workspaceRoot, file));
+  }
+
+  public async getAllLeekFilesFromUri(uri: vscode.Uri): Promise<string[]> {
+    const files: string[] = [];
+
+    try {
+      const entries = await vscode.workspace.fs.readDirectory(uri);
+      for (const [name, type] of entries) {
+        const entryUri = vscode.Uri.joinPath(uri, name);
+        if (type === vscode.FileType.Directory) {
+          const subFiles = await this.getAllLeekFilesFromUri(entryUri);
+          files.push(...subFiles);
+        } else if (type === vscode.FileType.File && name.endsWith(".leek")) {
+          files.push(entryUri.fsPath);
+        }
+      }
+    } catch (error) {
+      console.error(`Error reading directory ${uri.fsPath}:`, error);
+    }
+
+    return files;
+  }
+
+  setLocalFileState(files: FarmerTreeFile[]) {
+    this.localFilesState = files;
+  }
+
+  addNewFileToState(filePath: string) {
+    console.log("Adding new file to local state:", filePath);
+
+    if (this.localFilesState.some((file) => file.path === filePath)) {
+      console.warn(
+        `File ${filePath} already exists in local state when trying to add. Skipping.`,
+      );
+      return;
+    }
+
+    const file: FarmerTreeFile = {
+      path: filePath,
+      entrypoint: false,
+      mtime: 0,
+      valid: true,
+      version: 4,
+      strict: false,
+      total_lines: 0,
+      total_chars: 0,
+      scenario: null,
+    };
+    this.localFilesState.push(file);
+  }
+
+  updateFileInState(filePath: string) {
+    console.log("Updating file in local state:", filePath);
+    const fileIndex = this.localFilesState.findIndex(
+      (file) => file.path === filePath,
+    );
+
+    if (fileIndex !== -1) {
+      this.localFilesState[fileIndex].mtime = Date.now();
+    } else {
+      console.warn(
+        `File ${filePath} not found in local state when trying to update. Adding it as new file.`,
+      );
+      this.addNewFileToState(filePath);
+    }
+  }
+
+  removeFileFromState(filePath: string) {
+    console.log("Removing file from local state:", filePath);
+    this.localFilesState = this.localFilesState.filter(
+      (file) => file.path !== filePath,
+    );
+  }
+
+  removeAllFilesInFolderFromState(folderPath: string) {
+    console.log("Removing all files in folder from local state:", folderPath);
+    this.localFilesState = this.localFilesState.filter((file) => {
+      const removed = file.path.startsWith(folderPath + "/");
+      if (removed) {
+        console.log("Removing file due to folder removal:", file.path);
+      }
+      return !removed;
+    });
+
+    // console.log(
+    //   "Remaining files in local state after folder removal:",
+    //   this.localFilesState,
+    // );
   }
 }

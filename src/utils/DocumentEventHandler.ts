@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { DiagnosticService } from "../services/DiagnosticService";
 import { DataLoader } from "../providers/leekscript/DataLoader";
+import { LocalFilesService } from "../services/local-files/LocalFilesService";
 
 /**
  * Handles all document-related events
@@ -9,7 +10,8 @@ export class DocumentEventHandler {
   constructor(
     private context: vscode.ExtensionContext,
     private diagnosticService: DiagnosticService,
-    private dataLoader: DataLoader
+    private localFileService: LocalFilesService,
+    private dataLoader: DataLoader,
   ) {}
 
   /**
@@ -22,6 +24,87 @@ export class DocumentEventHandler {
     this.registerChangeListener();
     this.registerCloseListener();
     this.registerTextEditorSelectionChangeListener();
+    this.registerCreateListener();
+    this.registerRenameListener();
+  }
+
+  /**
+   * Register file rename listener
+   */
+  private registerRenameListener(): void {
+    const renameListener = vscode.workspace.onDidRenameFiles(async (event) => {
+      for (const file of event.files) {
+        // check if folder or .leek file was renamed
+
+        try {
+          const stat = await vscode.workspace.fs.stat(file.newUri);
+
+          const isDirectory = (stat.type & vscode.FileType.Directory) !== 0;
+          const isFile = (stat.type & vscode.FileType.File) !== 0;
+
+          if (isDirectory) {
+            console.log(
+              "Folder moved:",
+              file.oldUri.fsPath,
+              "->",
+              file.newUri.fsPath,
+            );
+
+            // old folder relative path
+            const oldRelativePath = this.getRelativePath(file.oldUri);
+
+            this.localFileService.removeAllFilesInFolderFromState(
+              oldRelativePath,
+            );
+            // get all .leek files in the renamed folder
+            const leekFiles =
+              await this.localFileService.getAllLeekFilesFromUri(file.newUri);
+
+            // delete old files from state and add new files to state
+            for (const leekFile of leekFiles) {
+              const relativePath = this.getRelativePath(
+                vscode.Uri.file(leekFile),
+              );
+              this.localFileService.addNewFileToState(relativePath);
+            }
+
+            // console.log("Leek files in renamed folder:", leekFiles);
+          } else if (isFile) {
+            if (file.oldUri.fsPath.endsWith(".leek")) {
+              // remove old file from state
+              const oldRelativePath = this.getRelativePath(file.oldUri);
+              this.localFileService.removeFileFromState(oldRelativePath);
+              // add new file to state
+              const newRelativePath = this.getRelativePath(file.newUri);
+              this.localFileService.addNewFileToState(newRelativePath);
+            }
+          }
+        } catch (e) {
+          // Can fail if the file no longer exists (rare edge cases)
+          console.error("Stat failed for:", file.newUri.fsPath);
+        }
+      }
+    });
+
+    this.context.subscriptions.push(renameListener);
+  }
+
+  /**
+   * Register file create listener
+   */
+  private registerCreateListener(): void {
+    const createFileListener = vscode.workspace.onDidCreateFiles((event) => {
+      event.files.forEach((uri) => {
+        // skip if it's not a .leek file
+        if (!uri.fsPath.endsWith(".leek")) {
+          return;
+        }
+        const relativePath = this.getRelativePath(uri);
+        this.localFileService.addNewFileToState(relativePath);
+      });
+    });
+
+    this.context.subscriptions.push(createFileListener);
   }
 
   /**
@@ -44,10 +127,10 @@ export class DocumentEventHandler {
 
         // Get relative path
         const relativePath = this.getRelativePath(document.uri);
-        console.log(`LeekScript file saved: ${relativePath}`);
+        this.localFileService.updateFileInState(relativePath);
 
         // TODO: Send content to local server if needed
-      }
+      },
     );
 
     this.context.subscriptions.push(saveListener);
@@ -58,21 +141,24 @@ export class DocumentEventHandler {
    */
   private registerDeleteListener(): void {
     const deleteListener = vscode.workspace.onDidDeleteFiles((event) => {
-      event.files.forEach((uri) => {
+      event.files.forEach(async (uri) => {
         const relativePath = this.getRelativePath(uri);
         const filePath = uri.fsPath;
 
         if (filePath.endsWith(".leek")) {
           console.log(`LeekScript file deleted: ${relativePath}`);
+          this.localFileService.removeFileFromState(relativePath);
         } else {
+          // check if it's a folder
           console.log(
-            `Folder or file deleted: ${relativePath} (may have contained .leek files)`
+            `Non-leek file or folder deleted: ${relativePath}, checking if it's a folder...`,
           );
+          this.localFileService.removeAllFilesInFolderFromState(relativePath);
         }
       });
     });
 
-    // this.context.subscriptions.push(deleteListener);
+    this.context.subscriptions.push(deleteListener);
   }
 
   /**
@@ -84,7 +170,7 @@ export class DocumentEventHandler {
         if (this.isLeekScriptDocument(document)) {
           await this.diagnosticService.analyzeDocument(document);
         }
-      }
+      },
     );
 
     this.context.subscriptions.push(openListener);
@@ -136,8 +222,7 @@ export class DocumentEventHandler {
         // Clear any pending debounce timer
         this.diagnosticService.clearDebounceTimer(uri);
         console.log(`LeekScript document closed: ${document.fileName}`);
-        // this.use
-      }
+      },
     );
 
     this.context.subscriptions.push(closeListener);

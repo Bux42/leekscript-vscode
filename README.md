@@ -160,3 +160,5 @@ Join the **Leek Wars Tools** [Discord](https://discord.gg/Py6EaDhQE5)
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or open issues.
+
+TODO: build functions / constants assets etc with a get request from API instead of parsing the front end project code

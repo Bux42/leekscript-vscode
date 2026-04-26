@@ -11,7 +11,7 @@ export class CommandRegistry {
     private context: vscode.ExtensionContext,
     private leekWarsService: LeekWarsService,
     private analyzerService: CodeAnalyzerService,
-    private statusBarService: StatusBarService
+    private statusBarService: StatusBarService,
   ) {}
 
   /**
@@ -36,7 +36,7 @@ export class CommandRegistry {
         } finally {
           this.statusBarService.setBusy(false);
         }
-      })
+      }),
     );
 
     // Force sync all command
@@ -48,7 +48,7 @@ export class CommandRegistry {
         } finally {
           this.statusBarService.setBusy(false);
         }
-      })
+      }),
     );
   }
 
@@ -59,7 +59,7 @@ export class CommandRegistry {
     this.context.subscriptions.push(
       vscode.commands.registerCommand("leekscript.showStatusMenu", async () => {
         await this.statusBarService.showStatusMenu();
-      })
+      }),
     );
 
     this.context.subscriptions.push(
@@ -79,7 +79,7 @@ export class CommandRegistry {
             ? "All systems operational"
             : "Some features unavailable - check status menu for details";
         vscode.window.showInformationMessage(`LeekScript: ${message}`);
-      })
+      }),
     );
   }
 
@@ -90,7 +90,7 @@ export class CommandRegistry {
     this.context.subscriptions.push(
       vscode.commands.registerCommand("leekscript.helloWorld", () => {
         vscode.window.showInformationMessage("Hello from LeekScript!");
-      })
+      }),
     );
   }
 }

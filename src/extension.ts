@@ -23,6 +23,7 @@ import {
   LeekScriptFormattingProvider,
   LeekScriptRangeFormattingProvider,
 } from "./providers/leekscript/FormattingProvider";
+import { LocalFilesService } from "./services/local-files/LocalFilesService";
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
@@ -41,11 +42,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
       if (isTokenConfigured) {
         vscode.window.showInformationMessage(
-          "LeekScript: LeekWars API token updated successfully"
+          "LeekScript: LeekWars API token updated successfully",
         );
       } else {
         vscode.window.showWarningMessage(
-          "LeekScript: LeekWars API token is not configured"
+          "LeekScript: LeekWars API token is not configured",
         );
       }
     }
@@ -57,7 +58,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const config = vscode.workspace.getConfiguration("leekscript");
       const newApiUrl = config.get<string>(
         "javaApiUrl",
-        "http://localhost:8080"
+        "http://localhost:8080",
       );
 
       // Update CodeAnalyzerService with new URL
@@ -68,11 +69,11 @@ export async function activate(context: vscode.ExtensionContext) {
         statusBarService.setAnalyzerServerStatus(isRunning);
         if (isRunning) {
           vscode.window.showInformationMessage(
-            `LeekScript: Connected to analysis server at ${newApiUrl}`
+            `LeekScript: Connected to analysis server at ${newApiUrl}`,
           );
         } else {
           vscode.window.showWarningMessage(
-            `LeekScript: Cannot connect to analysis server at ${newApiUrl}`
+            `LeekScript: Cannot connect to analysis server at ${newApiUrl}`,
           );
         }
       });
@@ -81,7 +82,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Print globalstate for debugging
   const farmerAIsResponse = context.globalState.get(
-    "leekwars.farmerAIsResponse"
+    "leekwars.farmerAIsResponse",
   );
   console.log("LeekWars Farmer AIs Response:", farmerAIsResponse);
 
@@ -90,7 +91,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Initialize user Definition Manager
   const definitionManager = DefinitionManager.getInstance(
-    context.extensionPath
+    context.extensionPath,
   );
 
   // Initialize services
@@ -105,44 +106,44 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Register user code providers
   const userCodeCompletionProvider = new UserCodeCompletionProvider(
-    definitionManager
+    definitionManager,
   );
   const userDotCodeCompletionProvider = new UserDotCodeCompletionProvider(
-    definitionManager
+    definitionManager,
   );
 
   const userCodeCompletionProviderRegistration =
     vscode.languages.registerCompletionItemProvider(
       "leekscript",
-      userCodeCompletionProvider
+      userCodeCompletionProvider,
     );
 
   const userDotCodeCompletionProviderRegistration =
     vscode.languages.registerCompletionItemProvider(
       "leekscript",
       userDotCodeCompletionProvider,
-      "."
+      ".",
     );
 
   const userCodeHoverProvider = vscode.languages.registerHoverProvider(
     "leekscript",
-    new UserCodeHoverProvider(definitionManager)
+    new UserCodeHoverProvider(definitionManager),
   );
 
   const userCodeDefinitionProvider =
     vscode.languages.registerDefinitionProvider(
       "leekscript",
-      new UserCodeDefinitionProvider(definitionManager)
+      new UserCodeDefinitionProvider(definitionManager),
     );
 
   const semanticTokensProviderInstance = new UserCodeSemanticTokensProvider(
-    definitionManager
+    definitionManager,
   );
   const userCodeSemanticTokensProvider =
     vscode.languages.registerDocumentSemanticTokensProvider(
       "leekscript",
       semanticTokensProviderInstance,
-      legend
+      legend,
     );
 
   context.subscriptions.push(
@@ -152,8 +153,8 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.window.showTextDocument(uri, {
           selection: new vscode.Range(pos, pos),
         });
-      }
-    )
+      },
+    ),
   );
 
   // hover
@@ -173,7 +174,7 @@ export async function activate(context: vscode.ExtensionContext) {
     diagnosticCollection,
     analyzerService,
     dataLoader,
-    definitionManager
+    definitionManager,
   );
 
   // Link semantic tokens provider to diagnostic service for refresh
@@ -195,7 +196,7 @@ export async function activate(context: vscode.ExtensionContext) {
     console.log("[LeekScript] Code Analysis Server is running");
   } else {
     console.log(
-      "[LeekScript] Code Analysis Server is not running - real-time analysis disabled"
+      "[LeekScript] Code Analysis Server is not running - real-time analysis disabled",
     );
   }
 
@@ -204,7 +205,7 @@ export async function activate(context: vscode.ExtensionContext) {
     context,
     leekWarsService,
     analyzerService,
-    statusBarService
+    statusBarService,
   );
   commandRegistry.registerAll();
 
@@ -212,13 +213,13 @@ export async function activate(context: vscode.ExtensionContext) {
   const leekScriptCompletionProvider =
     vscode.languages.registerCompletionItemProvider(
       "leekscript",
-      new LeekScriptCompletionProvider(dataLoader)
+      new LeekScriptCompletionProvider(dataLoader),
     );
   context.subscriptions.push(leekScriptCompletionProvider);
 
   const hoverProvider = vscode.languages.registerHoverProvider(
     "leekscript",
-    new LeekScriptHoverProvider(dataLoader)
+    new LeekScriptHoverProvider(dataLoader),
   );
   context.subscriptions.push(hoverProvider);
 
@@ -226,14 +227,14 @@ export async function activate(context: vscode.ExtensionContext) {
   const formattingProvider =
     vscode.languages.registerDocumentFormattingEditProvider(
       "leekscript",
-      new LeekScriptFormattingProvider()
+      new LeekScriptFormattingProvider(),
     );
   context.subscriptions.push(formattingProvider);
 
   const rangeFormattingProvider =
     vscode.languages.registerDocumentRangeFormattingEditProvider(
       "leekscript",
-      new LeekScriptRangeFormattingProvider()
+      new LeekScriptRangeFormattingProvider(),
     );
   context.subscriptions.push(rangeFormattingProvider);
 
@@ -241,7 +242,8 @@ export async function activate(context: vscode.ExtensionContext) {
   const documentEventHandler = new DocumentEventHandler(
     context,
     diagnosticService,
-    dataLoader
+    LocalFilesService.getInstance(),
+    dataLoader,
   );
   documentEventHandler.registerAll();
 
