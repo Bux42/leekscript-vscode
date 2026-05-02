@@ -24,6 +24,7 @@ import {
   LeekScriptRangeFormattingProvider,
 } from "./providers/leekscript/FormattingProvider";
 import { LocalFilesService } from "./services/local-files/LocalFilesService";
+import { FarmerTreeFile } from "./services/leekwars/LeekWarsApi";
 
 // Services
 let diagnosticService: DiagnosticService | null = null;
@@ -80,11 +81,17 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   });
 
-  // Print globalstate for debugging
-  const farmerAIsResponse = context.globalState.get(
-    "leekwars.farmerAIsResponse",
-  );
-  console.log("LeekWars Farmer AIs Response:", farmerAIsResponse);
+  // Sync local file state on startup
+  const localFilesService = LocalFilesService.getInstance();
+  const state: FarmerTreeFile[] | null =
+    await localFilesService.getLocalFilesState();
+  if (state) {
+    localFilesService.setLocalFileState(state);
+  } else {
+    vscode.window.showWarningMessage(
+      "LeekScript: Unable to read local .leek files - some features may not work",
+    );
+  }
 
   // Initialize Data Loader
   const dataLoader = DataLoader.getInstance(context.extensionPath);
